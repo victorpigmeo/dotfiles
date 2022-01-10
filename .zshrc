@@ -18,4 +18,4 @@ source $ZSH/oh-my-zsh.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export GPG_TTY=$(tty)
-export PATH=$PATH:/Users/victor.blosquievis/sdk-flutter/bin/cache/dart-sdk/bin
+export PATH=$PATH:~/sdk-flutter/bin/cache/dart-sdk/bin
