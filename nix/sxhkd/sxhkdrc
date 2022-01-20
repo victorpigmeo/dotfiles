@@ -1,0 +1,17 @@
+#
+# wm independent hotkeys
+#
+
+super + Return
+    terminator
+
+#close and kill
+super + {_,shift + }w
+    bspc node -{c,k}
+
+#make sxhkd reload its configuration files
+super + Escape
+    pkill -USR1 -x sxhkd
+
+super + b
+    google-chrome
