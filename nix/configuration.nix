@@ -10,19 +10,12 @@
       ./hardware-configuration.nix
     ];
 
-  #Allow unfree (google-chrome)
-  nixpkgs.config.allowUnfree = true;
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  #Install virtualbox extension pack
-  virtualisation.virtualbox.host.enableExtensionPack = true;
-
-  boot.loader = {
-    grub = {
-      enable = true;
-      version = 2;
-      device = "/dev/sda";
-    };
-  };
+  # networking.hostName = "nixos"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
@@ -31,28 +24,41 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp0s3.useDHCP = true;
+  networking.interfaces.enp3s0.useDHCP = true;
 
-  services = {
-    gnome.gnome-keyring.enable = true;
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-    xserver = {
-      enable = true;
-      layout = "us";
-      xkbVariant = "intl";
+  # Select internationalisation properties.
+  # i18n.defaultLocale = "en_US.UTF-8";
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  # };
 
-      displayManager.defaultSession = "none+bspwm";
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
 
-      windowManager.bspwm = {
-        enable = true;
-      };
-    };
 
-  };
-  
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.videoDrivers = [ "nvidia" ];
+
+  # Configure keymap in X11
+  # services.xserver.layout = "us";
+  # services.xserver.xkbOptions = "eurosign:e";
+
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
+
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.victor = {
@@ -62,51 +68,32 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    # gnomeExtensions.appindicator
-    bspwm
-    sxhkd
-    polybarFull
-    picom
-    vim 
-    wget
-    google-chrome
-    emacs
-    terminator
+    vim
+    git
     alacritty
+    google-chrome
   ];
 
-  programs = {
-    zsh = {
-      enable = true;
-      syntaxHighlighting.enable = true;
-      enableCompletion = true;
-      ohMyZsh = {
-        enable = true;
-        
-      };
-    };
-  };
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
 
-  #Fonts
-  #fonts = {
-   # fonts = with pkgs; [
-    #  emacs-all-the-icons-fonts
-     # hack-font
-     # roboto
-     # roboto-mono
-     # ibm-plex
-    #];
+  # List services that you want to enable:
 
-    #fontconfig = {
-     # defaultFonts = {
-      #  sansSerif = ["roboto" 
-       #              "ibm-plex"];
-       # monospace = ["roboto-mono" 
-       #              "ibm-plex"];
-     # };
-    #};
- # };
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
