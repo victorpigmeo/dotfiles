@@ -4,18 +4,75 @@
 
 { config, pkgs, ... }:
 
+let
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+in
 {
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      (import "${home-manager}/nixos")
     ];
+
+  nixpkgs.config.allowUnfree = true;
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
+
+  home-manager.users.victor = {
+    home.packages = with pkgs; [
+      vim
+      terminator
+      spotify
+      git
+      google-chrome
+      vscode
+      zsh
+    ];
+
+    programs = {
+      git = {
+        enable = true;
+        userName = "Victor Carvalho";
+        userEmail = "victor.blq@gmail.com";
+      };
+
+      zsh = {
+        enable = true;
+        autocd = true;
+        initExtra = ''
+          [[ ! -f "$HOME/.config/zsh/.p10k.zsh" ]] || source "$HOME/.config/zsh/.p10k.zsh"
+        '';
+        dotDir = ".config/zsh";
+        enableSyntaxHighlighting = true;
+        shellAliases = {
+          c = "clear";
+        };
+        history = {
+          size = 10000;
+          path = "~./local/share/zsh/history";
+        };
+        oh-my-zsh = {
+          enable = true;
+          plugins = ["git" "jump"];
+        };
+
+        plugins = [
+          {
+            name = "powerlevel10k";
+            src = pkgs.zsh-powerlevel10k;
+            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+          }
+        ];
+      };
+    };
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "victor-nixos"; # Define your hostname.
 
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
@@ -40,7 +97,7 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-   # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.victor = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
@@ -48,14 +105,8 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-    terminator
-    spotify
-    google-chrome
-  ];
+
+  #Home Manager
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
