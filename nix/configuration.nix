@@ -52,6 +52,8 @@
   environment.systemPackages = with pkgs; [
     vim
     git
+    terminator
+    spotify
     google-chrome
   ];
 
