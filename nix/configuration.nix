@@ -15,7 +15,15 @@ in
       (import "${home-manager}/nixos")
     ];
 
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.useOSProber = true;
+
+  # Allow proprietary pkgs
   nixpkgs.config.allowUnfree = true;
+
+  # Enable zsh systemwide
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
@@ -68,30 +76,63 @@ in
     };
   };
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "victor-nixos"; # Define your hostname.
-
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp3s0.useDHCP = true;
+  networking = {
+    useDHCP = false;
+    hostName = "vnixos";
+    nameservers = ["208.67.222.222" "208.67.220.220"];
+    interfaces = {
+      enp3s0 = {
+        useDHCP = false;
+        ipv4 = {
+          addresses = [
+            {
+              address = "192.168.100.4";
+              prefixLength = 24; 
+            }
+          ];
+
+          routes = [
+            {
+              address = "0.0.0.0";
+              prefixLength = 0;
+	            via = "192.168.100.1";
+            }
+	          {
+              address = "192.168.100.0";
+              prefixLength = 24;
+              via = "192.168.100.1";
+            }
+          ];
+        };
+      };
+    };
+  };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services = {
+    xserver = {
+      enable = true;
 
-  # Configure keymap in X11
-  services.xserver.layout = "us";
-  services.xserver.xkbOptions = "intl";
+      displayManager = {
+        gdm.enable = true;
+      };
+
+      # Enable the GNOME Desktop Environment.
+      desktopManager = {
+        gnome.enable = true;
+      };
+
+      # Configure keymap in X11
+      layout = "us";
+      xkbVariant = "intl";
+    };
+  };
 
   # Enable sound.
   sound.enable = true;
@@ -103,11 +144,6 @@ in
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-
-  #Home Manager
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -117,4 +153,3 @@ in
   system.stateVersion = "21.11"; # Did you read the comment?
 
 }
-
