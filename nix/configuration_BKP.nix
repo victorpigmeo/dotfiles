@@ -1,3 +1,7 @@
+# THIS CONFIGURATION FILE IS A BACKUP IN CASE I DELETE THE LINK TO THE DEFAULT ONE
+# I HAVE NO IDEIA WHY, BUT SIMBOLICAL LINKS SEEM NOT WORK WITH THIS FILE
+# THIS FILE NEEDS TO BE EXACTLY LIKE THE LIVE ONE, I HOPE I CAN MANAGE TO MAINTAIN IT
+
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -6,6 +10,11 @@
 
 let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+  doom-emacs = pkgs.callPackage (builtins.fetchTarball {
+    url = https://github.com/nix-community/nix-doom-emacs/archive/master.tar.gz;
+    }) {
+      doomPrivateDir = /etc/doom.d;
+    };
 in
 {
 
@@ -27,27 +36,15 @@ in
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
-  # Emacs
-  services.emacs.package = pkgs.emacsGcc;
-
-  nixpkgs.overlays = [
-    (import (builtins.fetchGit {
-      url = "https://github.com/nix-community/emacs-overlay.git";
-      ref = "master";
-      rev = "bfc8f6edcb7bcf3cf24e4a7199b3f6fed96aaecf"; # change the revision
-    }))
-  ];
- 
   home-manager.users.victor = {
-    home.sessionVariables = { EDITOR = "emacs"; };
-    
     services = {
-      emacs = with pkgs; {
+      # Enable doom-emacs
+      emacs = {
         enable = true;
-        client.enable = true;
+        package = doom-emacs;
       };
     };
-    
+
     home.packages = with pkgs; [
       vim
       terminator
@@ -56,11 +53,7 @@ in
       google-chrome
       vscode
       zsh
-      emacsGcc
-      bspwm
-      sxhkd
-      ripgrep
-      fd
+      doom-emacs
     ];
 
     programs = {
