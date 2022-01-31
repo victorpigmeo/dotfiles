@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # echo "Linking nix configurations"
 # sudo ln -f ~/.dotfiles/nix/configuration.nix /etc/nixos/
