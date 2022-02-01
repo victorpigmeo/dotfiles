@@ -49,18 +49,23 @@ in
     };
     
     home.packages = with pkgs; [
-      vim
-      terminator
-      spotify
+      alacritty
+      emacsGcc
+      fd
+      font-manager
       git
       google-chrome
+      gotop
+      gnome3.nautilus
+      playerctl
+      pulsemixer
+      ripgrep
+      rofi
+      spotify
+      sxhkd
+      vim
       vscode
       zsh
-      emacsGcc
-      bspwm
-      sxhkd
-      ripgrep
-      fd
     ];
 
     programs = {
@@ -75,6 +80,7 @@ in
         autocd = true;
         initExtra = ''
           [[ ! -f "$HOME/.config/zsh/.p10k.zsh" ]] || source "$HOME/.config/zsh/.p10k.zsh"
+          export PATH=$PATH:$HOME/.emacs.d/bin
         '';
         dotDir = ".config/zsh";
         enableSyntaxHighlighting = true;
@@ -110,51 +116,50 @@ in
   networking = {
     useDHCP = false;
     hostName = "vnixos";
+    networkmanager.enable = true;
     nameservers = ["208.67.222.222" "208.67.220.220"];
+
     interfaces = {
       enp3s0 = {
-        useDHCP = false;
-        ipv4 = {
-          addresses = [
-            {
-              address = "192.168.100.4";
-              prefixLength = 24; 
-            }
-          ];
-
-          routes = [
-            {
-              address = "0.0.0.0";
-              prefixLength = 0;
-	            via = "192.168.100.1";
-            }
-	          {
-              address = "192.168.100.0";
-              prefixLength = 24;
-              via = "192.168.100.1";
-            }
-          ];
-        };
+        useDHCP = true;
       };
     };
   };
 
   # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
+  services = {
+    gnome.gnome-keyring.enable = true;
 
-    displayManager = {
-      gdm.enable = true;
+    xserver = {
+      enable = true;
+
+      displayManager = {
+        # gdm.enable = true;
+        lightdm = {
+          enable = true;
+        };
+        defaultSession = "none+bspwm";
+      };
+
+      windowManager = {
+        bspwm.enable = true;
+      };
+
+      # Configure keymap in X11
+      layout = "us";
+      xkbVariant = "altgr-intl";
     };
+  };
 
-    # Enable the GNOME Desktop Environment.
-    desktopManager = {
-      gnome.enable = true;
-    };
-
-    # Configure keymap in X11
-    layout = "us";
-    xkbVariant = "intl";
+  fonts = {
+    fonts = with pkgs; [
+      emacs-all-the-icons-fonts
+      hack-font
+      roboto
+      roboto-mono
+      master.material-design-icons
+      ibm-plex
+    ];
   };
 
   # Enable sound.
@@ -164,7 +169,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.victor = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "sound" "audio" "video"];
   };
 
   # This value determines the NixOS release from which the default

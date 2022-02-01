@@ -1,0 +1,28 @@
+# SXHKD Configuration
+
+super + t
+	alacritty
+
+super + @space
+	rofi -show run -show-icons
+
+super + shift + {w,r}
+	bspc {quit,wm -r}
+
+super + e
+	emacsclient -c
+
+# bspwm
+# close or kill
+super + {_,shift + }q
+	bspc node -{c,k}
+
+alt + Tab
+	bspc node -f last
+
+super + Tab
+	rofi -show window -show-icons
+
+# Focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f, node -d} '^{1-9,10}'
