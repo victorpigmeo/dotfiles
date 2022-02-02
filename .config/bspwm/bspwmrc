@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-date >> /tmp/bspwm.debug
 # BSPWM Configuration
 
 # Autostart
@@ -20,4 +19,7 @@ bspc config focus_follows_pointer true
 
 # Rules
 bspc rule -a Emacs desktop='^2' state=fullscreen follow=on
-bspc rule -a Google-chrome desktop='^3' state=tiled follow=on
+bspc rule -a Google-chrome desktop='^6' state=tiled follow=on
+bspc rule -a Pavucontrol desktop='^9' state=tiled follow=on
+bspc rule -a .blueman-manager-wrapped desktop='^9' state=tiled follow=on
+bspc rule -a Google-chrome:crx_cinhimbnkkaeohfgghhklpknlkffjgod desktop='^4' state=tiled follow=on

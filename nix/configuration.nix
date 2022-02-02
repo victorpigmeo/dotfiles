@@ -58,7 +58,8 @@ in
       gotop
       gnome3.nautilus
       playerctl
-      pulsemixer
+      pavucontrol
+      pipewire
       ripgrep
       rofi
       spotify
@@ -126,10 +127,14 @@ in
     };
   };
 
-  # Enable the X11 windowing system.
+  #rtkit enabled for pipewire
+  security.rtkit.enable = true;
+
   services = {
+    blueman.enable = true;
     gnome.gnome-keyring.enable = true;
 
+    # Enable the X11 windowing system.
     xserver = {
       enable = true;
 
@@ -147,7 +152,36 @@ in
 
       # Configure keymap in X11
       layout = "us";
-      xkbVariant = "altgr-intl";
+      xkbVariant = "intl";
+    };
+
+    # Pipewire
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+
+      media-session.config.bluez-monitor.rules = [
+        {
+          matches = [ {"device.name" = "~bluez_card.*"; } ];
+          actions = {
+            "update-props" = {
+              "bluez5.reconnect-profiles" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
+              "bluez5.sbc-xq-support" = true;
+            };
+          };
+        }
+        {
+          matches = [
+            { "node.name" = "~bluez_input.*"; }
+            { "node.name" = "~bluez_output.*"; }
+          ];
+          actions = {
+            "node.pause-on-idle" = false;
+          };
+        }
+      ];
     };
   };
 
@@ -157,14 +191,22 @@ in
       hack-font
       roboto
       roboto-mono
-      master.material-design-icons
       ibm-plex
     ];
+
+    fontconfig = {
+      defaultFonts = {
+        serif = [ "Roboto" "IBM Plex" ];
+        sansSerif = [ "Roboto" "IBM Plex" ];
+        monospace = [ "Roboto Mono" "IBM Plex Mono" ];
+      };
+    };
   };
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # hardware.pulseaudio.enable = true;
+  hardware.bluetooth.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.victor = {

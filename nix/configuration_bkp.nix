@@ -161,7 +161,6 @@ in
       hack-font
       roboto
       roboto-mono
-      master.material-design-icons
       ibm-plex
     ];
   };
@@ -169,6 +168,8 @@ in
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  nixpkgs.config.pulseaudio = true;
+  hardware.enableAllFirmware = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.victor = {
