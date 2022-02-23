@@ -3,10 +3,15 @@
 # BSPWM Configuration
 
 # Autostart
+## Monitor Config
 xrandr --output DP-1 --mode 1920x1080 --rate 144.00 --right-of HDMI-1
 xrandr --output HDMI-1 --mode 1920x1080 --rate 75.00
-
+## SXHKD
 pgrep -x sxhkd > /dev/null || sxhkd &
+## Polybar
+killall -q polybar
+polybar -r primary &
+polybar -r secondary &
 
 # Monitor config
 bspc monitor DP-1 -d 1 2 3 4 5

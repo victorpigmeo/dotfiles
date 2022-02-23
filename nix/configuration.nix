@@ -60,6 +60,7 @@ in
       playerctl
       pavucontrol
       pipewire
+      polybarFull
       ripgrep
       rofi
       spotify
@@ -192,6 +193,8 @@ in
       roboto
       roboto-mono
       ibm-plex
+      siji
+      material-icons
     ];
 
     fontconfig = {

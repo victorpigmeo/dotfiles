@@ -13,16 +13,24 @@ ln -sf ${HOME}/.dotfiles/.doom.d/packages.el ${HOME}/.doom.d/
 echo "Succesfully linked doom-emacs configurations"
 
 echo "Linking bspwm+sxhkd configurations"
-[ -d "${HOME}/.config/bspwm" ] && echo "~/.config/bspwm directory already exists" || mkdir -r ${HOME}/.config/bspwm
-[ -d "${HOME}/.config/sxhkd" ] && echo "~/.config/sxhkd directory already exists" || mkdir -r ${HOME}/.config/sxhkd
+[ -d "${HOME}/.config/bspwm" ] && echo "~/.config/bspwm directory already exists" || mkdir -p ${HOME}/.config/bspwm
+[ -d "${HOME}/.config/sxhkd" ] && echo "~/.config/sxhkd directory already exists" || mkdir -p ${HOME}/.config/sxhkd
 
 ln -f ${HOME}/.dotfiles/.config/bspwm/bspwmrc ${HOME}/.config/bspwm/bspwmrc
 ln -sf ${HOME}/.dotfiles/.config/sxhkd/sxhkdrc ${HOME}/.config/sxhkd/sxhkdrc
 echo "Succesfully linked bspwm+sxhkd"
 
 echo "Linking desktop files"
-[ -d "${HOME}/.local/share/applications" ] && echo "~/.local/share/applications directory already exists" || mkdir -r ${HOME}/.config/bspwm
+[ -d "${HOME}/.local/share/applications" ] && echo "~/.local/share/applications directory already exists" || mkdir -p ${HOME}/.config/bspwm
 
 ln -sf ${HOME}/.dotfiles/.local/share/applications/youtube_music.desktop ${HOME}/.local/share/applications/youtube_music.desktop
 echo "Succesfully linked desktop files"
-# StartupWMClass=crx_cinhimbnkkaeohfgghhklpknlkffjgod
+
+echo "Linking polybar config"
+[ -d "${HOME}/.config/polybar" ] && echo "~/.config/polybar directory already exists" || mkdir -p ${HOME}/.config/polybar
+[ -d "${HOME}/.config/polybar/scripts" ] && echo "~/.config/polybar/scripts directory already exists" || mkdir -p ${HOME}/.config/polybar/scripts
+
+ln -sf ${HOME}/.dotfiles/.config/polybar/config ${HOME}/.config/polybar/config
+ln -sf ${HOME}/.dotfiles/.config/polybar/scripts/get_spotify_status.sh ${HOME}/.config/polybar/scripts/get_spotify_status.sh
+ln -sf ${HOME}/.dotfiles/.config/polybar/scripts/scroll_spotify_status.sh ${HOME}/.config/polybar/scripts/scroll_spotify_status.sh
+echo "Succesfully linked polybar config"
