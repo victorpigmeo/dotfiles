@@ -21,9 +21,9 @@ ln -sf ${HOME}/.dotfiles/.config/sxhkd/sxhkdrc ${HOME}/.config/sxhkd/sxhkdrc
 echo "Succesfully linked bspwm+sxhkd"
 
 echo "Linking desktop files"
-[ -d "${HOME}/.local/share/applications" ] && echo "~/.local/share/applications directory already exists" || mkdir -p ${HOME}/.config/bspwm
+# [ -d "${HOME}/.local/share/applications" ] && echo "~/.local/share/applications directory already exists" || mkdir -p ${HOME}/.local/share/applications
 
-ln -sf ${HOME}/.dotfiles/.local/share/applications/youtube_music.desktop ${HOME}/.local/share/applications/youtube_music.desktop
+#ln -sf ${HOME}/.dotfiles/.local/share/applications/youtube_music.desktop ${HOME}/.local/share/applications/youtube_music.desktop
 echo "Succesfully linked desktop files"
 
 echo "Linking polybar config"
@@ -34,3 +34,9 @@ ln -sf ${HOME}/.dotfiles/.config/polybar/config ${HOME}/.config/polybar/config
 ln -sf ${HOME}/.dotfiles/.config/polybar/scripts/get_spotify_status.sh ${HOME}/.config/polybar/scripts/get_spotify_status.sh
 ln -sf ${HOME}/.dotfiles/.config/polybar/scripts/scroll_spotify_status.sh ${HOME}/.config/polybar/scripts/scroll_spotify_status.sh
 echo "Succesfully linked polybar config"
+
+echo "Linking discord files"
+[ -d "${HOME}/.config/discord" ] && echo "~/.config/discord directory already exists" || mkdir -p ${HOME}/.config/discord
+
+ln -sf ${HOME}/.dotfiles/.config/discord/settings.json ${HOME}/.config/discord/settings.json
+echo "Succesfully linked discord files"

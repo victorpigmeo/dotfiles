@@ -36,6 +36,11 @@ in
       ref = "master";
       rev = "bfc8f6edcb7bcf3cf24e4a7199b3f6fed96aaecf"; # change the revision
     }))
+    (self: super: {
+      discord = super.discord.overrideAttrs (_: {
+        src = builtins.fetchTarball https://discord.com/api/download?platform=linux&format=tar.gz;
+      });
+    })
   ];
  
   home-manager.users.victor = {
@@ -50,6 +55,8 @@ in
     
     home.packages = with pkgs; [
       alacritty
+      discord
+      dunst
       emacsGcc
       fd
       font-manager
