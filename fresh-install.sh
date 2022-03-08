@@ -10,6 +10,7 @@ echo "Linking doom-emacs configurations"
 ln -sf ${HOME}/.dotfiles/.doom.d/init.el ${HOME}/.doom.d/
 ln -sf ${HOME}/.dotfiles/.doom.d/config.el ${HOME}/.doom.d/
 ln -sf ${HOME}/.dotfiles/.doom.d/packages.el ${HOME}/.doom.d/
+ln -sf ${HOME}/.dotfiles/.doom.d/+bindings.el ${HOME}/.doom.d/
 echo "Succesfully linked doom-emacs configurations"
 
 echo "Linking bspwm+sxhkd configurations"
@@ -20,11 +21,11 @@ ln -f ${HOME}/.dotfiles/.config/bspwm/bspwmrc ${HOME}/.config/bspwm/bspwmrc
 ln -sf ${HOME}/.dotfiles/.config/sxhkd/sxhkdrc ${HOME}/.config/sxhkd/sxhkdrc
 echo "Succesfully linked bspwm+sxhkd"
 
-echo "Linking desktop files"
+# echo "Linking desktop files"
 # [ -d "${HOME}/.local/share/applications" ] && echo "~/.local/share/applications directory already exists" || mkdir -p ${HOME}/.local/share/applications
 
 #ln -sf ${HOME}/.dotfiles/.local/share/applications/youtube_music.desktop ${HOME}/.local/share/applications/youtube_music.desktop
-echo "Succesfully linked desktop files"
+# echo "Succesfully linked desktop files"
 
 echo "Linking polybar config"
 [ -d "${HOME}/.config/polybar" ] && echo "~/.config/polybar directory already exists" || mkdir -p ${HOME}/.config/polybar
@@ -40,3 +41,9 @@ echo "Linking discord files"
 
 ln -sf ${HOME}/.dotfiles/.config/discord/settings.json ${HOME}/.config/discord/settings.json
 echo "Succesfully linked discord files"
+
+echo "Linking zsh files"
+[ -d "${HOME}/.config/zsh/oh-my-zsh/custom" ] && echo "~/.config/zsh/oh-my-zsh/custom directory already exists" || mkdir -p ${HOME}/.config/zsh/oh-my-zsh/custom
+
+ln -sf ${HOME}/.dotfiles/.config/zsh/oh-my-zsh/custom/aliases.zsh ${HOME}/.config/zsh/oh-my-zsh/custom/aliases.zsh
+echo "Succesfully linked zsh files"

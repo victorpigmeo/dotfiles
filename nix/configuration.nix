@@ -8,7 +8,6 @@ let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in
 {
-
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -42,7 +41,7 @@ in
       });
     })
   ];
- 
+
   home-manager.users.victor = {
     home.sessionVariables = { EDITOR = "emacs"; };
     
@@ -55,19 +54,25 @@ in
     
     home.packages = with pkgs; [
       alacritty
+      android-studio
       discord
       dunst
+      dart
       emacsGcc
       fd
+      flutter
       font-manager
       git
       google-chrome
       gotop
       gnome3.nautilus
+      #jdk11
+      jdk8
       playerctl
       pavucontrol
       pipewire
       polybarFull
+      postman
       ripgrep
       rofi
       spotify
@@ -89,7 +94,8 @@ in
         autocd = true;
         initExtra = ''
           [[ ! -f "$HOME/.config/zsh/.p10k.zsh" ]] || source "$HOME/.config/zsh/.p10k.zsh"
-          export PATH=$PATH:$HOME/.emacs.d/bin
+          export PATH=$PATH:$HOME/.emacs.d/bin:$HOME/Android/Sdk/tools/bin
+          export CHROME_EXECUTABLE=google-chrome-stable
         '';
         dotDir = ".config/zsh";
         enableSyntaxHighlighting = true;
@@ -103,6 +109,7 @@ in
         oh-my-zsh = {
           enable = true;
           plugins = ["git" "jump"];
+          custom = "$HOME/.config/zsh/oh-my-zsh/custom";
         };
 
         plugins = [
@@ -217,6 +224,7 @@ in
   sound.enable = true;
   # hardware.pulseaudio.enable = true;
   hardware.bluetooth.enable = true;
+  hardware.trackpoint.sensitivity = 16;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.victor = {

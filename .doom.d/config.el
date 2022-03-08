@@ -51,11 +51,5 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(map! :nv
-
-      :desc "Comment selected lines"
-      "C-/" #'comment-line
-
-      :desc "Evil multiword edit"
-      "M-r" #'evil-multiedit-match-all)
+(load! "+bindings")
 ;;; config.el Ends here
