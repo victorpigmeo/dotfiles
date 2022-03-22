@@ -16,4 +16,16 @@ ln -sf ${HOME}/.dotfiles/manjaro/.zshrc ${HOME}/
 ln -sf ${HOME}/.dotfiles/manjaro/.p10k.zsh ${HOME}/
 ln -sf ${HOME}/.dotfiles/manjaro/.fzf.zsh ${HOME}/
 ln -sf ${HOME}/.dotfiles/manjaro/.oh-my-zsh/custom/aliases.zsh ${HOME}/.oh-my-zsh/custom/
+ln -sf ${HOME}/.dotfiles/manjaro/.oh-my-zsh/custom/config.zsh ${HOME}/.oh-my-zsh/custom/
 echo "Succesfully linked oh-my-zsh configurations"
+
+# echo "Linking alacritty configurations"
+# [ -d "${HOME}/.config/alacritty" ] && echo "~/.config/alacritty directory already exists" || mkdir ${HOME}/.config/alacritty
+
+# ln -sf ${HOME}/.dotfiles/manjaro/.config/alacritty/alacritty.yml ${HOME}/.config/alacritty
+# echo "Succesfully linked alacritty configurations"
+echo "Linking terminator configurations"
+[ -d "${HOME}/.config/terminator" ] && echo "~/.config/terminator directory already exists" || mkdir ${HOME}/.config/terminator
+
+ln -sf ${HOME}/.dotfiles/.config/terminator/config ${HOME}/.config/terminator/
+echo "Succesfully linked terminator configurations"
