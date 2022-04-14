@@ -6,6 +6,7 @@ echo "Linking doom-emacs configurations"
 ln -sf ${HOME}/.dotfiles/.doom.d/init.el ${HOME}/.doom.d/
 ln -sf ${HOME}/.dotfiles/.doom.d/config.el ${HOME}/.doom.d/
 ln -sf ${HOME}/.dotfiles/.doom.d/packages.el ${HOME}/.doom.d/
+ln -sf ${HOME}/.dotfiles/.doom.d/custom.el ${HOME}/.doom.d/
 ln -sf ${HOME}/.dotfiles/.doom.d/+bindings.el ${HOME}/.doom.d/
 echo "Succesfully linked doom-emacs configurations"
 

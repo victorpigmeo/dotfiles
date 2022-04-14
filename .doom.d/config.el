@@ -43,30 +43,18 @@
 ;; dart-lsp
 ;;
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
-
-(setq package-selected-packages
-  '(dart-mode lsp-mode lsp-dart lsp-treemacs flycheck company
-    ;; Optional packages
-    lsp-ui company hover))
-
-(when (cl-find-if-not #'package-installed-p package-selected-packages)
-  (package-refresh-contents)
-  (mapc #'package-install package-selected-packages))
-
-(add-hook 'dart-mode-hook 'lsp)
-
-(setq gc-cons-threshold (* 100 1024 1024)
-      read-process-output-max (* 1024 1024)
-      company-minimum-prefix-length 1
-      lsp-lens-enable t
+(setq read-process-output-max (* 1024 1024)
       lsp-signature-auto-activate nil)
 
 (with-eval-after-load 'projectile
   (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
   (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
+
+;;remove yasnippet from backends
+(setq +lsp-company-backends '(:separate company-capf))
+
+
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
