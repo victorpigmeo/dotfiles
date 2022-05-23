@@ -1,0 +1,12 @@
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+
+[commit]
+	gpgsign = true
+[http]
+	sslverify = false

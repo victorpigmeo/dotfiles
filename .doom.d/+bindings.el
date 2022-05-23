@@ -16,4 +16,11 @@
       :desc "Reverse expand region"
       "M--" (lambda () (interactive) (er/expand-region -1)))
 
+(map! :after clojure-mode
+      :map clojure-mode-map
+      :localleader
+
+      :desc "Cider jack in CLJ"
+      "s" #'cider-jack-in-clj)
+
 ;;; +bindings.el ends here

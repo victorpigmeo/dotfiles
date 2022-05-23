@@ -38,7 +38,12 @@
       projectile-project-search-path '("~/dev/")
       projectile-enable-caching nil
       evil-split-window-below t
-      evil-vsplit-window-right t)
+      evil-vsplit-window-right t
+      doom-localleader-key ",")
+
+;; clojure-lsp
+;;
+(setq lsp-semantic-tokens-enable t)
 
 ;; dart-lsp
 ;;
