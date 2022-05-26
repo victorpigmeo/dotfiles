@@ -44,17 +44,8 @@ in {
 
     activation = {
       linkFiles = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-        ${dotfilesDir}/scripts/./install-fzf.sh
-        ${dotfilesDir}/scripts/./install-oh-my-zsh.sh
-        ln -sf ${dotfilesDir}/.oh-my-zsh/custom/aliases.zsh ~/.oh-my-zsh/custom/aliases.zsh
-        ${dotfilesDir}/scripts/./install-oh-my-zsh-plugins.sh
-        ln -sf ${dotfilesDir}/.p10k.zsh ~/.p10k.zsh
-        ln -sf ${dotfilesDir}/.fzf.zsh ~/.fzf.zsh
-        mv ~/.zshrc ~/.zshrc_before_home_switch
-        ln -sf ${dotfilesDir}/.zshrc ~/.zshrc
-        ln -sf ${dotfilesDir}/.profile ~/.profile
         ${dotfilesDir}/scripts/./install-doom-emacs.sh
-        ~/.emacs.d/bin/doom sync 
+        ~/.emacs.d/bin/doom sync
       '';
     };
   };
@@ -65,9 +56,7 @@ in {
       package = pkgs.jdk11;
     };
 
-    emacs = {
-      enable = false;
-    };
+    emacs = { enable = false; };
 
     git = {
       enable = true;
@@ -76,6 +65,24 @@ in {
       userEmail = "victor.blq@gmail.com";
 
       ignores = [ ".lsp/.cache" ".clj-kondo/.cache" ];
+    };
+
+    tmux = {
+      enable = true;
+      clock24 = true;
+
+      extraConfig = ''
+        bind-key -n M-x kill-pane
+        bind-key -n M-c new-window
+        bind -n M-Right next-window
+        bind -n M-Left previous-window
+        bind-key -n M-h split-window -h
+        bind-key -n M-v split-window -v
+        bind-key -n C-Left select-pane -L
+        bind-key -n C-Right select-pane -R
+        bind-key -n C-Up select-pane -U
+        bind-key -n C-Down select-pane -D
+      '';
     };
 
   };
