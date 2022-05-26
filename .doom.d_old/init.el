@@ -20,7 +20,8 @@
        (company)           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       ivy                 ; a search engine for love and life
+       ;;ivy                 ; a search engine for love and life
+       vertico
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -59,6 +60,8 @@
        snippets          ; my elves. They type so I don't have to
 
        :emacs
+       ;; Enable Redo function
+       undo
        (dired  +icons)
        ;; electric          ; smarter, keyword-based electric-indent
        ;;vc                ; version-control and Emacs, sitting in a tree

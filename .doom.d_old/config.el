@@ -132,14 +132,7 @@
 
 (use-package! lsp-dart
   :config
-  (when-let (dart-exec (executable-find "dart"))
-    (let ((dart-sdk-path (-> dart-exec
-                             file-chase-links
-                             file-name-directory
-                             directory-file-name
-                             file-name-directory)))
-      (setq lsp-dart-dap-flutter-hot-reload-on-save t)
-      (setq lsp-dart-sdk-dir dart-sdk-path))))
+  (setq lsp-dart-dap-flutter-hot-reload-on-save t))
 
 (use-package! lsp-java
   :after lsp
@@ -222,7 +215,8 @@
 
 (after! projectile
   (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
-  (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
+  (add-to-list 'projectile-project-root-files-bottom-up "BUILD")
+  (add-to-list 'projectile-project-root-files-bottom-up "project.clj"))
 
 (put 'narrow-to-region 'disabled nil)
 

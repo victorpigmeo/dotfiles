@@ -99,7 +99,7 @@
   (define-key paredit-mode-map (kbd "C-<left>") nil)
   (define-key paredit-mode-map (kbd "C-<right>") nil)
 
-  (map! :nvi
+  (map! :nvidjsahdhiuasdayusgduyas
 
         :desc "Forward barf"
         "M-<left>" #'paredit-forward-barf-sexp
@@ -137,6 +137,13 @@
 
       :desc "Cider eval last sexpr and copy to clipboard"
       "e c" #'cider-eval-last-sexpr-and-copy-to-clipboard)
+
+(map! :after clojure-mode
+      :map clojure-mode-map
+      :localleader
+
+      :desc "Cider jack in CLJ"
+      "s" #'cider-jack-in-clj)
 
 (after! company
   (define-key company-active-map (kbd "M-h") #'company-quickhelp-manual-begin))
