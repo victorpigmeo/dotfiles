@@ -12,7 +12,7 @@ in {
       ref = "master";
     }))
 
-    (import (builtins.fetchGit { url = "https://github.com/nubank/nixpkgs"; }))
+    # (import (builtins.fetchGit { url = "https://github.com/nubank/nixpkgs"; }))
   ];
 
   home = {
@@ -37,9 +37,10 @@ in {
       jet
       (leiningen.override { jdk = jdk11; })
 
+      kubectl
       go
-      nubank.dart
-      nubank.flutter
+      dart
+      flutter
     ];
 
     activation = {

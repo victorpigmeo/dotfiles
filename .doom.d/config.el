@@ -46,20 +46,19 @@
 ;;
 (setq lsp-semantic-tokens-enable t)
 
+(use-package! paredit
+  :hook ((clojure-mode . paredit-mode)
+         (emacs-lisp-mode . paredit-mode)))
 ;; dart-lsp
 ;;
 
-(setq read-process-output-max (* 1024 1024)
-      lsp-signature-auto-activate nil)
-
+;; projectile
 (with-eval-after-load 'projectile
   (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
   (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
 
 ;;remove yasnippet from backends
 (setq +lsp-company-backends '(:separate company-capf))
-
-
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -77,10 +76,8 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(let ((nudev-emacs-path "~/dev/nu/nudev/ides/emacs/"))
-  (when (file-directory-p nudev-emacs-path)
-    (add-to-list 'load-path nudev-emacs-path)
-    (require 'nu nil t)))
+;;
 
 (load! "+bindings")
+(load! "+nubank")
 ;;; config.el Ends here

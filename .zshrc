@@ -120,6 +120,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 export NU_HOME="${HOME}/dev/nu"
 export NUCLI_HOME="${NU_HOME}/nucli"
-export PATH="${NUCLI_HOME}:${PATH}"
+export PATH="${NUCLI_HOME}:${PATH}:/home/victor/go/bin"
 export XDG_DATA_DIRS="/home/victor/.nix-profile/share:$XDG_DATA_DIRS"
 
