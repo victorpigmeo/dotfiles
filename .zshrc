@@ -123,3 +123,6 @@ export NUCLI_HOME="${NU_HOME}/nucli"
 export PATH="${NUCLI_HOME}:${PATH}:/home/victor/go/bin"
 export XDG_DATA_DIRS="/home/victor/.nix-profile/share:$XDG_DATA_DIRS"
 
+
+if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+export GPG_TTY=$(tty)

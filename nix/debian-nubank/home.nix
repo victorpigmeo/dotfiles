@@ -39,8 +39,8 @@ in {
 
       kubectl
       go
-      dart
-      flutter
+      #dart
+      #flutter
     ];
 
     activation = {
@@ -66,7 +66,7 @@ in {
       userName = "Victor Pigmeo";
       userEmail = "victor.blq@gmail.com";
       signing = {
-        key = "EEB2A1692650A7A";
+        key = "E892323E59CCCB99";
         signByDefault = true;
       };
 

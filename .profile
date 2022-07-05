@@ -23,3 +23,5 @@ fi
 export XDG_DATA_DIRS=/usr/share:/usr/local/share:${HOME}/.local/share:${HOME}/.nix-profile/share
 
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
+
+if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
