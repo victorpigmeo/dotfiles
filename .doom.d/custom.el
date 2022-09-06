@@ -4,7 +4,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-minimum-prefix-length 3)
+ '(lsp-dart-flutter-sdk-dir "/home/victor/flutter")
  '(lsp-dart-line-length 80)
+ '(lsp-dart-sdk-dir "/home/victor/flutter/bin/cache/dart-sdk")
  '(lsp-enable-snippet nil)
  '(lsp-log-io nil))
 

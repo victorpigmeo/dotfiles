@@ -40,7 +40,10 @@
       evil-split-window-below t
       evil-vsplit-window-right t
       doom-localleader-key ","
-      +format-on-save-enabled-modes '(dart-mode))
+      +format-on-save-enabled-modes '(dart-mode)
+      lsp-ui-peek-enable nil)
+
+(setq-default evil-kill-on-visual-paste nil)
 
 ;; clojure-lsp
 ;;
@@ -53,9 +56,10 @@
 ;;
 
 ;; projectile
-(with-eval-after-load 'projectile
+(after! projectile
   (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
-  (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
+  (add-to-list 'projectile-project-root-files-bottom-up "BUILD")
+  (add-to-list 'projectile-project-root-files-bottom-up "project.clj"))
 
 ;;remove yasnippet from backends
 (setq +lsp-company-backends '(:separate company-capf))

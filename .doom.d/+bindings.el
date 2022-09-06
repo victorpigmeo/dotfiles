@@ -49,7 +49,19 @@
       "C-M-s-<down>" #'scroll-up-bottom-window
 
       :desc "scroll down bottom window"
-      "C-M-s-<up>" #'scroll-down-bottom-window)
+      "C-M-s-<up>" #'scroll-down-bottom-window
+
+      :desc "increase window width"
+      "C-S-<left>" (lambda () (interactive) (enlarge-window 5 t))
+
+      :desc "decrease window width"
+      "C-S-<right>" (lambda () (interactive) (enlarge-window -5 t))
+
+      :desc "increase window height"
+      "C-S-<down>" (lambda () (interactive) (enlarge-window 5))
+
+      :desc "decrease window height"
+      "C-S-<up>" (lambda () (interactive) (enlarge-window -5)))
 
 (defun move-line-up ()
   "Move up the current line."

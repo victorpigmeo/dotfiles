@@ -23,7 +23,6 @@ in {
     packages = with pkgs; [
       emacsPackage
 
-      spotify
       slack
       discord
       gnupg
@@ -34,11 +33,13 @@ in {
       clojure-lsp
       babashka
       clj-kondo
+      gotop
       jet
       (leiningen.override { jdk = jdk11; })
 
       kubectl
       go
+      tektoncd-cli
       #dart
       #flutter
     ];
@@ -46,7 +47,7 @@ in {
     activation = {
       linkFiles = config.lib.dag.entryAfter [ "writeBoundary" ] ''
         ln -sf ${dotfilesDir}/.doom.d/*.el ~/.doom.d/
-              '';
+      '';
     };
   };
 
@@ -56,9 +57,7 @@ in {
       package = pkgs.jdk11;
     };
 
-    emacs = {
-      enable = false;
-    };
+    emacs = { enable = false; };
 
     git = {
       enable = true;
