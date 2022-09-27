@@ -34,6 +34,7 @@
       ;; This determines the style of line numbers in effect. If set to `nil', line
       ;; numbers are disabled. For relative line numbers, set this to `relative'.
       display-line-numbers-type t
+      doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 
       projectile-project-search-path '("~/dev/")
       projectile-enable-caching nil
