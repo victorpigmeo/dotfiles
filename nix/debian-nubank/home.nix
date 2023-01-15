@@ -35,9 +35,9 @@ in {
       clj-kondo
       gotop
       jet
+      postman
       (leiningen.override { jdk = jdk11; })
 
-      kubectl
       go
       tektoncd-cli
       #dart
