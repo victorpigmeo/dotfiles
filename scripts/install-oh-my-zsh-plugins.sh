@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 PWRLVL10KREPOSRC="https://github.com/romkatv/powerlevel10k.git"
 PWRLVL10KLOCALREPO="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
