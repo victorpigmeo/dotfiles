@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 REPOSRC="https://github.com/doomemacs/doomemacs"
 LOCALREPO="${HOME}/.emacs.d"

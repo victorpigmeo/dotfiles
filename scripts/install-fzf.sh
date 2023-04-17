@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 FZFREPOSRC="https://github.com/junegunn/fzf.git"
 FZFLOCALREPO="${HOME}/.fzf"
