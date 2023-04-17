@@ -131,3 +131,8 @@ export FLUTTER_ROOT=$HOME/flutter
 export ANDROID_HOME=$HOME/Android
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$HOME/bin
 export ANDROID_SDK_ROOT=/home/victor/Android
+export NODE_OPTIONS=--max-old-space-size=8192
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)

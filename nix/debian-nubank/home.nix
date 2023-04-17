@@ -26,12 +26,13 @@ in {
       slack
       discord
       gnupg
+      spotify
 
       nixfmt
       ripgrep
       (clojure.override { jdk = jdk11; })
       clojure-lsp
-      babashka
+      # babashka
       clj-kondo
       gotop
       jet

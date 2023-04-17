@@ -46,6 +46,9 @@
 
 (setq-default evil-kill-on-visual-paste nil)
 
+;; cider
+(set-popup-rule! "*cider-test-report*" :side 'right :width 0.4)
+
 ;; clojure-lsp
 ;;
 (setq lsp-semantic-tokens-enable t)
@@ -61,6 +64,9 @@
   (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
   (add-to-list 'projectile-project-root-files-bottom-up "BUILD")
   (add-to-list 'projectile-project-root-files-bottom-up "project.clj"))
+
+(after! js2-mode
+  (add-to-list 'projectile-globally-ignored-directories "node_modules"))
 
 ;;remove yasnippet from backends
 (setq +lsp-company-backends '(:separate company-capf))
