@@ -1,5 +1,11 @@
 #!/bin/sh
 
+sudo apt install zsh
+
+cat /etc/shells
+
+chsh
+
 DOTFILESDIR=${HOME}/.dotfiles
 
 ${DOTFILESDIR}/scripts/./install-fzf.sh
