@@ -8,6 +8,7 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
+export XDG_DATA_DIRS=/usr/local/share/:/usr/share/
 # if [ -n ${XDG_SESSION_ID} ];then
 #     xdgpath=$(echo $XDG_DATA_DIRS|sed -e 's#/usr/local/share:##' -e 's#/usr/share:##')
 #     XDG_DATA_DIRS=/usr/local/share:/usr/share
@@ -19,8 +20,8 @@ fi
 #     XDG_DATA_DIRS=${HOME}/.local/share:${xdgpath}:${XDG_DATA_DIRS}
 #     export XDG_DATA_DIRS
 # fi
+
 xset r rate 220 60
-export XDG_DATA_DIRS=/usr/share:/usr/local/share:${HOME}/.local/share:${HOME}/.nix-profile/share
 
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
 

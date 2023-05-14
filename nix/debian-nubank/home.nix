@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  dotfilesDir = "$HOME/.dotfiles";
+  homeDir = "$HOME";
   emacsPackage = (pkgs.emacsPackagesFor pkgs.emacsNativeComp).emacsWithPackages
     (epkgs: [ epkgs.vterm ]);
 in {
@@ -12,50 +12,43 @@ in {
       ref = "master";
     }))
 
-    # (import (builtins.fetchGit { url = "https://github.com/nubank/nixpkgs"; }))
   ];
 
   home = {
-    stateVersion = "22.05";
+    stateVersion = "22.11";
     username = "victor";
     homeDirectory = "/home/victor";
 
     packages = with pkgs; [
       emacsPackage
-
+      google-chrome
       slack
       discord
       gnupg
+      openfortivpn
       spotify
-
       nixfmt
       ripgrep
-      (clojure.override { jdk = jdk11; })
+      (clojure.override { jdk = jdk17; })
       clojure-lsp
-      # babashka
+      babashka
       clj-kondo
       gotop
       jet
-      postman
-      (leiningen.override { jdk = jdk11; })
-
+      (leiningen.override { jdk = jdk17; })
+      htop
       go
       tektoncd-cli
-      #dart
-      #flutter
+
+
     ];
 
-    activation = {
-      linkFiles = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-        ln -sf ${dotfilesDir}/.doom.d/*.el ~/.doom.d/
-      '';
-    };
   };
 
   programs = {
     java = {
       enable = true;
-      package = pkgs.jdk11;
+      package = pkgs.jdk17_headless;
     };
 
     emacs = { enable = false; };
@@ -75,8 +68,8 @@ in {
       ignores = [ ".lsp/.cache" ".clj-kondo/.cache" ];
     };
 
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
   };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }

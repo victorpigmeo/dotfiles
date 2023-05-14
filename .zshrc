@@ -121,18 +121,16 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export NU_HOME="${HOME}/dev/nu"
 export NUCLI_HOME="${NU_HOME}/nucli"
 export PATH="${NUCLI_HOME}:${PATH}:/home/victor/go/bin:/home/victor/flutter/bin:/home/victor/fluter/bin/cache/dart-sdk/bin"
-export XDG_DATA_DIRS="/home/victor/.nix-profile/share:$XDG_DATA_DIRS"
 
 if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 export GPG_TTY=$(tty)
 
-#Android 
+xset r rate 220 60
+
+#Android
 export FLUTTER_ROOT=$HOME/flutter
 export ANDROID_HOME=$HOME/Android
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$HOME/bin
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$HOME/bin:$HOME/.config/emacs/bin
 export ANDROID_SDK_ROOT=/home/victor/Android
 export NODE_OPTIONS=--max-old-space-size=8192
 
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)
