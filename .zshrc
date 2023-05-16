@@ -126,6 +126,7 @@ if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.n
 export GPG_TTY=$(tty)
 
 xset r rate 220 60
+export DISPLAY=:0
 
 #Android
 export FLUTTER_ROOT=$HOME/flutter

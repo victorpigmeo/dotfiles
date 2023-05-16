@@ -2,7 +2,7 @@
 
 let
   homeDir = "$HOME";
-  emacsPackage = (pkgs.emacsPackagesFor pkgs.emacsNativeComp).emacsWithPackages
+  emacsPackage = (pkgs.emacsPackagesFor pkgs.emacsUnstable).emacsWithPackages
     (epkgs: [ epkgs.vterm ]);
 in {
   nixpkgs.config.allowUnfree = true;
@@ -39,10 +39,12 @@ in {
       htop
       go
       tektoncd-cli
-
-
+      rxvt-unicode
+      peek
+      dmenu
+      rofi
+      polybar
     ];
-
   };
 
   programs = {

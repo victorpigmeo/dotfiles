@@ -1,30 +1,60 @@
-#!/usr/bin/env bash
+#! /bin/sh
 
-# BSPWM Configuration
+# pgrep -x sxhkd > /dev/null || sxhkd &
+pgrep sxhkd || sxhkd -c ~/.config/sxhkd/sxhkdrc &
+
+bspc monitor -d 1 2 3 4
+
+bspc config border_width         2
+bspc config window_gap           4
+
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+bspc rule -a URxvt desktop='^1' state tiled follow=on
+bspc rule -a Emacs desktop='^2' state=tiled follow=on
+bspc rule -a Google-chrome desktop='^3' state=tiled follow=on
+bspc rule -a Peek state=floating follow=on
+bspc rule -a Org.gnome.Nautilus desktop='^4' state=tiled follow=on
+
+# Set cursor speed and delay
+xset r rate 220 50
+
+# Set background
+feh --bg-scale ~/.dotfiles/background.png
+
+# Set keymap to us-intl
+setxkbmap -layout us -variant intl
+
+polybar &
+
+
+# OLD BSPWM Configuration
 
 # Autostart
-## Monitor Config
-xrandr --output DP-1 --mode 1920x1080 --rate 144.00 --right-of HDMI-1
-xrandr --output HDMI-1 --mode 1920x1080 --rate 75.00
-## SXHKD
-pgrep -x sxhkd > /dev/null || sxhkd &
-## Polybar
-killall -q polybar
-polybar -r primary &
-polybar -r secondary &
+# ## Monitor Config
+# xrandr --output DP-1 --mode 1920x1080 --rate 144.00 --right-of HDMI-1
+# xrandr --output HDMI-1 --mode 1920x1080 --rate 75.00
+# ## SXHKD
+# pgrep -x sxhkd > /dev/null || sxhkd &
+# ## Polybar
+# killall -q polybar
+# polybar -r primary &
+# polybar -r secondary &
 
-# Monitor config
-bspc monitor DP-1 -d 1 2 3 4 5
-bspc monitor HDMI-1 -d 6 7 8 9 10
+# # Monitor config
+# bspc monitor DP-1 -d 1 2 3 4 5
+# bspc monitor HDMI-1 -d 6 7 8 9 10
 
-bspc wm --reorder-monitors DP-1 HDMI-1
+# bspc wm --reorder-monitors DP-1 HDMI-1
 
-bspc config pointer_follows_monitor true
-bspc config focus_follows_pointer true
+# bspc config pointer_follows_monitor true
+# bspc config focus_follows_pointer true
 
-# Rules
-bspc rule -a Emacs desktop='^2' state=fullscreen follow=on
-bspc rule -a Google-chrome desktop='^6' state=tiled follow=on
-bspc rule -a Pavucontrol desktop='^9' state=tiled follow=on
-bspc rule -a .blueman-manager-wrapped desktop='^9' state=tiled follow=on
-bspc rule -a Google-chrome:crx_cinhimbnkkaeohfgghhklpknlkffjgod desktop='^4' state=tiled follow=on
+# # Rules
+# bspc rule -a Emacs desktop='^2' state=fullscreen follow=on
+# bspc rule -a Google-chrome desktop='^6' state=tiled follow=on
+# bspc rule -a Pavucontrol desktop='^9' state=tiled follow=on
+# bspc rule -a .blueman-manager-wrapped desktop='^9' state=tiled follow=on
+# bspc rule -a Google-chrome:crx_cinhimbnkkaeohfgghhklpknlkffjgod desktop='^4' state=tiled follow=on
