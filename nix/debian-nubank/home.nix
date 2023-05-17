@@ -45,7 +45,7 @@ in {
       rofi
       polybar
       kubectl
-      flutter
+      # flutter
       betterlockscreen
       dunst
       playerctl

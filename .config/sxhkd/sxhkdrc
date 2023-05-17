@@ -23,8 +23,8 @@ super + Escape
 # # bspwm hotkeys
 # #
 
-super + {1,2,3,4,5,6}
-      bspc desktop -f "^{1,2,3,4,5,6}"
+super + {1,2,3,4,5,6,7}
+      bspc desktop -f "^{1,2,3,4,5,6,7}"
 
 # # quit/restart bspwm
 super + shift + {q,r}
@@ -43,8 +43,8 @@ super + shift + {Left,Right}
       bspc node -m {prev,next} --follow;
 
 # # Send node to specific desktop
-super + shift + {1,2,3,4,5,6}
-      bspc node -d "^{1,2,3,4,5,6}" --follow;
+super + shift + {1,2,3,4,5,6,7}
+      bspc node -d "^{1,2,3,4,5,6,7}" --follow;
 
 # # Focus the next/previous desktop in the current monitor
 super + bracket{left,right}
