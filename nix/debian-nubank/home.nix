@@ -26,7 +26,6 @@ in {
       discord
       gnupg
       openfortivpn
-      # spotify
       nixfmt
       ripgrep
       (clojure.override { jdk = jdk17; })
@@ -45,7 +44,6 @@ in {
       rofi
       polybar
       kubectl
-      # flutter
       betterlockscreen
       dunst
       playerctl
