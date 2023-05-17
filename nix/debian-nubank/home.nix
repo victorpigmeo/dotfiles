@@ -44,6 +44,10 @@ in {
       dmenu
       rofi
       polybar
+      kubectl
+      flutter
+      betterlockscreen
+      dunst
     ];
   };
 

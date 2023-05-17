@@ -20,7 +20,7 @@ echo "Checking for existing sxhkdrc file"
 if [ -d $SXHKD_CONFIG_DIR ]; then
     echo "SXHKD dir already exists"
 else
-    mkdir $SXHKD_CONFIG_DIR
+    mkdir -p $SXHKD_CONFIG_DIR
 fi
 
 ln -sf ${HOME}/.dotfiles/.config/bspwm/bspwmrc ${HOME}/.config/bspwm/bspwmrc
@@ -30,4 +30,7 @@ ln -sf ${HOME}/.dotfiles/.config/sxhkd/sxhkdrc ${HOME}/.config/sxhkd/sxhkdrc
 ln -sf ${HOME}/.dotfiles/.Xresources ${HOME}/.Xresources
 
 #rofi config
+if [ ! -d ${HOME}/.config/rofi ]; then
+    mkdir -p ${HOME}/.config/rofi
+fi
 ln -sf ${HOME}/.dotfiles/.config/rofi/launchers ${HOME}/.config/rofi/launchers

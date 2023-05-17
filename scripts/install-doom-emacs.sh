@@ -9,6 +9,11 @@ LOCALREPO_VC_DIR=$LOCALREPO/.git
 
 sudo apt install ripgrep
 
+if [ ! -d ${HOME}/.config/doom ]
+then
+    mkdir ${HOME}/.config/doom
+fi
+
 ln -sf ${DOTFILESDIR}/.doom.d/*.el ${HOME}/.config/doom/
 
 if [ ! -d $LOCALREPO_VC_DIR ]

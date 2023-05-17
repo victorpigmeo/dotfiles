@@ -125,7 +125,6 @@ export PATH="${NUCLI_HOME}:${PATH}:/home/victor/go/bin:/home/victor/flutter/bin:
 if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 export GPG_TTY=$(tty)
 
-xset r rate 220 60
 export DISPLAY=:0
 
 #Android
@@ -135,3 +134,4 @@ export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$
 export ANDROID_SDK_ROOT=/home/victor/Android
 export NODE_OPTIONS=--max-old-space-size=8192
 
+export BROWSER=google-chrome-stable
