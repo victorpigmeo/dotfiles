@@ -26,7 +26,7 @@ in {
       discord
       gnupg
       openfortivpn
-      spotify
+      # spotify
       nixfmt
       ripgrep
       (clojure.override { jdk = jdk17; })
@@ -48,6 +48,8 @@ in {
       flutter
       betterlockscreen
       dunst
+      playerctl
+      flameshot
     ];
   };
 

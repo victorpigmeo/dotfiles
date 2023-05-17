@@ -23,8 +23,8 @@ super + Escape
 # # bspwm hotkeys
 # #
 
-super + {1,2,3,4,5,6,7}
-      bspc desktop -f "^{1,2,3,4,5,6,7}"
+super + {1,2,3,4,5,6}
+      bspc desktop -f "^{1,2,3,4,5,6}"
 
 # # quit/restart bspwm
 super + shift + {q,r}
@@ -38,23 +38,51 @@ super + {_,shift + }w
 alt + Tab
       bspc node -f last
 
+# # Send node to next/prev monitor
 super + shift + {Left,Right}
-    bspc node -m {prev,next} --follow;
+      bspc node -m {prev,next} --follow;
 
-# focus the next/previous desktop in the current monitor
+# # Send node to specific desktop
+super + shift + {1,2,3,4,5,6}
+      bspc node -d "^{1,2,3,4,5,6}" --follow;
+
+# # Focus the next/previous desktop in the current monitor
 super + bracket{left,right}
       bspc desktop -f {prev,next}.local
 
+# # Open rofi to run apps
 super + Tab
-      rofi -show drun -show-icons -theme $HOME/.config/rofi/launchers/type-3/style-1.rasi
+      rofi -show drun -show-icons -theme $HOME/.config/rofi/launchers/type-7/style-7.rasi
 
+# # Open rofi to switch between windows
 super + shift + Tab
       rofi -show window -show-icons -theme $HOME/.config/rofi/launchers/type-3/style-9.rasi
 
 # # System hotkeys
 super + l
-      betterlockscreen -l && \
       systemctl hibernate
+
+XF86AudioPlay
+      playerctl play-pause
+
+XF86AudioNext
+      playerctl next
+
+XF86AudioPrev
+      playerctl previous
+
+XF86AudioRaiseVolume
+      playerctl volume 0.10+
+
+XF86AudioLowerVolume
+      playerctl volume 0.10-
+
+XF86AudioMute
+      playerctl volume 0
+
+Print
+      flameshot gui
+
 
 # # alternate between the tiled and monocle layout
 # super + m
