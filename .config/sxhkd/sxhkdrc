@@ -72,13 +72,13 @@ XF86AudioPrev
       playerctl previous
 
 XF86AudioRaiseVolume
-      playerctl volume 0.10+
+      amixer set Master 10%+
 
 XF86AudioLowerVolume
-      playerctl volume 0.10-
+      amixer set Master 10%-
 
 XF86AudioMute
-      playerctl volume 0
+      amixer set Master 0
 
 Print
       flameshot gui
