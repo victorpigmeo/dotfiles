@@ -40,6 +40,10 @@ slack &
 
 flameshot &
 
+playerctl &
+
+eval $(ssh-agent)
+
 # OLD BSPWM Configuration
 
 # Autostart
