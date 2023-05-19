@@ -8,6 +8,7 @@ SXHKD_CONFIG_FILE="${SXHKD_CONFIG_DIR}/sxhkdrc"
 sudo apt install bspwm sxhkd
 sudo apt install tmux
 sudo apt install feh
+sudo apt install xinput
 
 echo "Checking for existing bspwmrc file"
 if [ -d $BSPWM_CONFIG_DIR ]; then
@@ -33,4 +34,28 @@ ln -sf ${HOME}/.dotfiles/.Xresources ${HOME}/.Xresources
 if [ ! -d ${HOME}/.config/rofi ]; then
     mkdir -p ${HOME}/.config/rofi
 fi
-ln -sf ${HOME}/.dotfiles/.config/rofi/launchers ${HOME}/.config/rofi/launchers
+
+#get rofi themes
+git clone https://github.com/adi1090x/rofi.git \
+
+cd rofi \
+
+#install rofi themes
+./setup.sh \
+
+cd .. \
+
+rm -rf rofi;
+
+if [ ! -d ${HOME}/.config/polybar ]; then
+    mkdir -p ${HOME}/.config/polybar
+fi
+
+#polybar setup
+ln -sf ${HOME}/.dotfiles/.config/polybar/config ${HOME}/.config/polybar/config
+
+#enable natural scrolling
+xinput set-prop 15 322 1
+
+#enable adding ssh keys to agent
+ln -sf ${HOME}/.dotfiles/.ssh/config ${HOME}/.ssh/config
