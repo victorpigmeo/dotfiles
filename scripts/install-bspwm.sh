@@ -59,3 +59,20 @@ xinput set-prop 15 322 1
 
 #enable adding ssh keys to agent
 ln -sf ${HOME}/.dotfiles/.ssh/config ${HOME}/.ssh/config
+
+#multi monitor setup
+sudo apt install iwatch
+
+if [ ! -d ${HOME}/bin ]; then
+    mkdir -p ${HOME}/bin
+fi
+
+ln -sf ${HOME}/.dotfiles/bin/monitor-switcher ${HOME}/bin/monitor-switcher
+ln -sf ${HOME}/.dotfiles/bin/monitor-switcher-triggered ${HOME}/bin/monitor-switcher-triggered
+
+sudo ln -sf ${HOME}/.dotfiles/udev-rules/99-input-monitor.rules /etc/udev/rules.d/99-input-monitor.rules
+
+touch ${HOME}/.monitor-switcher.log
+
+sudo udevadm control -R
+sudo service udev restart

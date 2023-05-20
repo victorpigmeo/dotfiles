@@ -1,0 +1,16 @@
+#! /bin/sh
+
+if  xrandr | grep -o "HDMI-1 connected"; then
+    bspc desktop 5 --to-monitor HDMI-1
+    bspc desktop 6 --to-monitor HDMI-1
+    bspc desktop 7 --to-monitor HDMI-1
+
+    bspc desktop Desktop -r
+else
+
+    bspc desktop 5 --to-monitor eDP-1
+    bspc desktop 6 --to-monitor eDP-1
+    bspc desktop 7 --to-monitor eDP-1
+
+    bspc monitor HDMI-1 -r
+fi

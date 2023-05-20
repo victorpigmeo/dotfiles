@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+echo "Triggered" >> /home/victor/bin/monitor-switcher.log
