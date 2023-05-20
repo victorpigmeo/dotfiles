@@ -12,6 +12,4 @@ else
     bspc desktop 5 --to-monitor eDP-1
     bspc desktop 6 --to-monitor eDP-1
     bspc desktop 7 --to-monitor eDP-1
-
-    bspc monitor HDMI-1 -r
 fi

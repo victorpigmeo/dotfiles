@@ -70,7 +70,7 @@ fi
 ln -sf ${HOME}/.dotfiles/bin/monitor-switcher ${HOME}/bin/monitor-switcher
 ln -sf ${HOME}/.dotfiles/bin/monitor-switcher-triggered ${HOME}/bin/monitor-switcher-triggered
 
-sudo ln -sf ${HOME}/.dotfiles/udev-rules/99-input-monitor.rules /etc/udev/rules.d/99-input-monitor.rules
+sudo ln -sf ${HOME}/.dotfiles/udev-rules/10-input-monitor.rules /etc/udev/rules.d/10-input-monitor.rules
 
 touch ${HOME}/.monitor-switcher.log
 
