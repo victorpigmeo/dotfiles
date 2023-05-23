@@ -49,6 +49,8 @@ in {
       playerctl
       flameshot
       font-manager
+      yad
+      xdotool
     ];
   };
 

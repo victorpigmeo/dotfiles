@@ -53,6 +53,7 @@ fi
 
 #polybar setup
 ln -sf ${HOME}/.dotfiles/.config/polybar/config ${HOME}/.config/polybar/config
+ln -sf ${HOME}/.dotfiles/bin/popup-calendar.sh ${HOME}/bin/popup-calendar.sh
 
 #enable natural scrolling
 xinput set-prop 15 322 1
@@ -76,3 +77,5 @@ touch ${HOME}/.monitor-switcher.log
 
 sudo udevadm control -R
 sudo service udev restart
+#end multi monitor setup
+

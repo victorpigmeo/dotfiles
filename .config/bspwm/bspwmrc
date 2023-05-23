@@ -3,6 +3,7 @@
 #multimonitor setup
 iwatch -c "/home/victor/bin/monitor-switcher-triggered" -e modify ${HOME}/.monitor-switcher.log &
 
+pkill polybar
 # pgrep -x sxhkd > /dev/null || sxhkd &
 pgrep sxhkd || sxhkd -c ~/.config/sxhkd/sxhkdrc &
 
@@ -11,8 +12,8 @@ MONITOR_COUNT=`xrandr | grep -c " connected"`
 if [[ $MONITOR_COUNT -eq 1 ]]; then
     bspc monitor eDP-1 -d 1 2 3 4 5 6 7
 else
-    bspc monitor eDP-1 -d 1 2 3 4
-    bspc monitor HDMI-1 -d 5 6 7
+    bspc monitor eDP-1 -d 1 2 3
+    bspc monitor HDMI-1 -d 4 5 6 7
 fi
 
 bspc config border_width         0
@@ -30,12 +31,13 @@ bspc config gapless_monocle      true
 
 bspc rule -a URxvt desktop='^1' state tiled follow=on
 bspc rule -a Emacs desktop='^2' state=tiled follow=on
-bspc rule -a Loading.. desktop='^5' state=floating
-bspc rule -a nubank desktop='^5' state=floating
+bspc rule -a Loading.. desktop='^1' state=floating
+bspc rule -a nubank desktop='^1' state=floating
 bspc rule -a Slack desktop='^3' state=tiled
 bspc rule -a Google-chrome desktop='^4' state=tiled follow=on
 bspc rule -a Org.gnome.Nautilus desktop='^5' state=tiled follow=on
 bspc rule -a Peek state=floating follow=on
+bspc rule -a Yad state=floating
 
 # Set cursor speed and delay
 xset r rate 220 50
@@ -55,7 +57,7 @@ polybar &
 
 dunst &
 
-# slack &
+slack &
 
 flameshot &
 
