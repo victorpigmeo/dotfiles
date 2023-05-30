@@ -126,8 +126,8 @@ if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.n
 export GPG_TTY=$(tty)
 
 export DISPLAY=:0
-export HOVER_HEIGHT=740
-export HOVER_WIDTH=420
+export HOVER_HEIGHT=700
+export HOVER_WIDTH=380
 #Android
 export FLUTTER_ROOT=$HOME/flutter
 export ANDROID_HOME=$HOME/Android

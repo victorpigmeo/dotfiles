@@ -38,7 +38,7 @@ bspc rule -a Google-chrome desktop='^4' state=tiled follow=on
 bspc rule -a Org.gnome.Nautilus desktop='^5' state=tiled follow=on
 bspc rule -a Peek state=floating follow=on
 bspc rule -a Yad state=floating
-bspc rule -a PanGPUI state=floating
+bspc rule -a gpclient state=floating desktop='^1'
 
 # Set cursor speed and delay
 xset r rate 220 50

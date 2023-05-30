@@ -25,7 +25,6 @@ in {
       slack
       discord
       gnupg
-      openfortivpn
       nixfmt
       ripgrep
       (clojure.override { jdk = jdk17; })
