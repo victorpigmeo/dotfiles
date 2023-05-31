@@ -44,6 +44,8 @@
       +format-on-save-enabled-modes '(dart-mode)
       lsp-ui-peek-enable nil)
 
+(setq lsp-clojure-custom-server-command "/home/victor/dev/clojure-lsp/clojure-lsp")
+
 (setq-default evil-kill-on-visual-paste nil)
 
 ;; cider
