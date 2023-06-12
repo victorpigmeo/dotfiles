@@ -28,7 +28,7 @@ in {
       nixfmt
       ripgrep
       (clojure.override { jdk = jdk17; })
-      clojure-lsp
+      # clojure-lsp
       babashka
       clj-kondo
       gotop

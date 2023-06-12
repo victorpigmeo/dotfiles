@@ -54,6 +54,7 @@ fi
 #polybar setup
 ln -sf ${HOME}/.dotfiles/.config/polybar/config ${HOME}/.config/polybar/config
 ln -sf ${HOME}/.dotfiles/bin/popup-calendar.sh ${HOME}/bin/popup-calendar.sh
+ln -sf ${HOME}/.dotfiles/.config/polybar/vpn.sh ${HOME}/.config/polybar/vpn.sh
 
 #enable natural scrolling
 xinput set-prop 15 322 1
