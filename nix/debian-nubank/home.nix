@@ -2,7 +2,7 @@
 
 let
   homeDir = "$HOME";
-  emacsPackage = (pkgs.emacsPackagesFor pkgs.emacsUnstable).emacsWithPackages
+  emacsPackage = (pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
     (epkgs: [ epkgs.vterm ]);
 in {
   nixpkgs.config.allowUnfree = true;
@@ -15,7 +15,7 @@ in {
   ];
 
   home = {
-    stateVersion = "22.11";
+    stateVersion = "23.05";
     username = "victor";
     homeDirectory = "/home/victor";
 

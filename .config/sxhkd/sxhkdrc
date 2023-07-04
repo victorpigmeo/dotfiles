@@ -50,6 +50,10 @@ super + shift + {1,2,3,4,5,6,7}
 super + bracket{left,right}
       bspc desktop -f {prev,next}.local
 
+# # Focus the next/previous node in the current desktop
+super + {Left,Right}
+      bspc node -f {prev,next}.local;
+
 # # Open rofi to run apps
 super + Tab
       rofi -show drun -show-icons -theme $HOME/.config/rofi/launchers/type-7/style-7.rasi
