@@ -55,7 +55,7 @@ font-0 = monospace;2
 font-1 = feather:size=12;2
 
 modules-left = xworkspaces
-modules-center = vpn
+modules-center = vpn pulseaudio
 modules-right = filesystem xkeyboard memory cpu wlan eth battery popup-calendar exit
 
 cursor-click = pointer
@@ -112,8 +112,8 @@ label-mounted = %{F#F0C674}%mountpoint%%{F-} %percentage_used%%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.disabled}
 
-; [module/pulseaudio]
-; type = internal/pulseaudio
+[module/pulseaudio]
+type = internal/pulseaudio
 
 ; format-volume-prefix = "VOL "
 ; format-volume-prefix-foreground = ${colors.primary}

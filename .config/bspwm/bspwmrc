@@ -30,7 +30,7 @@ bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
 bspc rule -a URxvt desktop='1' state tiled follow=on
-bspc rule -a Emacs desktop='2' state=tiled follow=on
+bspc rule -a Emacs desktop='5' state=tiled follow=on
 bspc rule -a Loading.. desktop='1' state=floating
 bspc rule -a nubank desktop='1' state=floating
 bspc rule -a Slack desktop='3' state=tiled
@@ -58,6 +58,8 @@ xinput set-prop 13 322 1
 polybar &
 
 dunst &
+
+pkill slack
 
 slack &
 

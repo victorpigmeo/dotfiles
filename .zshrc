@@ -131,8 +131,12 @@ export HOVER_WIDTH=380
 #Android
 export FLUTTER_ROOT=$HOME/flutter
 export ANDROID_HOME=$HOME/Android
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$HOME/bin:$HOME/.config/emacs/bin
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$HOME/bin:$HOME/.local/bin:$HOME/.config/emacs/bin
 export ANDROID_SDK_ROOT=/home/victor/Android
 export NODE_OPTIONS=--max-old-space-size=8192
 
 export BROWSER=google-chrome-stable
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

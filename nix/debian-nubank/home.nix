@@ -27,9 +27,9 @@ in {
       gnupg
       nixfmt
       ripgrep
-      (clojure.override { jdk = jdk17; })
+      clojure
       # clojure-lsp
-      babashka
+      babashka-unwrapped
       clj-kondo
       gotop
       jet
@@ -50,14 +50,15 @@ in {
       font-manager
       yad
       xdotool
+
     ];
   };
 
   programs = {
-    java = {
-      enable = true;
-      package = pkgs.jdk17_headless;
-    };
+    # java = {
+    #   enable = true;
+    #   package = pkgs.jdk17_headless;
+    # };
 
     emacs = { enable = false; };
 

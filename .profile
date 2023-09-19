@@ -21,7 +21,7 @@ export XDG_DATA_DIRS=/usr/local/share/:/usr/share/
 #     export XDG_DATA_DIRS
 # fi
 
-xset r rate 220 60
+export PATH=$PATH
 
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
 
