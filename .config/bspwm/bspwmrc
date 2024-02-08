@@ -9,6 +9,14 @@ pgrep sxhkd || sxhkd -c ~/.config/sxhkd/sxhkdrc &
 
 MONITOR_COUNT=`xrandr | grep -c " connected"`
 
+#Remove just a little bit of the blue lights
+xrandr --output eDP-1 --gamma 1:1:0.8
+xrandr --output HDMI-1 --gamma 1:1:0.8
+
+#Default brightness
+xrandr --output eDP-1 --brightness 1
+xrandr --output HDMI-1 --brightness 1
+
 if [[ $MONITOR_COUNT -eq 1 ]]; then
     bspc monitor eDP-1 -d 1 2 3 4 5 6 7
 else
@@ -31,8 +39,8 @@ bspc config gapless_monocle      true
 
 bspc rule -a URxvt desktop='1' state tiled follow=on
 bspc rule -a Emacs desktop='5' state=tiled follow=on
-bspc rule -a Loading.. desktop='1' state=floating
-bspc rule -a nubank desktop='1' state=floating
+bspc rule -a Loading.. desktop='1' state=floating follow=off
+bspc rule -a nubank desktop='1' state=floating follow=off
 bspc rule -a Slack desktop='3' state=tiled
 bspc rule -a Google-chrome desktop='4' state=tiled follow=on
 bspc rule -a Org.gnome.Nautilus desktop='5' state=tiled follow=on
@@ -51,9 +59,9 @@ feh --bg-scale ~/.dotfiles/background.png
 setxkbmap -layout us -variant intl
 
 # Set natural scrolling to 1
-xinput set-prop 15 322 1
-xinput set-prop 12 322 1
-xinput set-prop 13 322 1
+xinput set-prop 15 319 1
+xinput set-prop 12 319 1
+xinput set-prop 13 319 1
 
 polybar &
 
@@ -68,32 +76,3 @@ flameshot &
 playerctl &
 
 eval $(ssh-agent)
-
-# OLD BSPWM Configuration
-
-# Autostart
-# ## Monitor Config
-# xrandr --output DP-1 --mode 1920x1080 --rate 144.00 --right-of HDMI-1
-# xrandr --output HDMI-1 --mode 1920x1080 --rate 75.00
-# ## SXHKD
-# pgrep -x sxhkd > /dev/null || sxhkd &
-# ## Polybar
-# killall -q polybar
-# polybar -r primary &
-# polybar -r secondary &
-
-# # Monitor config
-# bspc monitor DP-1 -d 1 2 3 4 5
-# bspc monitor HDMI-1 -d 6 7 8 9 10
-
-# bspc wm --reorder-monitors DP-1 HDMI-1
-
-# bspc config pointer_follows_monitor true
-# bspc config focus_follows_pointer true
-
-# # Rules
-# bspc rule -a Emacs desktop='^2' state=fullscreen follow=on
-# bspc rule -a Google-chrome desktop='^6' state=tiled follow=on
-# bspc rule -a Pavucontrol desktop='^9' state=tiled follow=on
-# bspc rule -a .blueman-manager-wrapped desktop='^9' state=tiled follow=on
-# bspc rule -a Google-chrome:crx_cinhimbnkkaeohfgghhklpknlkffjgod desktop='^4' state=tiled follow=on

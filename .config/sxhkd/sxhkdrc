@@ -62,6 +62,11 @@ super + Tab
 super + shift + Tab
       rofi -show window -show-icons -theme $HOME/.config/rofi/launchers/type-3/style-9.rasi
 
+# # Lock screen
+super + l
+      . /home/victor/.dotfiles/scripts/lock.sh
+      # xsecurelock
+
 # # System hotkeys
 XF86AudioPlay
       playerctl play-pause
@@ -80,6 +85,16 @@ XF86AudioLowerVolume
 
 XF86AudioMute
       amixer set Master 0
+
+# # Reset brightness
+super + XF86MonBrightnessDown
+       xrandr --output eDP-1 --brightness 1
+
+XF86MonBrightnessUp
+      . /home/victor/.dotfiles/scripts/brightness.sh +
+
+XF86MonBrightnessDown
+      . /home/victor/.dotfiles/scripts/brightness.sh -
 
 Print
       flameshot gui

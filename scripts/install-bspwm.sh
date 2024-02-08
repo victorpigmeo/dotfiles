@@ -52,9 +52,10 @@ if [ ! -d ${HOME}/.config/polybar ]; then
 fi
 
 #polybar setup
-ln -sf ${HOME}/.dotfiles/.config/polybar/config ${HOME}/.config/polybar/config
+ln -sf ${HOME}/.dotfiles/.config/polybar/config.ini ${HOME}/.config/polybar/config.ini
 ln -sf ${HOME}/.dotfiles/bin/popup-calendar.sh ${HOME}/bin/popup-calendar.sh
 ln -sf ${HOME}/.dotfiles/.config/polybar/vpn.sh ${HOME}/.config/polybar/vpn.sh
+ln -sf ${HOME}/.dotfiles/.config/polybar/headset.sh ${HOME}/.config/polybar/headset.sh
 
 #enable natural scrolling
 xinput set-prop 15 322 1
@@ -71,6 +72,7 @@ fi
 
 ln -sf ${HOME}/.dotfiles/bin/monitor-switcher ${HOME}/bin/monitor-switcher
 ln -sf ${HOME}/.dotfiles/bin/monitor-switcher-triggered ${HOME}/bin/monitor-switcher-triggered
+ln -sf ${HOME}/.dotfiles/bin/external-window-rules.sh ${HOME}/bin/external-window-rules.sh
 
 sudo ln -sf ${HOME}/.dotfiles/udev-rules/10-input-monitor.rules /etc/udev/rules.d/10-input-monitor.rules
 
@@ -80,3 +82,4 @@ sudo udevadm control -R
 sudo service udev restart
 #end multi monitor setup
 
+ln -sf /home/victor/.nix-profile/share/applications /home/victor/.local/share/applications

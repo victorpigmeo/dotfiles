@@ -15,7 +15,7 @@ in {
   ];
 
   home = {
-    stateVersion = "23.05";
+    stateVersion = "23.11";
     username = "victor";
     homeDirectory = "/home/victor";
 
@@ -39,18 +39,19 @@ in {
       tektoncd-cli
       rxvt-unicode
       peek
-      dmenu
+      # dmenu
       rofi
       polybar
       kubectl
-      betterlockscreen
+      # betterlockscreen
+      # xsecurelock
+      scrot
       dunst
       playerctl
       flameshot
       font-manager
       yad
       xdotool
-
     ];
   };
 

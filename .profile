@@ -8,7 +8,7 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-export XDG_DATA_DIRS=/usr/local/share/:/usr/share/
+export XDG_DATA_DIRS=/usr/local/share/:/usr/share/:/home/victor/.nix-profile/bin
 # if [ -n ${XDG_SESSION_ID} ];then
 #     xdgpath=$(echo $XDG_DATA_DIRS|sed -e 's#/usr/local/share:##' -e 's#/usr/share:##')
 #     XDG_DATA_DIRS=/usr/local/share:/usr/share
@@ -26,3 +26,6 @@ export PATH=$PATH
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
 
 if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+#Natural scrolling on touchpad
+xinput set-prop 14 319 1

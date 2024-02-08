@@ -131,12 +131,32 @@ export HOVER_WIDTH=380
 #Android
 export FLUTTER_ROOT=$HOME/flutter
 export ANDROID_HOME=$HOME/Android
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$HOME/bin:$HOME/.local/bin:$HOME/.config/emacs/bin
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$ANDROID_HOME/cmdline-tools/latest/bin:$HOME/bin:$HOME/.local/bin:$HOME/.config/emacs/bin:$HOME/swift/usr/bin
 export ANDROID_SDK_ROOT=/home/victor/Android
 export NODE_OPTIONS=--max-old-space-size=8192
+
+if [ -f $HOME/.nix-profile/etc/profile.d/nix.sh ];
+then
+    source $HOME/.nix-profile/etc/profile.d/nix.sh
+fi
 
 export BROWSER=google-chrome-stable
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/victor/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/victor/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/home/victor/miniforge3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/victor/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
