@@ -5,10 +5,7 @@ BSPWM_CONFIG_FILE="${BSPWM_CONFIG_DIR}/bspwmrc"
 SXHKD_CONFIG_DIR="${HOME}/.config/sxhkd"
 SXHKD_CONFIG_FILE="${SXHKD_CONFIG_DIR}/sxhkdrc"
 
-sudo apt install bspwm sxhkd
-sudo apt install tmux
-sudo apt install feh
-sudo apt install xinput
+sudo apt install bspwm sxhkd tmux feh xinput -y
 
 echo "Checking for existing bspwmrc file"
 if [ -d $BSPWM_CONFIG_DIR ]; then
@@ -51,10 +48,15 @@ if [ ! -d ${HOME}/.config/polybar ]; then
     mkdir -p ${HOME}/.config/polybar
 fi
 
+#create home/bin directory
+if [ ! -d ${HOME}/bin ]; then
+    mkdir -p ${HOME}/bin
+fi
+
 #polybar setup
 ln -sf ${HOME}/.dotfiles/.config/polybar/config.ini ${HOME}/.config/polybar/config.ini
 ln -sf ${HOME}/.dotfiles/bin/popup-calendar.sh ${HOME}/bin/popup-calendar.sh
-ln -sf ${HOME}/.dotfiles/.config/polybar/vpn.sh ${HOME}/.config/polybar/vpn.sh
+#ln -sf ${HOME}/.dotfiles/.config/polybar/vpn.sh ${HOME}/.config/polybar/vpn.sh
 ln -sf ${HOME}/.dotfiles/.config/polybar/headset.sh ${HOME}/.config/polybar/headset.sh
 
 #enable natural scrolling
@@ -66,13 +68,10 @@ ln -sf ${HOME}/.dotfiles/.ssh/config ${HOME}/.ssh/config
 #multi monitor setup
 sudo apt install iwatch
 
-if [ ! -d ${HOME}/bin ]; then
-    mkdir -p ${HOME}/bin
-fi
-
 ln -sf ${HOME}/.dotfiles/bin/monitor-switcher ${HOME}/bin/monitor-switcher
 ln -sf ${HOME}/.dotfiles/bin/monitor-switcher-triggered ${HOME}/bin/monitor-switcher-triggered
-ln -sf ${HOME}/.dotfiles/bin/external-window-rules.sh ${HOME}/bin/external-window-rules.sh
+#file below don't exist
+#ln -sf ${HOME}/.dotfiles/bin/external-window-rules.sh ${HOME}/bin/external-window-rules.sh
 
 sudo ln -sf ${HOME}/.dotfiles/udev-rules/10-input-monitor.rules /etc/udev/rules.d/10-input-monitor.rules
 
@@ -82,4 +81,6 @@ sudo udevadm control -R
 sudo service udev restart
 #end multi monitor setup
 
-ln -sf /home/victor/.nix-profile/share/applications /home/victor/.local/share/applications
+#sera?
+#ln -sf /home/victor/.nix-profile/share/applications /home/victor/.local/share/applications
+
