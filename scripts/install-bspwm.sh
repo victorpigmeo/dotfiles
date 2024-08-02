@@ -5,7 +5,7 @@ BSPWM_CONFIG_FILE="${BSPWM_CONFIG_DIR}/bspwmrc"
 SXHKD_CONFIG_DIR="${HOME}/.config/sxhkd"
 SXHKD_CONFIG_FILE="${SXHKD_CONFIG_DIR}/sxhkdrc"
 
-sudo apt install bspwm sxhkd tmux feh xinput -y
+sudo apt install bspwm sxhkd tmux feh xinput polybar -y
 
 echo "Checking for existing bspwmrc file"
 if [ -d $BSPWM_CONFIG_DIR ]; then
