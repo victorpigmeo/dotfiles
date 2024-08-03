@@ -114,13 +114,10 @@ source $ZSH/oh-my-zsh.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 export NU_HOME="${HOME}/dev/nu"
 export NUCLI_HOME="${NU_HOME}/nucli"
-export PATH="${NUCLI_HOME}:${PATH}:/home/victor/go/bin:/home/victor/flutter/bin:/home/victor/fluter/bin/cache/dart-sdk/bin"
+export PATH="${NUCLI_HOME}:${PATH}:/home/victor/go/bin:/home/victor/flutter/bin:/home/victor/fluter/bin/cache/dart-sdk/bin:/home/victor/.sdkman/candidates/java/current/bin"
 
 if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 export GPG_TTY=$(tty)
@@ -131,7 +128,7 @@ export HOVER_WIDTH=380
 #Android
 export FLUTTER_ROOT=$HOME/flutter
 export ANDROID_HOME=$HOME/Android
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$ANDROID_HOME/cmdline-tools/latest/bin:$HOME/bin:$HOME/.local/bin:$HOME/.config/emacs/bin:$HOME/swift/usr/bin
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$HOME/bin:$HOME/.local/bin:$HOME/.config/emacs/bin:$HOME/swift/usr/bin:$HOME/.sdkman/candidates/java/current/bin:$HOME/.npm-global/bin
 export ANDROID_SDK_ROOT=/home/victor/Android
 export NODE_OPTIONS=--max-old-space-size=8192
 
@@ -160,3 +157,11 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+#for leiningen
+export JAVA_CMD=$HOME/.sdkman/candidates/java/current/bin/java
+
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
