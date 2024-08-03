@@ -1,3 +1,6 @@
+# Setup monitors
+exec --no-startup-id $HOME/.dotfiles/scripts/setup-monitors-i3.sh
+
 # Include i3 default cfg, with stuff that cames and I don't know what it is
 include $HOME/.dotfiles/.config/i3/default.cfg
 
@@ -71,11 +74,11 @@ set $ws3 "3: Slack"
 set $ws4 "4: Chrome"
 set $ws5 "5: Emacs"
 
-workspace $ws1 output Virtual1
-workspace $ws2 output Virtual1
-workspace $ws3 output Virutal1
-workspace $ws4 output Virtual2
-workspace $ws5 output Virtual2
+workspace $ws1 output eDP-1
+workspace $ws2 output eDP-1
+workspace $ws3 output eDP-1
+workspace $ws4 output DP-2
+workspace $ws5 output DP-2
 
 #set $ws6 "6"
 #set $ws7 "7"
@@ -111,6 +114,8 @@ bindsym $mod+Shift+5 move container to workspace $ws5
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+#Alt tab
+bindsym Mod1+Tab workspace back_and_forth
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -133,7 +138,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-mode "system" {
+set $system_mode "System (Shutdown [s], Restart [r], Logout [l])"
+
+mode $system_mode {
      bindsym s exec --no-startup-id "i3-nagbar -t warning -m 'Really shutdown?' -b 'Yes' 'i3-msg exit'"
      bindsym r exec --no-startup-id "i3-nagbar -t warning -m 'Really restart?' -b 'Yes' 'systemctl reboot'"
      bindsym l exec --no-startup-id "i3-msg exit"
@@ -141,7 +148,7 @@ mode "system" {
      bindsym Escape mode "default"
 }
 
-bindsym $mod+Shift+s mode "system"
+bindsym $mod+Shift+s mode $system_mode
 
 # Window border
 default_border pixel 1
@@ -164,6 +171,8 @@ mouse_warping none
 # Assigns
 assign [class="URxvt"] $ws1
 assign [class="Emacs"] $ws5
+assign [class="Google-chrome"] $ws4
+assign [class="Slack"] $ws3
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)

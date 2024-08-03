@@ -1,12 +1,6 @@
-[color "branch"]
-  current = yellow reverse
-  local = yellow
-  remote = green
-
-[url "git@github.com:"]
-  insteadOf = https://github.com/
-
+[user]
+	name = Victor Pigmeo
+	email = victor.blq@gmail.com
+	signingkey = E892323E59CCCB99
 [commit]
 	gpgsign = true
-[http]
-	sslverify = false
