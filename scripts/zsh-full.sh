@@ -15,6 +15,5 @@ ln -sf ${DOTFILESDIR}/.oh-my-zsh/custom/config.zsh ~/.oh-my-zsh/custom/config.zs
 ${DOTFILESDIR}/scripts/./install-oh-my-zsh-plugins.sh
 ln -sf ${DOTFILESDIR}/.p10k.zsh ~/.p10k.zsh
 ln -sf ${DOTFILESDIR}/.fzf.zsh ~/.fzf.zsh
-mv ~/.zshrc ~/.zshrc_before_home_switch
+mv ~/.zshrc ~/.zshrc_before_dotfiles
 ln -sf ${DOTFILESDIR}/.zshrc ~/.zshrc
-ln -sf ${DOTFILESDIR}/.profile ~/.profile
