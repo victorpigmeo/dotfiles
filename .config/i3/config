@@ -1,5 +1,7 @@
 # Setup monitors
 exec --no-startup-id $HOME/.dotfiles/scripts/setup-monitors-i3.sh
+# Setup cursor speed
+exec_always --no-startup-id "xset r rate 220 70"
 
 # Include i3 default cfg, with stuff that cames and I don't know what it is
 include $HOME/.dotfiles/.config/i3/default.cfg
@@ -141,7 +143,7 @@ bindsym $mod+r mode "resize"
 set $system_mode "System (Shutdown [s], Restart [r], Logout [l])"
 
 mode $system_mode {
-     bindsym s exec --no-startup-id "i3-nagbar -t warning -m 'Really shutdown?' -b 'Yes' 'i3-msg exit'"
+     bindsym s exec --no-startup-id "i3-nagbar -t warning -m 'Really shutdown?' -b 'Yes' 'shutdown now'"
      bindsym r exec --no-startup-id "i3-nagbar -t warning -m 'Really restart?' -b 'Yes' 'systemctl reboot'"
      bindsym l exec --no-startup-id "i3-msg exit"
 
@@ -150,12 +152,25 @@ mode $system_mode {
 
 bindsym $mod+Shift+s mode $system_mode
 
+set $monitor_switcher_mode "Monitor Switcher (1 monitor setup [1], 2 monitor setup [2])"
+
+mode $monitor_switcher_mode {
+     bindsym 1 exec --no-startup-id i3-msg workspace $ws4 && i3-msg move workspace to output eDP-1 && i3-msg workspace $ws5 && i3-msg move workspace to output eDP-1 && i3-msg mode default;
+
+     bindsym 2 exec --no-startup-id i3-msg workspace $ws4 && i3-msg move workspace to output DP-2 && i3-msg workspace $ws5 && i3-msg move workspace to output DP-2 && i3-msg mode default;
+
+
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+p mode $monitor_switcher_mode
+
 # Window border
 default_border pixel 1
 
-# TODO
-# Use exec to auto start programs but not exec again on restart
-# Use exec-always to always run stuff on restarts
+# Flameshot
+exec --no-startup-id "flameshot &"
+bindsym Print exec --no-startup-id "flameshot gui"
 
 # Colors
 client.focused #ff00000 #00ff00 #0000000 #ffffff #6e6e6e
@@ -168,11 +183,17 @@ smart_gaps on
 focus_follows_mouse no
 mouse_warping none
 
+# For_windows
+for_window [class="Emacs"] fullscreen enable
+for_window [class="Nubank"] floating enable
+
 # Assigns
 assign [class="URxvt"] $ws1
-assign [class="Emacs"] $ws5
-assign [class="Google-chrome"] $ws4
+assign [class="Nubank"] $ws1
+assign [class="Spotify"] $ws2
 assign [class="Slack"] $ws3
+assign [class="Google-chrome"] $ws4
+assign [class="Emacs"] $ws5
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -181,4 +202,14 @@ bar {
     status_command i3status
     workspace_buttons yes
     position top
+    output primary
 }
+
+# TODO
+# Use exec to auto start programs but not exec again on restart
+exec slack
+exec emacs
+
+# Use exec-always to always run stuff on restarts
+
+exec i3-msg workspace $ws3
