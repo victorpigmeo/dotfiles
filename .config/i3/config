@@ -75,12 +75,14 @@ set $ws2 "2: Spotify"
 set $ws3 "3: Slack"
 set $ws4 "4: Chrome"
 set $ws5 "5: Emacs"
+set $ws6 "6: Extra"
 
 workspace $ws1 output eDP-1
 workspace $ws2 output eDP-1
 workspace $ws3 output eDP-1
 workspace $ws4 output DP-2
 workspace $ws5 output DP-2
+workspace $ws6 output DP-2
 
 #set $ws6 "6"
 #set $ws7 "7"
@@ -94,6 +96,7 @@ bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
 bindsym $mod+4 workspace $ws4
 bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
 #bindsym $mod+6 workspace number $ws6
 #bindsym $mod+7 workspace number $ws7
 #bindsym $mod+8 workspace number $ws8
@@ -106,7 +109,7 @@ bindsym $mod+Shift+2 move container to workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3
 bindsym $mod+Shift+4 move container to workspace $ws4
 bindsym $mod+Shift+5 move container to workspace $ws5
-#bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+6 move container to workspace $ws6
 #bindsym $mod+Shift+7 move container to workspace number $ws7
 #bindsym $mod+Shift+8 move container to workspace number $ws8
 #bindsym $mod+Shift+9 move container to workspace number $ws9
@@ -118,6 +121,17 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 #Alt tab
 bindsym Mod1+Tab workspace back_and_forth
+
+#Multimedia keys
+bindsym XF86AudioPlay exec "playerctl play-pause"
+bindsym XF86AudioPause exec "playerctl play-pause"
+bindsym XF86AudioNext exec "playerctl next"
+bindsym XF86AudioPrev exec "playerctl previous"
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume 0 +5% && $refresh_i3status"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume 0 -5% && $refresh_i3status"
+bindsym XF86AudioMute exec --no-startup-id "pactl set-sink-mute 0 toggle && $refresh_i3status"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -143,8 +157,8 @@ bindsym $mod+r mode "resize"
 set $system_mode "System (Shutdown [s], Restart [r], Logout [l])"
 
 mode $system_mode {
-     bindsym s exec --no-startup-id "i3-nagbar -t warning -m 'Really shutdown?' -b 'Yes' 'shutdown now'"
-     bindsym r exec --no-startup-id "i3-nagbar -t warning -m 'Really restart?' -b 'Yes' 'systemctl reboot'"
+     bindsym s exec --no-startup-id "shutdown now"
+     bindsym r exec --no-startup-id "systemctl reboot"
      bindsym l exec --no-startup-id "i3-msg exit"
 
      bindsym Escape mode "default"
@@ -186,6 +200,8 @@ mouse_warping none
 # For_windows
 for_window [class="Emacs"] fullscreen enable
 for_window [class="Nubank"] floating enable
+for_window [class="Emulator"] floating enable
+for_window [class="Bdc"] floating enable
 
 # Assigns
 assign [class="URxvt"] $ws1
@@ -199,7 +215,7 @@ assign [class="Emacs"] $ws5
 # finds out, if available)
 # I can comment this and install polybar for example
 bar {
-    status_command i3status
+    status_command i3blocks
     workspace_buttons yes
     position top
     output primary
