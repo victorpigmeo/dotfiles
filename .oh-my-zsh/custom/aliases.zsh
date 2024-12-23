@@ -10,8 +10,8 @@ alias vpn='sudo -E gpclient connect zta.nubank.world'
 # alias credentials-full='credentials-stg && credentials-prod'
 # alias nix-flake-install='NIXPKGS_ALLOW_UNFREE=1 home-manager switch --impure --flake /home/victor/.dotfiles/nix/debian-nubank/'
 
-alias co-token='nu-co auth get-refresh-token --env staging --force && nu-co auth get-access-token'
-alias co-login='nu-co customer get-keys-and-certificates --env staging'
+# alias co-token='nu-co auth get-refresh-token --env staging --force && nu-co auth get-access-token'
+# alias co-login='nu-co customer get-keys-and-certificates --env staging'
 
 function j(){
     jump "$1"

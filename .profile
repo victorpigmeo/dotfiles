@@ -28,4 +28,8 @@ if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc
 if [ -e /home/victor/.nix-profile/etc/profile.d/nix.sh ]; then . /home/victor/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 #Natural scrolling on touchpad
-xinput set-prop 14 319 1
+#Figure out how to get the device id fixed
+# xinput set-prop 12 309 1
+
+#Enable dark theme for GTK Apps
+export GTK_THEME=Adwaita:dark

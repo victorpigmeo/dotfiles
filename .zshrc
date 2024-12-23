@@ -157,11 +157,4 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-#for leiningen
-export JAVA_CMD=$HOME/.sdkman/candidates/java/current/bin/java
-
 export ELECTRON_OZONE_PLATFORM_HINT=auto
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
