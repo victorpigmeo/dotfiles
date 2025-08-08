@@ -16,6 +16,7 @@
  '(lsp-idle-delay 0.05)
  '(lsp-log-io nil)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
+ '(package-selected-packages '(mvn lsp-java))
  '(projectile-globally-ignored-directories
    '("^flow-typed$" "^node_modules$" "~/.emacs.d/.local/" "^\\.idea$" "^\\.vscode$" "^\\.ensime_cache$" "^\\.eunit$" "^\\.git$" "^\\.hg$" "^\\.fslckout$" "^_FOSSIL_$" "^\\.bzr$" "^_darcs$" "^\\.pijul$" "^\\.tox$" "^\\.svn$" "^\\.stack-work$" "^\\.ccls-cache$" "^\\.cache$" "^\\.clangd$" "^\\node_modules"))
  '(safe-local-variable-values
@@ -36,6 +37,13 @@
 (setq plantuml-output-type "png")
 (setq plantuml-java-args (list "-Djava.awt.headless=true" "-jar"))
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+
+;; Java Setup
+(setq lsp-java-vmargs '("-XX:+UseG1GC" "-XX:+UseStringDeduplication" "-javaagent:/home/victor/.m2/repository/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" "-Xbootclasspath/a:/home/victor/.m2/repository/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar"))
+
+(defun mvn-clean-package-spring-boot-run ()
+  (interactive)
+  (mvn "spring-boot:run -DskipTests"))
 
 
 ;; (require 'protobuf-mode)

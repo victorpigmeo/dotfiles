@@ -72,17 +72,17 @@ bindsym $mod+e layout toggle split
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1: CLI"
 set $ws2 "2: Spotify"
-set $ws3 "3: Slack"
-set $ws4 "4: Chrome"
+set $ws3 "3: Comms"
+set $ws4 "4: Firefox"
 set $ws5 "5: Emacs"
 set $ws6 "6: Extra"
 
 workspace $ws1 output eDP-1
 workspace $ws2 output eDP-1
 workspace $ws3 output eDP-1
-workspace $ws4 output DP-2
-workspace $ws5 output DP-2
-workspace $ws6 output DP-2
+workspace $ws4 output HDMI-1
+workspace $ws5 output HDMI-1
+workspace $ws6 output HDMI-1
 
 #set $ws6 "6"
 #set $ws7 "7"
@@ -199,16 +199,16 @@ mouse_warping none
 
 # For_windows
 for_window [class="Emacs"] fullscreen enable
-for_window [class="Nubank"] floating enable
-for_window [class="Emulator"] floating enable
-for_window [class="Bdc"] floating enable
+# for_window [class="firefox"] fullscreen disabled
+# for_window [class="Emulator"] floating enable
+# for_window [class="Bdc"] floating enable
 
 # Assigns
 assign [class="URxvt"] $ws1
 assign [class="Nubank"] $ws1
 assign [class="Spotify"] $ws2
 assign [class="Slack"] $ws3
-assign [class="Google-chrome"] $ws4
+assign [class="firefox"] $ws4
 assign [class="Emacs"] $ws5
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -223,9 +223,9 @@ bar {
 
 # TODO
 # Use exec to auto start programs but not exec again on restart
-exec slack
-exec emacs
+# exec slack
+# exec emacs
 
 # Use exec-always to always run stuff on restarts
 
-exec i3-msg workspace $ws3
+exec i3-msg workspace $ws1

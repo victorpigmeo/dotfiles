@@ -23,6 +23,19 @@
       :desc "Cider jack in CLJ"
       "s" #'cider-jack-in-clj)
 
+(map! :after dap-mode
+      :map dap-mode-map
+      :localleader
+
+      :desc "Run"
+      "s" #'mvn-clean-package-spring-boot-run
+
+      :desc "Debug"
+      "d" #'dap-debug
+
+      :desc "Stop"
+      "r q" #'dap-disconnect)
+
 (defun scroll-up-bottom-window ()
   "Scroll up bottom window"
   (interactive)

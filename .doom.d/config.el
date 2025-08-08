@@ -65,7 +65,8 @@
 (after! projectile
   (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
   (add-to-list 'projectile-project-root-files-bottom-up "BUILD")
-  (add-to-list 'projectile-project-root-files-bottom-up "project.clj"))
+  (add-to-list 'projectile-project-root-files-bottom-up "project.clj")
+  (add-to-list 'projectile-project-root-files-bottom-up "pom.xml"))
 
 (after! js2-mode
   (add-to-list 'projectile-globally-ignored-directories "node_modules"))
