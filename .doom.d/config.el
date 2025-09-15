@@ -76,11 +76,12 @@
 (setq +lsp-company-backends '(:separate company-capf))
 
 ;; NodeJS
-(setq node-path "/home/victor/.nvm/versions/node/v22.19.0/bin")
-(after! lsp-mode
-  (setq exec-path (append exec-path '(node-path))))
+(setq custom-node-path "/home/victor/.nvm/versions/node/v22.19.0/bin")
 
-(setenv "PATH" (concat (getenv "PATH") (concat  ":" node-path)) )
+(after! lsp-mode
+  (add-to-list 'exec-path custom-node-path))
+
+(setenv "PATH" (concat (getenv "PATH") (concat  ":" custom-node-path)))
 
 (defun run-current-file ()
   "Run the current file using the appropriate interpreter/command."

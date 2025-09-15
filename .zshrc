@@ -146,6 +146,10 @@ export NVM_DIR="$HOME/.nvm"
 # Maven config
 export PATH=$PATH:/home/victor/maven-3.9.11/bin
 
+
+#NeoVim
+export PATH=$PATH:/opt/nvim-linux-x86_64/bin
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/victor/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
