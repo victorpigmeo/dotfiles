@@ -58,8 +58,9 @@
 (use-package! paredit
   :hook ((clojure-mode . paredit-mode)
          (emacs-lisp-mode . paredit-mode)))
-;; dart-lsp
-;;
+
+(use-package rainbow-delimiters
+  :hook ((clojure-mode . rainbow-delimiters-mode)))
 
 ;; projectile
 (after! projectile
@@ -73,6 +74,36 @@
 
 ;;remove yasnippet from backends
 (setq +lsp-company-backends '(:separate company-capf))
+
+;; NodeJS
+(setq node-path "/home/victor/.nvm/versions/node/v22.19.0/bin")
+(after! lsp-mode
+  (setq exec-path (append exec-path '(node-path))))
+
+(setenv "PATH" (concat (getenv "PATH") (concat  ":" node-path)) )
+
+(defun run-current-file ()
+  "Run the current file using the appropriate interpreter/command."
+  (interactive)
+  (let* ((file-path (buffer-file-name))
+         (file-extension (file-name-extension file-path))
+         (command ""))
+    (message file-extension)
+    (cond
+     ((or (string= file-extension "js") (string= file-extension "ts")) (setq command (format "node %s" file-path)))
+     ;; Add more conditions for other file types
+     ;;
+     (t (message "No run command defined for this file type: %s" file-extension)))
+    (when (not (string= command ""))
+      (async-shell-command command)))) ; Use async-shell-command to run in the background
+
+(map! :localleader
+      :desc "Run current file"
+      "r f" #'run-current-file)
+
+;; Java LSP (Uncomment for java environment)
+;; (setenv "JAVA_HOME"  "/usr/lib/jvm/java-21-openjdk-amd64")
+;; (setq lsp-java-java-path "/usr/bin/java"
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

@@ -161,3 +161,10 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 export ELECTRON_OZONE_PLATFORM_HINT=auto
+
+# bun completions
+[ -s "/home/victor/.bun/_bun" ] && source "/home/victor/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

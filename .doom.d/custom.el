@@ -16,7 +16,7 @@
  '(lsp-idle-delay 0.05)
  '(lsp-log-io nil)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
- '(package-selected-packages '(mvn lsp-java))
+ '(package-selected-packages '(rainbow-delimiters mvn lsp-java))
  '(projectile-globally-ignored-directories
    '("^flow-typed$" "^node_modules$" "~/.emacs.d/.local/" "^\\.idea$" "^\\.vscode$" "^\\.ensime_cache$" "^\\.eunit$" "^\\.git$" "^\\.hg$" "^\\.fslckout$" "^_FOSSIL_$" "^\\.bzr$" "^_darcs$" "^\\.pijul$" "^\\.tox$" "^\\.svn$" "^\\.stack-work$" "^\\.ccls-cache$" "^\\.cache$" "^\\.clangd$" "^\\node_modules"))
  '(safe-local-variable-values

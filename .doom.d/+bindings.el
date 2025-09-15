@@ -14,7 +14,13 @@
       "M-=" #'er/expand-region
 
       :desc "Reverse expand region"
-      "M--" (lambda () (interactive) (er/expand-region -1)))
+      "M--" (lambda () (interactive) (er/expand-region -1))
+
+      :desc "Slurp"
+      "C-<right>" #'paredit-forward-slurp-sexp
+
+      :desc "Barf"
+      "C-<left>" #'paredit-forward-slurp-sexp)
 
 (map! :after clojure-mode
       :map clojure-mode-map
@@ -23,18 +29,25 @@
       :desc "Cider jack in CLJ"
       "s" #'cider-jack-in-clj)
 
-(map! :after dap-mode
-      :map dap-mode-map
-      :localleader
+;; Uncomment for java environments
+;; (map! :after dap-mode
+;;       :map dap-mode-map
+;;       :localleader
 
-      :desc "Run"
-      "s" #'mvn-clean-package-spring-boot-run
+;;       :desc "Run"
+;;       "s" #'mvn-clean-package-spring-boot-run
 
-      :desc "Debug"
-      "d" #'dap-debug
+;;       :desc "Debug"
+;;       "d" #'dap-debug
 
-      :desc "Stop"
-      "r q" #'dap-disconnect)
+;;       :desc "Run test method"
+;;       "t t" #'dap-java-run-test-method
+
+;;       :desc "Run test class"
+;;       "t n" #'dap-java-run-test-class
+
+;;       :desc "Stop"
+;;       "r q" #'dap-disconnect)
 
 (defun scroll-up-bottom-window ()
   "Scroll up bottom window"
