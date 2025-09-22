@@ -15,9 +15,6 @@ font pango:monospace 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# start a terminal
-bindsym $mod+Return exec rxvt-unicode
-
 # kill focused window
 bindsym $mod+w kill
 
@@ -74,7 +71,7 @@ set $ws1 "1: CLI"
 set $ws2 "2: Spotify"
 set $ws3 "3: Comms"
 set $ws4 "4: Firefox"
-set $ws5 "5: Emacs"
+set $ws5 "5: NeoVim"
 set $ws6 "6: Extra"
 
 workspace $ws1 output eDP-1
@@ -198,18 +195,22 @@ focus_follows_mouse no
 mouse_warping none
 
 # For_windows
-for_window [class="Emacs"] fullscreen enable
+# for_window [class="Emacs"] fullscreen enable
 # for_window [class="firefox"] fullscreen disabled
 # for_window [class="Emulator"] floating enable
-# for_window [class="Bdc"] floating enable
+# for_window [class="URxvt"] layout tabbed
 
 # Assigns
-assign [class="URxvt"] $ws1
-assign [class="Nubank"] $ws1
+# assign [class="URxvt"] $ws1
+# assign [class="Nubank"] $ws1
 assign [class="Spotify"] $ws2
 assign [class="Slack"] $ws3
 assign [class="firefox"] $ws4
-assign [class="Emacs"] $ws5
+
+# Start a terminal
+bindsym $mod+Return workspace $ws1; exec --no-startup-id rxvt-unicode
+# Start a terminal on workspace 5 (Nvim)
+bindsym $mod+Shift+Return workspace $ws5; layout tabbed; exec --no-startup-id rxvt-unicode
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -218,7 +219,7 @@ bar {
     status_command i3blocks
     workspace_buttons yes
     position top
-    output primary
+    #output primary
 }
 
 # TODO
