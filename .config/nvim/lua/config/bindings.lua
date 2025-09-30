@@ -7,6 +7,17 @@ vim.keymap.set("n", "<leader>wl", "<C-w>l", { noremap = true })
 vim.keymap.set("n", "<leader>wk", "<C-w>k", { noremap = true })
 vim.keymap.set("n", "<leader>wj", "<C-w>j", { noremap = true })
 vim.keymap.set("n", "<leader>wh", "<C-w>h", { noremap = true })
+vim.keymap.set("n", "<leader>wb", "<C-w>b", { noremap = true })
+vim.keymap.set("n", "<leader>wt", "<C-w>t", { noremap = true })
+--Move windows
+vim.keymap.set("n", "<leader>wL", "<C-w>L", { noremap = true })
+vim.keymap.set("n", "<leader>wK", "<C-w>K", { noremap = true })
+vim.keymap.set("n", "<leader>wJ", "<C-w>J", { noremap = true })
+vim.keymap.set("n", "<leader>wH", "<C-w>H", { noremap = true })
+
+--Navigate on buffer
+-- Go to matching bracket
+vim.keymap.set("n", "<tab>", "%", { noremap = true })
 
 -- Save & Quit
 vim.keymap.set("n", "<leader>wq", ":q<CR>", { noremap = true })
@@ -24,8 +35,11 @@ vim.keymap.set("n", "<S-A-Right>", "<C-w>>", { noremap = true })
 vim.keymap.set("n", "=", "<C-w>=", { noremap = true })
 
 -- Move lines
-vim.keymap.set({ "n", "i" }, "<A-Up>", ":move -2<CR>") -- move line up(n)
-vim.keymap.set({ "n", "i" }, "<A-Down>", ":move +1<CR>") -- move line down(n)
+vim.keymap.set({ "n", "i" }, "<A-Up>", ":move -2<CR>", { noremap = true }) -- move line up(n)
+vim.keymap.set({ "n", "i" }, "<A-Down>", ":move +1<CR>", { noremap = true }) -- move line down(n)
+
+-- TerminalToggle
+vim.keymap.set("n", "<leader>tt", ":ToggleTerm size=12 name=Terminal direction=float<CR>", { noremap = true })
 
 -- Comments
 -- To get the <C-/> char I:
@@ -35,9 +49,6 @@ vim.keymap.set("n", "", "gcc", { remap = true })
 vim.keymap.set("v", "", "gc", { remap = true })
 -- Delete entire word
 vim.keymap.set("i", "", "<C-w>", { remap = true })
-
--- See `:help K` for why this keymap
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover Documentation" })
 
 --LSP Specific commands
 vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "[R]e[n]ame" })
@@ -54,4 +65,5 @@ vim.keymap.set(
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover Documentation" })
 vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { noremap = true })
 
+-- Neogit
 vim.keymap.set("n", "<leader>gg", ":Neogit<CR>", { noremap = true })

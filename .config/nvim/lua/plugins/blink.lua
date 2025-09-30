@@ -5,7 +5,7 @@ return {
 	dependencies = "rafamadriz/friendly-snippets",
 
 	-- use a release tag to download pre-built binaries
-	version = "v0.*",
+	version = "v1.*",
 	-- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
 	-- build = 'cargo build --release',
 	-- If you use nix, you can build from source using latest nightly rust with:
@@ -34,15 +34,16 @@ return {
 		completion = {
 			list = {
 				selection = {
-					preselect = true,
-					auto_insert = true,
+					preselect = false,
+					auto_insert = false,
 				},
 			},
 			accept = {
 				create_undo_point = true,
 			},
 			menu = {
-				auto_show = false,
+				auto_show = true,
+				auto_show_delay_ms = 300,
 				draw = {
 					treesitter = { "lsp" },
 				},

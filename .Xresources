@@ -38,10 +38,10 @@
 *.color15: #fdf6e3
 
 !! URxvt Appearance
-URxvt.font: xft:DejaVu Sans Mono:size=10:antialias=true
-URxvt.boldFont: xft:DejaVu Sans Mono:bold:size=10:antialias=true
-URxvt.italicFont: xft:DejaVu Sans Mono:italic:size=10:antialias=true
-URxvt.italicBoldFont: xft:DejaVu Sans Mono:italic::bold:size=10:antialias=true
+URxvt.font: xft:AdwaitaMonoNerdFontMono-Regular:size=11:antialias=true
+URxvt.boldFont: xft:AdwaitaMonoNerdFontMono-Bold:bold:size=11:antialias=true
+URxvt.italicFont: xft:AdwaitaMonoNerdFontMono-Italic:italic:size=11:antialias=true
+URxvt.italicBoldFont: xft:AdwaitaMonoNerdFontMono-BoldItalic:italic::bold:size=11:antialias=true
 URxvt.allowBold: true
 URxvt.letterSpace: 0
 URxvt.lineSpace: 0

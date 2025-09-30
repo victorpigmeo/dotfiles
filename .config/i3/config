@@ -184,7 +184,7 @@ exec --no-startup-id "flameshot &"
 bindsym Print exec --no-startup-id "flameshot gui"
 
 # Colors
-client.focused #ff00000 #00ff00 #0000000 #ffffff #6e6e6e
+client.focused #bdbdbd #666666 #0000000 #ffffff #6e6e6e
 
 # Window gaps
 gaps inner 0px
