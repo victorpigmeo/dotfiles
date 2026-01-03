@@ -1,8 +1,17 @@
 require("config")
 
 vim.lsp.enable({
-	--lua
+	--Lua
 	"lua_ls",
-	--javascript
+	--Javascript
 	"ts_ls",
+	--Protobuf
+	"protols",
+	--Dart
+	"dartls",
 })
+
+-- Require autocmds
+require("config.autocmds")
+
+vim.lsp.enable("kotlin_lsp")

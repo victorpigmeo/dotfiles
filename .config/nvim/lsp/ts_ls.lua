@@ -1,5 +1,8 @@
 return {
 	init_options = { hostInfo = "neovim" },
+	preferences = {
+		exclude = { "node_modules", "widgets/proto_out" },
+	},
 	cmd = { "typescript-language-server", "--stdio" },
 	filetypes = {
 		"javascript",

@@ -14,7 +14,7 @@ return {
 	config = function()
 		require("telescope").setup({
 			defaults = {
-				file_ignore_patterns = { "node_modules", ".cache" },
+				file_ignore_patterns = { "node_modules", ".class" },
 			},
 			pickers = {
 				find_files = {

@@ -125,11 +125,12 @@ export GPG_TTY=$(tty)
 export DISPLAY=:0
 export HOVER_HEIGHT=700
 export HOVER_WIDTH=380
+
 #Android
 export FLUTTER_ROOT=$HOME/flutter
 export ANDROID_HOME=$HOME/Android
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform_tools:$HOME/bin:$HOME/.local/bin:$HOME/.config/emacs/bin:$HOME/swift/usr/bin:$HOME/.sdkman/candidates/java/current/bin:$HOME/.npm-global/bin
-export ANDROID_SDK_ROOT=/home/victor/Android
+export PATH=$PATH:$HOME/android-studio/bin/:$HOME/bin:$HOME/.local/bin:$HOME/.config/emacs/bin:$HOME/.sdkman/candidates/java/current/bin:$HOME/.npm-global/bin
+export ANDROID_SDK_ROOT=/home/victor/Android/Sdk
 export NODE_OPTIONS=--max-old-space-size=8192
 
 if [ -f $HOME/.nix-profile/etc/profile.d/nix.sh ];
@@ -176,3 +177,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/.p10k.zsh.
 [[ ! -f ~/.dotfiles/.p10k.zsh ]] || source ~/.dotfiles/.p10k.zsh
 
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
