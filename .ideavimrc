@@ -1,0 +1,39 @@
+let mapleader=" "
+set scrolloff=5
+set clipboard+=unnamed
+set ideajoin
+
+if has('ide')
+  map <leader><leader> <Action>(SearchEverywhere)
+  map <leader>qq <Action>(Exit)
+  map <leader>fs <Action>(SaveAll)
+  map <leader>tt <Action>(ActivateTerminalToolWindow)
+  map <leader>cx <Action>(ActivateProblemsViewToolWindow)
+  map <leader>ff <Action>(ShowNavBar)
+
+  map <leader>wv <Action>(SplitVertically)
+  map <leader>ws <Action>(SplitHorizontally)
+  map <leader>wq <Action>(CloseAllEditors)
+  map <leader>bk <Action>(CloseContent)
+  map <leader>wl <C-w>l
+  map <leader>wj <C-w>j
+  map <leader>wk <C-w>k
+  map <leader>wh <C-w>h
+
+  map <A-Up> <Action>(MoveLineUp)
+  map <A-Down> <Action>(MoveLineDown)
+
+  map <leader>cd <Action>(GotoDeclaration)
+  map <leader>cD <Action>(GotoImplementation)
+  map <leader>cr <Action>(RenameElement)
+  map <leader>ca <Action>(ShowIntentionActions)
+
+  map ,s <Action>(Run)
+  map ,rq <Action>(Stop)
+  map ,d <Action>(Debug)
+  map ,b <Action>(ToggleLineBreakpoint)
+  map ,ws <Action>(ActivateRunToolWindow)
+  map ,wd <Action>(ActivateDebugToolWindow)
+
+  map ,gr <Action>(ExternalSystem.ProjectRefreshAction)
+endif
