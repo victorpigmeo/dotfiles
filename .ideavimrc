@@ -5,6 +5,8 @@ set ideajoin
 
 if has('ide')
   map <leader><leader> <Action>(SearchEverywhere)
+  
+  map <leader>vr :source C:\Users\Pigmeo\.ideavimrc<CR>
   map <leader>qq <Action>(Exit)
   map <leader>fs <Action>(SaveAll)
   map <leader>tt <Action>(ActivateTerminalToolWindow)
@@ -23,10 +25,12 @@ if has('ide')
   map <A-Up> <Action>(MoveLineUp)
   map <A-Down> <Action>(MoveLineDown)
 
+  map <leader>cf <Action>(ReformatCode)
   map <leader>cd <Action>(GotoDeclaration)
   map <leader>cD <Action>(GotoImplementation)
   map <leader>cr <Action>(RenameElement)
   map <leader>ca <Action>(ShowIntentionActions)
+  map <leader>co <Action>(OptimizeImports)
 
   map ,s <Action>(Run)
   map ,rq <Action>(Stop)
@@ -34,6 +38,8 @@ if has('ide')
   map ,b <Action>(ToggleLineBreakpoint)
   map ,ws <Action>(ActivateRunToolWindow)
   map ,wd <Action>(ActivateDebugToolWindow)
+  map ,wb <Action>(ActivateBuildToolWindow)
 
   map ,gr <Action>(ExternalSystem.ProjectRefreshAction)
+  map ,gb <Action>(ExternalSystem.RunTask)
 endif
