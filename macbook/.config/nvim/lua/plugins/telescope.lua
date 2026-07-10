@@ -6,7 +6,6 @@ return {
   cmd = "Telescope",
   keys = {
     { "<leader><leader>", "<cmd>Telescope find_files<CR>", desc = "Find files" },
-    { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Find files" },
     { "<leader>fr", "<cmd>Telescope oldfiles<CR>", desc = "Recent files" },
     { "<leader>sg", "<cmd>Telescope live_grep<CR>", desc = "Grep project" },
     { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Search buffer" },
