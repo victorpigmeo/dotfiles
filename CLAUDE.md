@@ -24,6 +24,7 @@ Apply this for every config, both platforms.
 ## Rules
 
 - **Branch per feature.** New branch off current before starting a new logical task. Follow-up commits that continue the same in-progress work stay on that branch. Never commit straight to `main`/`master`.
+- **Humans only merge PRs.** Claude never merges a PR. Claude never pushes commits directly onto a PR's target/base branch (e.g. `v2`, `main`) — only onto the feature branch. Merging is a human decision.
 - **Never touch `old/`.**
 - Unsure which directory a config file belongs in? **Ask.** Do not guess placement.
 - Commit/PR text: caveman style.
