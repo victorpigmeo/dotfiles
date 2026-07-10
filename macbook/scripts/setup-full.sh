@@ -1,9 +1,21 @@
 DOTFILESDIR=${HOME}/.dotfiles
 
-# ZSH
+# ZSH — symlink ~/.zshrc to the dotfiles zshrc (idempotent).
+ZSH_SRC="${DOTFILESDIR}/macbook/.zshrc"
+ZSH_DST="${HOME}/.zshrc"
 
-mv ~/.zshrc ~/.zshrc_before_dotfiles
-ln -sf ${DOTFILESDIR}/.zshrc ~/.zshrc
+if [ -L "${ZSH_DST}" ] && [ "$(readlink "${ZSH_DST}")" = "${ZSH_SRC}" ]; then
+  echo "zsh: symlink already in place, nothing to do"
+elif [ -e "${ZSH_DST}" ] || [ -L "${ZSH_DST}" ]; then
+  ZSH_BACKUP="${ZSH_DST}.backup.$(date +%Y%m%d%H%M%S)"
+  echo "zsh: backing up ${ZSH_DST} -> ${ZSH_BACKUP}"
+  mv "${ZSH_DST}" "${ZSH_BACKUP}"
+  ln -s "${ZSH_SRC}" "${ZSH_DST}"
+  echo "zsh: linked ${ZSH_DST} -> ${ZSH_SRC}"
+else
+  ln -s "${ZSH_SRC}" "${ZSH_DST}"
+  echo "zsh: linked ${ZSH_DST} -> ${ZSH_SRC}"
+fi
 
 # Neovim — symlink ~/.config/nvim to the dotfiles config (idempotent).
 NVIM_SRC="${DOTFILESDIR}/macbook/.config/nvim"
