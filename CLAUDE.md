@@ -23,7 +23,7 @@ Apply this for every config, both platforms.
 
 ## Rules
 
-- **Branch before every change.** New branch off current before editing anything. Never commit straight to `main`/`master`.
+- **Branch per feature.** New branch off current before starting a new logical task. Follow-up commits that continue the same in-progress work stay on that branch. Never commit straight to `main`/`master`.
 - **Never touch `old/`.**
 - Unsure which directory a config file belongs in? **Ask.** Do not guess placement.
 - Commit/PR text: caveman style.
