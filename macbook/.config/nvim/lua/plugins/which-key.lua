@@ -6,6 +6,7 @@ return {
     preset = "helix",
     spec = {
       { "<leader>b", group = "buffer" },
+      { "<leader>c", group = "code" },
       { "<leader>f", group = "file" },
       { "<leader>g", group = "git" },
       { "<leader>p", group = "project" },
