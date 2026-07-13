@@ -12,6 +12,7 @@ return {
       { "<leader>p", group = "project" },
       { "<leader>q", group = "quit" },
       { "<leader>s", group = "search" },
+      { "<leader>t", group = "terminal" },
       { "<leader>w", group = "window" },
     },
   },
