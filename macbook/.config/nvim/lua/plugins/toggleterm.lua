@@ -3,15 +3,17 @@
 --   SPC t s  bottom split, full width, pushes buffers up (30% height)
 --   SPC t v  right split, 30% width, pushes buffers left
 --   SPC t c  float 90%, runs claude code; toggle hides it (process stays alive)
+--   SPC t q  kill the active terminal, ending its process
 -- Distinct <count> per mapping = three independent, persistent terminals.
 
 -- Dedicated Claude Code terminal. Built once, reused so toggle hides/shows the
 -- same job instead of spawning a new one. close_on_exit=false keeps the buffer
--- if claude quits.
+-- if claude quits. Rebuilt if it was killed (e.g. via SPC t q).
 local claude_term
 local function toggle_claude()
-  if not claude_term then
-    claude_term = require("toggleterm.terminal").Terminal:new({
+  local tt = require("toggleterm.terminal")
+  if not claude_term or not tt.get(claude_term.id, true) then
+    claude_term = tt.Terminal:new({
       cmd = "claude",
       direction = "float",
       close_on_exit = false,
@@ -26,6 +28,19 @@ local function toggle_claude()
     })
   end
   claude_term:toggle()
+end
+
+-- Kill the active terminal outright: shutdown() closes the window, wipes the
+-- buffer and stops the job. Prefer the focused terminal, else the last focused.
+local function kill_terminal()
+  local tt = require("toggleterm.terminal")
+  local id = tt.get_focused_id()
+  local term = (id and tt.get(id, true)) or tt.get_last_focused()
+  if term then
+    term:shutdown()
+  else
+    vim.notify("No active toggleterm terminal", vim.log.levels.WARN)
+  end
 end
 
 return {
@@ -53,5 +68,6 @@ return {
     { "<leader>ts", "<cmd>2ToggleTerm direction=horizontal<cr>", desc = "Terminal (bottom split)" },
     { "<leader>tv", "<cmd>3ToggleTerm direction=vertical<cr>", desc = "Terminal (right split)" },
     { "<leader>tc", toggle_claude, desc = "Terminal (Claude Code, 90%)" },
+    { "<leader>tq", kill_terminal, desc = "Kill active terminal" },
   },
 }
