@@ -28,7 +28,19 @@ return {
   "MeanderingProgrammer/render-markdown.nvim",
   ft = { "markdown" },
   dependencies = { "nvim-treesitter/nvim-treesitter" },
-  opts = {},
+  -- anti_conceal off: keep the cursor line rendered instead of revealing raw
+  -- markup. cursorline (markdown-only) marks where the cursor is instead.
+  init = function()
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "markdown",
+      callback = function()
+        vim.opt_local.cursorline = true
+      end,
+    })
+  end,
+  opts = {
+    anti_conceal = { enabled = false },
+  },
   keys = {
     { "<leader>mr", toggle_preview, desc = "Markdown render preview (right 80%)" },
   },
