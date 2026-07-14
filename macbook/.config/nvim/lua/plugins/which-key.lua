@@ -9,6 +9,7 @@ return {
       { "<leader>c", group = "code" },
       { "<leader>f", group = "file" },
       { "<leader>g", group = "git" },
+      { "<leader>m", group = "markdown" },
       { "<leader>p", group = "project" },
       { "<leader>q", group = "quit" },
       { "<leader>s", group = "search" },
