@@ -43,6 +43,16 @@
           "to": [{ "key_code": "tab", "modifiers": ["left_command"] }]
         }
       ]
+    },
+    {
+      "description": "Ctrl+Space = Spotlight (send Cmd+Space)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "spacebar", "modifiers": { "mandatory": ["left_control"] } },
+          "to": [{ "key_code": "spacebar", "modifiers": ["left_command"] }]
+        }
+      ]
     }
   ]
 }
