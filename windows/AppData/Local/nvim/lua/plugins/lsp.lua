@@ -22,18 +22,34 @@ return {
 
       -- jdtls's own JVM needs Java 21+. Projects may target older Java; only
       -- the server runtime is pinned here. Prefer $JDTLS_JAVA_HOME, else the
-      -- newest SDKMAN java >= 21. Nil = fall back to JAVA_HOME/PATH.
+      -- newest JDK >= 21 found in the OS's usual install dirs. Nil = fall back
+      -- to JAVA_HOME/PATH. Each candidate dir name carries its version
+      -- (jdk-21.0.5-hotspot, 21.0.2-open, corretto-21...), so major = first
+      -- number in the leaf name.
       local function jdtls_java_home()
         if vim.env.JDTLS_JAVA_HOME then
           return vim.env.JDTLS_JAVA_HOME
         end
-        local dirs = vim.fn.glob(vim.fn.expand("~/.sdkman/candidates/java") .. "/*", true, true)
+        local globs
+        if vim.fn.has("win32") == 1 then
+          globs = {
+            "C:/Program Files/Eclipse Adoptium/*",
+            "C:/Program Files/Java/*",
+            "C:/Program Files/Microsoft/*",
+            "C:/Program Files/Amazon Corretto/*",
+            "C:/Program Files/Zulu/*",
+          }
+        else
+          globs = { vim.fn.expand("~/.sdkman/candidates/java") .. "/*" }
+        end
         local best, best_major
-        for _, dir in ipairs(dirs) do
-          local major = tonumber(vim.fn.fnamemodify(dir, ":t"):match("^(%d+)"))
-          if major and major >= 21 and vim.fn.isdirectory(dir) == 1 then
-            if not best_major or major > best_major then
-              best, best_major = dir, major
+        for _, g in ipairs(globs) do
+          for _, dir in ipairs(vim.fn.glob(g, true, true)) do
+            local major = tonumber(vim.fn.fnamemodify(dir, ":t"):match("(%d+)"))
+            if major and major >= 21 and vim.fn.isdirectory(dir) == 1 then
+              if not best_major or major > best_major then
+                best, best_major = dir, major
+              end
             end
           end
         end
