@@ -20,6 +20,13 @@ return {
     config = function(_, opts)
       require("mason-lspconfig").setup(opts)
 
+      -- Advertise blink.cmp's completion capabilities to every server so the
+      -- LSP returns snippets and resolvable detail. Applied before servers
+      -- attach (BufReadPre), which is why it lives here, not in blink's spec.
+      vim.lsp.config("*", {
+        capabilities = require("blink.cmp").get_lsp_capabilities(),
+      })
+
       -- jdtls's own JVM needs Java 21+. Projects may target older Java; only
       -- the server runtime is pinned here. Prefer $JDTLS_JAVA_HOME, else the
       -- newest SDKMAN java >= 21. Nil = fall back to JAVA_HOME/PATH.
