@@ -15,7 +15,7 @@ map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 -- SPC w — window
 map("n", "<leader>ws", "<C-w>s", { desc = "Split window below" })
 map("n", "<leader>wv", "<C-w>v", { desc = "Split window right" })
-map("n", "<leader>wd", "<C-w>c", { desc = "Delete window" })
+map("n", "<leader>wq", "<C-w>c", { desc = "Delete window" })
 map("n", "<leader>wo", "<C-w>o", { desc = "Delete other windows" })
 map("n", "<leader>wh", "<C-w>h", { desc = "Go to left window" })
 map("n", "<leader>wj", "<C-w>j", { desc = "Go to lower window" })
@@ -26,7 +26,7 @@ map("n", "<leader>w=", "<C-w>=", { desc = "Balance windows" })
 -- SPC b — buffer
 map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next buffer" })
 map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
-map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Kill buffer" })
+map("n", "<leader>bk", "<cmd>bdelete<CR>", { desc = "Kill buffer" })
 map("n", "<leader>bb", "<cmd>e #<CR>", { desc = "Switch to other buffer" })
 
 -- SPC f — file
