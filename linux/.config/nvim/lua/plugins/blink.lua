@@ -8,12 +8,14 @@ return {
   opts = {
     keymap = {
       preset = "default", -- <C-space> shows menu/docs; <C-n>/<C-p> navigate
-      ["<CR>"] = { "accept", "fallback" }, -- Enter accepts the selection
+      ["<Tab>"] = { "accept", "fallback" }, -- Tab applies the selection
+      ["<CR>"] = { "fallback" }, -- Enter never accepts: closes menu + new line
     },
     sources = {
       default = { "lsp", "path", "snippets", "buffer" },
     },
     completion = {
+      menu = { auto_show_delay_ms = 2000 }, -- wait 2s before auto-opening menu
       documentation = { auto_show = true },
     },
   },
