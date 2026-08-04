@@ -160,27 +160,35 @@ return {
         :find()
     end
 
-    -- Tabline: show each tab's "Project (worktree)" label (set at open time),
-    -- falling back to the tab-local cwd's dir name for tabs opened another way.
-    function _G.ProjectTabline()
+    -- Per-tab "Project (worktree)" label: the cached tab var, else the tab
+    -- cwd's dir name.
+    local function tab_label(tab, i)
+      local ok, label = pcall(vim.api.nvim_tabpage_get_var, tab, "project_label")
+      if not ok or label == nil or label == "" then
+        local cwd = vim.fn.getcwd(-1, i)
+        label = (cwd ~= "" and vim.fn.fnamemodify(cwd, ":t")) or "[No Name]"
+      end
+      return label
+    end
+
+    -- Neovim's real tabline is top-only, so to put the tabs at the BOTTOM of the
+    -- screen we render them in the global statusline (laststatus=3). Current file
+    -- + position sit on the right. Switch tabs with Alt+1..9.
+    function _G.ProjectTabsBar()
       local parts = {}
       local current = vim.api.nvim_get_current_tabpage()
       for i, tab in ipairs(vim.api.nvim_list_tabpages()) do
         local hl = (tab == current) and "%#TabLineSel#" or "%#TabLine#"
-        local ok, label = pcall(vim.api.nvim_tabpage_get_var, tab, "project_label")
-        if not ok or label == nil or label == "" then
-          local cwd = vim.fn.getcwd(-1, i)
-          label = (cwd ~= "" and vim.fn.fnamemodify(cwd, ":t")) or "[No Name]"
-        end
-        label = label:gsub("%%", "%%%%") -- escape for the statusline parser
-        parts[#parts + 1] = hl .. "%" .. i .. "T " .. label .. " "
+        local label = tab_label(tab, i):gsub("%%", "%%%%")
+        parts[#parts + 1] = string.format("%s %d:%s ", hl, i, label)
       end
-      parts[#parts + 1] = "%#TabLineFill#%T"
+      parts[#parts + 1] = "%#StatusLine#%= %f  %l:%c "
       return table.concat(parts)
     end
 
-    vim.o.tabline = "%!v:lua.ProjectTabline()"
-    vim.o.showtabline = 2
+    vim.o.showtabline = 0 -- hide the top tabline
+    vim.o.laststatus = 3 -- single global statusline, at the bottom
+    vim.o.statusline = "%!v:lua.ProjectTabsBar()"
 
     vim.keymap.set("n", "<leader>po", pick_project, { desc = "Open project (new tab)" })
     vim.keymap.set("n", "<leader>pw", pick_worktree, { desc = "Switch git worktree (new tab)" })
