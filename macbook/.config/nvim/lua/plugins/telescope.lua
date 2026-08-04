@@ -1,4 +1,27 @@
 -- Telescope fuzzy finder. SPC SPC = find files (Doom style).
+
+-- Java files sit in deep package dirs. Shorten the displayed path: every
+-- middle directory is cut to 3 chars, while the last directory and the
+-- filename stay full. Matching still runs on the full path, so typing whole
+-- package names filters as normal.
+--   src/main/java/com/example/service/impl/UserServiceImpl.java
+--   -> src/mai/jav/com/exa/ser/impl/UserServiceImpl.java
+-- Non-Java paths are shown unchanged.
+local function path_display(_, path)
+  if not path:match("%.java$") then
+    return path
+  end
+  local parts = vim.split(path, "/", { plain = true, trimempty = true })
+  local n = #parts
+  if n <= 2 then
+    return path -- just a filename, or one dir + file: nothing to shorten
+  end
+  for i = 1, n - 2 do -- middle dirs -> first 3 chars; last dir + file stay full
+    parts[i] = parts[i]:sub(1, 3)
+  end
+  return table.concat(parts, "/")
+end
+
 return {
   "nvim-telescope/telescope.nvim",
   branch = "0.1.x",
@@ -12,6 +35,9 @@ return {
     { "<leader>bi", "<cmd>Telescope buffers<CR>", desc = "Buffer list" },
   },
   opts = {
+    defaults = {
+      path_display = path_display,
+    },
     pickers = {
       -- rg --files respects .gitignore; avoids `find` fallback that lists ignored files
       find_files = {
