@@ -3,8 +3,10 @@
 --   SPC t s  bottom split, full width, pushes buffers up (30% height)
 --   SPC t v  right split, 30% width, pushes buffers left
 --   SPC t c  float 90%, runs claude code; toggle hides it (process stays alive)
+--   SPC t T  terminal in its own tab ("Terminal"); closing the tab ends it
 --   SPC t q  kill the active terminal, ending its process
 -- Distinct <count> per mapping = three independent, persistent terminals.
+-- SPC t T tabs join the project tab row; jump to them with Alt+1..9.
 
 -- Dedicated Claude Code terminal. Built once, reused so toggle hides/shows the
 -- same job instead of spawning a new one. close_on_exit=false keeps the buffer
@@ -43,6 +45,18 @@ local function kill_terminal()
   end
 end
 
+-- Open a terminal in its own tab, like a project tab. The tabline shows
+-- "Terminal" (reusing project.lua's tab-local `project_label`), and
+-- bufhidden=wipe ends the job the instant the tab is closed. Alt+1..9 jump
+-- between tabs (terminal-mode variants live in config/keymaps.lua).
+local function terminal_in_tab()
+  vim.cmd("tabnew")
+  vim.api.nvim_tabpage_set_var(0, "project_label", "Terminal")
+  vim.cmd("terminal")
+  vim.bo.bufhidden = "wipe"
+  vim.cmd("startinsert")
+end
+
 return {
   "akinsho/toggleterm.nvim",
   version = "*",
@@ -67,6 +81,7 @@ return {
     { "<leader>tt", "<cmd>1ToggleTerm direction=float<cr>", desc = "Terminal (float 80%)" },
     { "<leader>ts", "<cmd>2ToggleTerm direction=horizontal<cr>", desc = "Terminal (bottom split)" },
     { "<leader>tv", "<cmd>3ToggleTerm direction=vertical<cr>", desc = "Terminal (right split)" },
+    { "<leader>tT", terminal_in_tab, desc = "Terminal (new tab)" },
     { "<leader>tc", toggle_claude, desc = "Terminal (Claude Code, 90%)" },
     { "<leader>tq", kill_terminal, desc = "Kill active terminal" },
   },
