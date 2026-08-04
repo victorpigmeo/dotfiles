@@ -37,6 +37,10 @@ return {
   opts = {
     defaults = {
       path_display = path_display,
+      -- Preview highlighting via built-in syntax, not treesitter: telescope 0.1.x
+      -- calls the removed nvim-treesitter master API (ft_to_lang), which errors
+      -- against the main branch (required for Neovim 0.12). Regex preview works.
+      preview = { treesitter = false },
     },
     pickers = {
       -- rg --files respects .gitignore; avoids `find` fallback that lists ignored files
