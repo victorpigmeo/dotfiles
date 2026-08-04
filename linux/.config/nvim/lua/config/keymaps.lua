@@ -8,6 +8,12 @@ map("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Terminal: double-Esc leaves insert mode
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal insert mode" })
 
+-- Terminal: Alt+1..9 jump to tab N without leaving terminal mode first, so a
+-- terminal tab navigates like a project tab (normal-mode Alt+N is in project.lua).
+for i = 1, 9 do
+  map("t", ("<A-%d>"):format(i), ([[<C-\><C-n>%dgt]]):format(i), { desc = "Go to tab " .. i })
+end
+
 -- Move selected lines
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
