@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Wire the Linux setup: install zsh (+ the bits the .zshrc needs), back up any
-# existing zsh / p10k / nvim config, then symlink this repo's files into place.
+# Wire the Linux setup: install zsh (+ the bits the .zshrc needs), install the
+# Neovim config's runtime deps (nvim, ripgrep, tree-sitter CLI, JDK, ...), back
+# up any existing zsh / p10k / nvim config, then symlink this repo's files in.
 # Idempotent: safe to re-run. Existing real files are moved to <file>.backup.<ts>.
 set -euo pipefail
 
@@ -53,6 +54,49 @@ install_zsh_framework() {
   fi
 }
 
+# --- neovim + its runtime deps: the config needs a recent nvim, ripgrep
+# (telescope), a C toolchain + tree-sitter CLI (nvim-treesitter main branch
+# builds parsers via the CLI), unzip (mason), and a JDK 21+ (jdtls). nvim and
+# the CLI land where the .zshrc PATH entry expects them. Idempotent. ---
+install_nvim_deps() {
+  # distro packages (apt); other package managers get a manual note
+  if command -v apt-get >/dev/null 2>&1; then
+    log "nvim deps: installing ripgrep, fd, unzip, build-essential, JDK 21, wl-clipboard..."
+    sudo apt-get update
+    sudo apt-get install -y ripgrep fd-find unzip build-essential openjdk-21-jdk wl-clipboard
+  else
+    log "nvim deps: non-apt system; install manually: ripgrep fd unzip a C toolchain openjdk-21 wl-clipboard" >&2
+  fi
+
+  # Neovim: official tarball -> /opt/nvim-linux-x86_64 (matches the .zshrc PATH).
+  if [ -x /opt/nvim-linux-x86_64/bin/nvim ]; then
+    log "neovim: already at /opt/nvim-linux-x86_64"
+  elif [ "$(uname -m)" != "x86_64" ]; then
+    log "neovim: arch is $(uname -m), not x86_64; install nvim manually" >&2
+  else
+    log "neovim: downloading official tarball -> /opt/nvim-linux-x86_64..."
+    curl -fsSL -o /tmp/nvim-linux-x86_64.tar.gz \
+      https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    sudo rm -rf /opt/nvim-linux-x86_64
+    sudo tar -C /opt -xzf /tmp/nvim-linux-x86_64.tar.gz
+    rm -f /tmp/nvim-linux-x86_64.tar.gz
+  fi
+
+  # tree-sitter CLI: prebuilt binary -> /usr/local/bin (already on PATH).
+  if command -v tree-sitter >/dev/null 2>&1; then
+    log "tree-sitter CLI: already present"
+  elif [ "$(uname -m)" != "x86_64" ]; then
+    log "tree-sitter CLI: arch is $(uname -m), not x86_64; install manually" >&2
+  else
+    log "tree-sitter CLI: downloading prebuilt binary -> /usr/local/bin..."
+    curl -fsSL -o /tmp/tree-sitter.gz \
+      https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz
+    gunzip -f /tmp/tree-sitter.gz
+    sudo install -m 0755 /tmp/tree-sitter /usr/local/bin/tree-sitter
+    rm -f /tmp/tree-sitter
+  fi
+}
+
 # --- backup any existing target, then symlink src -> dst ---
 backup_and_link() {
   local src="$1" dst="$2"
@@ -77,6 +121,7 @@ backup_and_link() {
 main() {
   install_packages
   install_zsh_framework
+  install_nvim_deps
 
   backup_and_link "${PLATFORM_DIR}/.zshrc"       "${HOME}/.zshrc"
   backup_and_link "${PLATFORM_DIR}/.p10k.zsh"    "${HOME}/.p10k.zsh"
