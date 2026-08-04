@@ -14,7 +14,12 @@ return {
     { "<leader>op", "<cmd>Neotree toggle<CR>", desc = "Project tree" },
   },
   opts = {
-    window = { position = "left" },
+    window = {
+      position = "left",
+      mappings = {
+        ["<Tab>"] = "toggle_node", -- Tab expands/collapses the folder under cursor
+      },
+    },
     filesystem = {
       follow_current_file = { enabled = true }, -- track the active buffer
       use_libuv_file_watcher = true, -- live-refresh on external file changes
