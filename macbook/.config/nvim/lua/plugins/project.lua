@@ -239,7 +239,8 @@ return {
           label = (cwd ~= "" and vim.fn.fnamemodify(cwd, ":t")) or "[No Name]"
         end
         label = label:gsub("%%", "%%%%") -- escape for the statusline parser
-        parts[#parts + 1] = hl .. "%" .. i .. "T " .. label .. " "
+        -- prefix the tab number (also its Alt+<n> switch key)
+        parts[#parts + 1] = hl .. "%" .. i .. "T " .. i .. ": " .. label .. " "
       end
       parts[#parts + 1] = "%#TabLineFill#%T"
       return table.concat(parts)
