@@ -40,7 +40,8 @@ return {
           m("<leader>cD", "<cmd>Telescope lsp_references<CR>", "Find usages")
           m("<leader>ca", vim.lsp.buf.code_action, "Code action")
           m("<leader>cf", function()
-            vim.lsp.buf.format({ async = true })
+            -- Java -> Spotless (conform); other filetypes fall back to the LSP.
+            require("conform").format({ async = true, lsp_format = "fallback" })
           end, "Format buffer")
         end,
       })

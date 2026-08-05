@@ -20,6 +20,12 @@ map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 map("v", "<A-Down>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 map("v", "<A-Up>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
+-- Move the current line with Alt+Up/Down in insert (edit) and normal mode.
+map("i", "<A-Down>", "<Esc>:m .+1<CR>==gi", { desc = "Move line down" })
+map("i", "<A-Up>", "<Esc>:m .-2<CR>==gi", { desc = "Move line up" })
+map("n", "<A-Down>", ":m .+1<CR>==", { desc = "Move line down" })
+map("n", "<A-Up>", ":m .-2<CR>==", { desc = "Move line up" })
+
 -- Toggle comment on the visual selection with Ctrl+/ (terminals may send C-_)
 map("x", "<C-/>", "gc", { remap = true, desc = "Toggle comment" })
 map("x", "<C-_>", "gc", { remap = true, desc = "Toggle comment" })
