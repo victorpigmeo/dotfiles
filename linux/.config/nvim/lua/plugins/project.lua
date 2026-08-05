@@ -1,6 +1,7 @@
 -- project.nvim: track project roots; open each project as its own tab.
 -- One project per tabpage, each with a tab-local cwd (:tcd).
 --   SPC p o  pick a known project -> opens in a NEW tab (oil at its root)
+--   SPC p n  pick a folder under ~/dev -> add to known projects (does not open)
 --   SPC p w  pick a git worktree of the current repo -> opens in a NEW tab
 --   SPC p q  close the current project (tabpage)
 --   Alt+1..9 switch to project (tab) N
@@ -160,6 +161,71 @@ return {
         :find()
     end
 
+    -- Register a folder as a known project WITHOUT opening it, so SPC p o can
+    -- open it later. Appends to project.nvim's history and persists it. Telescope
+    -- lists directories under ~/dev (2 levels deep, skipping hidden/build dirs).
+    local project_search_root = vim.fn.expand("~/dev")
+    local function add_project()
+      if vim.fn.isdirectory(project_search_root) == 0 then
+        vim.notify(project_search_root .. " does not exist", vim.log.levels.WARN)
+        return
+      end
+      local cmd
+      if vim.fn.executable("fd") == 1 then
+        cmd = { "fd", "--type", "d", "--max-depth", "2", "--absolute-path", "--color", "never", ".", project_search_root }
+      else
+        cmd = { "find", project_search_root, "-maxdepth", "2", "-type", "d" }
+      end
+      local items = {}
+      for _, d in ipairs(vim.fn.systemlist(cmd)) do
+        d = d:gsub("/+$", "")
+        if
+          d ~= project_search_root
+          and not d:find("/%.") -- skip hidden dirs (.git, ...)
+          and not d:find("/node_modules")
+          and not d:find("/target")
+          and not d:find("/build")
+        then
+          table.insert(items, d)
+        end
+      end
+      if vim.tbl_isempty(items) then
+        vim.notify("No folders found under " .. project_search_root, vim.log.levels.INFO)
+        return
+      end
+      local pickers = require("telescope.pickers")
+      local finders = require("telescope.finders")
+      local conf = require("telescope.config").values
+      local actions = require("telescope.actions")
+      local action_state = require("telescope.actions.state")
+      pickers
+        .new({}, {
+          prompt_title = "Add project (~/dev)",
+          finder = finders.new_table({ results = items }),
+          sorter = conf.generic_sorter({}),
+          attach_mappings = function(bufnr)
+            actions.select_default:replace(function()
+              actions.close(bufnr)
+              local entry = action_state.get_selected_entry()
+              local path = entry and entry[1]
+              if not path then
+                return
+              end
+              if vim.tbl_contains(require("project_nvim").get_recent_projects(), path) then
+                vim.notify("Already a known project: " .. path, vim.log.levels.INFO)
+                return
+              end
+              local history = require("project_nvim.utils.history")
+              table.insert(history.session_projects, path)
+              history.write_projects_to_history()
+              vim.notify("Added project: " .. path)
+            end)
+            return true
+          end,
+        })
+        :find()
+    end
+
     -- Tabline: show each tab's "Project (worktree)" label (set at open time),
     -- falling back to the tab-local cwd's dir name for tabs opened another way.
     function _G.ProjectTabline()
@@ -183,6 +249,7 @@ return {
     vim.o.showtabline = 2
 
     vim.keymap.set("n", "<leader>po", pick_project, { desc = "Open project (new tab)" })
+    vim.keymap.set("n", "<leader>pn", add_project, { desc = "Add project from ~/dev (no open)" })
     vim.keymap.set("n", "<leader>pw", pick_worktree, { desc = "Switch git worktree (new tab)" })
     vim.keymap.set("n", "<leader>pq", "<cmd>tabclose<CR>", { desc = "Close project (tab)" })
     for i = 1, 9 do
