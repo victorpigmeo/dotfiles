@@ -3,9 +3,26 @@
 -- extendedClientCapabilities, which leaves jdtls degraded: diagnostics work but
 -- code actions do not. nvim-jdtls gives each project its own workspace and sets
 -- those capabilities, unlocking add-import / organize-imports / generate /
--- extract, etc. mason installs the jdtls binary (ensure_installed in lsp.lua);
--- this spec only starts it. jdtls stays excluded from auto-enable in lsp.lua.
-return {
+-- extract, etc. This file owns all of Java's LSP config: it installs the jdtls
+-- binary via mason and keeps it out of auto-enable (nvim-jdtls starts it), then
+-- drives nvim-jdtls itself.
+
+-- Java owns its mason entry: install jdtls, but let nvim-jdtls start it. An opts
+-- function that initialises the lists then extends them in place -- lazy runs
+-- fragments in filename order and replaces list-valued table opts, so each
+-- contributor must defensively init before extending.
+local mason_jdtls = {
+  "williamboman/mason-lspconfig.nvim",
+  opts = function(_, opts)
+    opts.ensure_installed = opts.ensure_installed or {}
+    opts.automatic_enable = opts.automatic_enable or {}
+    opts.automatic_enable.exclude = opts.automatic_enable.exclude or {}
+    vim.list_extend(opts.ensure_installed, { "jdtls" })
+    vim.list_extend(opts.automatic_enable.exclude, { "jdtls" })
+  end,
+}
+
+local nvim_jdtls = {
   "mfussenegger/nvim-jdtls",
   ft = "java",
   dependencies = { "williamboman/mason.nvim" },
@@ -87,3 +104,5 @@ return {
     end
   end,
 }
+
+return { mason_jdtls, nvim_jdtls }

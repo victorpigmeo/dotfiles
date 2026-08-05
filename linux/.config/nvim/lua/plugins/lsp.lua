@@ -1,8 +1,15 @@
--- LSP: mason installs language servers, nvim-lspconfig provides their configs.
--- Java (jdtls) is driven by nvim-jdtls (see jdtls.lua) for a per-project
--- workspace and the full code-action set, so it is excluded from
--- mason-lspconfig's auto-enable here to avoid a double start. Any other server
--- auto-enables. SPC c keymaps bind per-buffer on LspAttach for every LSP.
+-- LSP core (language-agnostic). mason installs servers, mason-lspconfig
+-- auto-enables the installed ones, blink's completion capabilities are
+-- advertised to every server, and the SPC c keymaps bind per-buffer on attach.
+--
+-- Language-specific setup lives in its own file, not here:
+--   Java       -> jdtls.lua      (nvim-jdtls; adds jdtls to mason, excludes it
+--                                  from auto-enable since nvim-jdtls starts it)
+--   TypeScript -> typescript.lua (ts_ls / eslint / tailwindcss for Next.js)
+-- Those files append their servers via opts FUNCTIONS that extend the lists in
+-- place (lazy REPLACES list-valued table opts on merge and runs fragments in
+-- filename order, so a base list here would be clobbered -- the language files
+-- own and initialise the lists defensively instead).
 return {
   {
     "williamboman/mason.nvim",
@@ -16,10 +23,7 @@ return {
       "williamboman/mason.nvim",
       "neovim/nvim-lspconfig",
     },
-    opts = {
-      ensure_installed = { "jdtls" }, -- still install the binary; nvim-jdtls runs it
-      automatic_enable = { exclude = { "jdtls" } }, -- jdtls is started by nvim-jdtls
-    },
+    opts = {}, -- ensure_installed / automatic_enable come from the language files
     config = function(_, opts)
       require("mason-lspconfig").setup(opts)
 

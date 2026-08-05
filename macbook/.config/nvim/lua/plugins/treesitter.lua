@@ -2,7 +2,21 @@
 -- archived and unsupported on 0.11+). The main branch only manages parsers;
 -- highlighting is native via vim.treesitter.start(), wired per-buffer on
 -- FileType. Indentation uses the plugin's indentexpr.
-local ensure = { "java", "lua", "markdown", "markdown_inline", "vim", "vimdoc" }
+local ensure = {
+  "java",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "vim",
+  "vimdoc",
+  -- web / Next.js
+  "typescript",
+  "tsx",
+  "javascript",
+  "json",
+  "css",
+  "html",
+}
 
 return {
   "nvim-treesitter/nvim-treesitter",
