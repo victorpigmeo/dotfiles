@@ -37,7 +37,7 @@ return {
             vim.keymap.set("n", lhs, rhs, { buffer = ev.buf, desc = desc })
           end
           m("<leader>cd", vim.lsp.buf.definition, "Go to definition")
-          m("<leader>cD", vim.lsp.buf.references, "Find usages")
+          m("<leader>cD", "<cmd>Telescope lsp_references<CR>", "Find usages")
           m("<leader>ca", vim.lsp.buf.code_action, "Code action")
           m("<leader>cf", function()
             vim.lsp.buf.format({ async = true })
