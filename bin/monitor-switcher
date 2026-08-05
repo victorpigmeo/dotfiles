@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-echo "[" `/usr/bin/date` "] Triggered" >> /home/victor/.monitor-switcher.log
