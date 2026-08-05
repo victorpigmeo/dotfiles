@@ -1,0 +1,89 @@
+-- Java LSP via nvim-jdtls. The generic mason-lspconfig auto-enable path shares
+-- one jdtls -data workspace across every project and omits jdtls's
+-- extendedClientCapabilities, which leaves jdtls degraded: diagnostics work but
+-- code actions do not. nvim-jdtls gives each project its own workspace and sets
+-- those capabilities, unlocking add-import / organize-imports / generate /
+-- extract, etc. mason installs the jdtls binary (ensure_installed in lsp.lua);
+-- this spec only starts it. jdtls stays excluded from auto-enable in lsp.lua.
+return {
+  "mfussenegger/nvim-jdtls",
+  ft = "java",
+  dependencies = { "williamboman/mason.nvim" },
+  config = function()
+    -- jdtls's own JVM needs Java 21+. Prefer $JDTLS_JAVA_HOME, else the newest
+    -- SDKMAN java >= 21. Nil = let the mason launcher use JAVA_HOME / PATH.
+    local function jdtls_java_home()
+      if vim.env.JDTLS_JAVA_HOME then
+        return vim.env.JDTLS_JAVA_HOME
+      end
+      local dirs = vim.fn.glob(vim.fn.expand("~/.sdkman/candidates/java") .. "/*", true, true)
+      local best, best_major
+      for _, dir in ipairs(dirs) do
+        local major = tonumber(vim.fn.fnamemodify(dir, ":t"):match("^(%d+)"))
+        if major and major >= 21 and vim.fn.isdirectory(dir) == 1 then
+          if not best_major or major > best_major then
+            best, best_major = dir, major
+          end
+        end
+      end
+      return best
+    end
+
+    local jdtls_bin = vim.fn.stdpath("data") .. "/mason/bin/jdtls"
+
+    local function start()
+      local jdtls = require("jdtls")
+      local root = vim.fs.root(0, {
+        "pom.xml",
+        "build.gradle",
+        "build.gradle.kts",
+        "settings.gradle",
+        "settings.gradle.kts",
+        "mvnw",
+        "gradlew",
+        ".git",
+      })
+      if not root then
+        return -- loose file, not in a project: skip rather than spawn a stray workspace
+      end
+
+      -- One -data workspace per project root (full path sanitised to a dir name),
+      -- so projects never share/corrupt each other's jdtls index.
+      local key = vim.fn.fnamemodify(root, ":p"):gsub("[/\\:]+", "-")
+      local workspace = vim.fn.stdpath("cache") .. "/jdtls/" .. key
+
+      -- extendedClientCapabilities is what unlocks jdtls's source actions.
+      local caps = jdtls.extendedClientCapabilities
+      caps.resolveAdditionalTextEditsSupport = true
+
+      local jhome = jdtls_java_home()
+      jdtls.start_or_attach({
+        cmd = { jdtls_bin, "-data", workspace },
+        cmd_env = jhome and { JAVA_HOME = jhome } or nil,
+        root_dir = root,
+        capabilities = require("blink.cmp").get_lsp_capabilities(),
+        init_options = { extendedClientCapabilities = caps },
+        on_attach = function(_, bufnr)
+          -- generic SPC c d/D/a/f come from lsp.lua's LspAttach; add the
+          -- jdtls-only organize-imports here.
+          vim.keymap.set("n", "<leader>co", jdtls.organize_imports, {
+            buffer = bufnr,
+            desc = "Organize imports",
+          })
+        end,
+      })
+    end
+
+    local group = vim.api.nvim_create_augroup("jdtls_start", { clear = true })
+    vim.api.nvim_create_autocmd("FileType", {
+      group = group,
+      pattern = "java",
+      callback = start,
+    })
+    -- The FileType event that lazy-loaded this plugin already fired for the
+    -- current buffer, so start it explicitly too.
+    if vim.bo.filetype == "java" then
+      start()
+    end
+  end,
+}

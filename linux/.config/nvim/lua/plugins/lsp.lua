@@ -1,6 +1,8 @@
 -- LSP: mason installs language servers, nvim-lspconfig provides their configs.
--- jdtls = Java. mason-lspconfig (v2) auto-enables installed servers.
--- Keymaps live under SPC c (code) and bind per-buffer when an LSP attaches.
+-- Java (jdtls) is driven by nvim-jdtls (see jdtls.lua) for a per-project
+-- workspace and the full code-action set, so it is excluded from
+-- mason-lspconfig's auto-enable here to avoid a double start. Any other server
+-- auto-enables. SPC c keymaps bind per-buffer on LspAttach for every LSP.
 return {
   {
     "williamboman/mason.nvim",
@@ -15,7 +17,8 @@ return {
       "neovim/nvim-lspconfig",
     },
     opts = {
-      ensure_installed = { "jdtls" },
+      ensure_installed = { "jdtls" }, -- still install the binary; nvim-jdtls runs it
+      automatic_enable = { exclude = { "jdtls" } }, -- jdtls is started by nvim-jdtls
     },
     config = function(_, opts)
       require("mason-lspconfig").setup(opts)
@@ -26,31 +29,6 @@ return {
       vim.lsp.config("*", {
         capabilities = require("blink.cmp").get_lsp_capabilities(),
       })
-
-      -- jdtls's own JVM needs Java 21+. Projects may target older Java; only
-      -- the server runtime is pinned here. Prefer $JDTLS_JAVA_HOME, else the
-      -- newest SDKMAN java >= 21. Nil = fall back to JAVA_HOME/PATH.
-      local function jdtls_java_home()
-        if vim.env.JDTLS_JAVA_HOME then
-          return vim.env.JDTLS_JAVA_HOME
-        end
-        local dirs = vim.fn.glob(vim.fn.expand("~/.sdkman/candidates/java") .. "/*", true, true)
-        local best, best_major
-        for _, dir in ipairs(dirs) do
-          local major = tonumber(vim.fn.fnamemodify(dir, ":t"):match("^(%d+)"))
-          if major and major >= 21 and vim.fn.isdirectory(dir) == 1 then
-            if not best_major or major > best_major then
-              best, best_major = dir, major
-            end
-          end
-        end
-        return best
-      end
-
-      local jhome = jdtls_java_home()
-      if jhome then
-        vim.lsp.config("jdtls", { cmd_env = { JAVA_HOME = jhome } })
-      end
 
       vim.api.nvim_create_autocmd("LspAttach", {
         desc = "LSP buffer-local keymaps",
