@@ -44,16 +44,29 @@ return {
     return {
       formatters = {
         spotless = {
-          command = "./gradlew",
-          args = {
-            "spotlessApply",
-            "-PspotlessIdeHook=$FILENAME",
-            "-PspotlessIdeHookUseStdIn",
-            "-PspotlessIdeHookUseStdOut",
-            "--quiet",
-          },
+          -- Absolute gradlew path: conform's "is the command executable" check
+          -- runs against Neovim's cwd, not the formatter's cwd, so a relative
+          -- "./gradlew" is skipped whenever cwd isn't the Gradle root (e.g. the
+          -- project tab is rooted at the repo, and gradlew lives in a subdir).
+          command = function(_, ctx)
+            local root = vim.fs.root(ctx.filename, { "settings.gradle", "settings.gradle.kts", "gradlew" })
+            return (root or ".") .. "/gradlew"
+          end,
+          -- args as a function: conform only expands a bare "$FILENAME" arg, not
+          -- one embedded in "-PspotlessIdeHook=$FILENAME", so build it here with
+          -- the real path -- else Spotless gets a bogus hook target, treats the
+          -- input as clean, and returns empty (conform then aborts).
+          args = function(_, ctx)
+            return {
+              "spotlessApply",
+              "-PspotlessIdeHook=" .. ctx.filename,
+              "-PspotlessIdeHookUseStdIn",
+              "-PspotlessIdeHookUseStdOut",
+              "--quiet",
+            }
+          end,
           stdin = true,
-          -- ./gradlew must run from the Gradle root.
+          -- gradlew must still RUN from the Gradle root.
           cwd = util.root_file({ "settings.gradle", "settings.gradle.kts", "gradlew" }),
           require_cwd = true,
           condition = function(_, ctx)
