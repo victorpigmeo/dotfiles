@@ -48,18 +48,38 @@ local nvim_jdtls = {
 
     local jdtls_bin = vim.fn.stdpath("data") .. "/mason/bin/jdtls"
 
-    local function start()
-      local jdtls = require("jdtls")
-      local root = vim.fs.root(0, {
-        "pom.xml",
-        "build.gradle",
-        "build.gradle.kts",
+    -- Root the LSP at the OUTERMOST project dir so multi-module Gradle/Maven
+    -- builds resolve cross-module types. settings.gradle(.kts), gradlew and mvnw
+    -- live only at the true root, so prefer them over a submodule's own
+    -- build.gradle / pom.xml (which vim.fs.root would otherwise pick because it
+    -- is nearer). Fall back to the topmost build file, then .git.
+    local function project_root(bufnr)
+      local single = vim.fs.root(bufnr, {
         "settings.gradle",
         "settings.gradle.kts",
-        "mvnw",
         "gradlew",
-        ".git",
+        "mvnw",
       })
+      if single then
+        return single
+      end
+      -- No wrapper/settings: climb to the topmost dir that still has a build
+      -- file (covers multi-module Maven, where every module has a pom.xml).
+      local markers = { "pom.xml", "build.gradle", "build.gradle.kts" }
+      local root = vim.fs.root(bufnr, markers)
+      while root do
+        local up = vim.fs.root(vim.fs.dirname(root), markers)
+        if not up or up == root then
+          break
+        end
+        root = up
+      end
+      return root or vim.fs.root(bufnr, { ".git" })
+    end
+
+    local function start()
+      local jdtls = require("jdtls")
+      local root = project_root(0)
       if not root then
         return -- loose file, not in a project: skip rather than spawn a stray workspace
       end
