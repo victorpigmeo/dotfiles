@@ -112,6 +112,29 @@ local nvim_jdtls = {
         root_dir = root,
         capabilities = require("blink.cmp").get_lsp_capabilities(),
         init_options = { extendedClientCapabilities = caps },
+        settings = {
+          java = {
+            completion = {
+              -- jdtls only completes/auto-imports static members from this list.
+              -- It defaults to JUnit + Mockito; add AssertJ (and keep the
+              -- defaults) so assertThat / assertThatThrownBy resolve and import.
+              favoriteStaticMembers = {
+                "org.assertj.core.api.Assertions.*",
+                "org.assertj.core.api.Assumptions.*",
+                "org.assertj.core.api.InstanceOfAssertFactories.*",
+                "org.junit.jupiter.api.Assertions.*",
+                "org.junit.jupiter.api.Assumptions.*",
+                "org.junit.jupiter.api.DynamicTest.*",
+                "org.junit.jupiter.api.DynamicContainer.*",
+                "org.junit.Assert.*",
+                "org.junit.Assume.*",
+                "org.mockito.Mockito.*",
+                "org.mockito.ArgumentMatchers.*",
+                "org.mockito.Answers.*",
+              },
+            },
+          },
+        },
         on_attach = function(_, bufnr)
           -- generic SPC c d/D/a/f come from lsp.lua's LspAttach; add the
           -- jdtls-only organize-imports here.
