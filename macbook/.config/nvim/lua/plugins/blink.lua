@@ -9,7 +9,7 @@ return {
     keymap = {
       preset = "default", -- <C-space> shows menu/docs; <C-n>/<C-p> navigate
       ["<Tab>"] = { "accept", "fallback" }, -- Tab applies the selection
-      ["<CR>"] = { "fallback" }, -- Enter never accepts: closes menu + new line
+      ["<CR>"] = { "accept", "fallback" }, -- Enter accepts on the same line when the menu is open, else newline
     },
     sources = {
       default = { "lsp", "path", "snippets", "buffer" },
