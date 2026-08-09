@@ -43,6 +43,7 @@ return {
           m("<leader>cd", vim.lsp.buf.definition, "Go to definition")
           m("<leader>cD", "<cmd>Telescope lsp_references<CR>", "Find usages")
           m("<leader>ca", vim.lsp.buf.code_action, "Code action")
+          m("<leader>cr", vim.lsp.buf.rename, "Rename symbol")
           -- SPC c f (format) is a global keymap in conform.lua so it works even
           -- without an LSP attached.
         end,
