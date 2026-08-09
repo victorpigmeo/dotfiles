@@ -35,12 +35,12 @@ local function ensure_output()
     vim.cmd("botright vsplit") -- full-height split on the far right (focused)
     out.win = vim.api.nvim_get_current_win()
     vim.api.nvim_win_set_buf(out.win, out.buf)
-    vim.api.nvim_win_set_width(out.win, math.max(30, math.floor(vim.o.columns * 0.3)))
+    vim.api.nvim_win_set_width(out.win, math.max(40, math.floor(vim.o.columns * 0.4)))
     local wo = vim.wo[out.win]
     wo.number = false
     wo.relativenumber = false
     wo.signcolumn = "no"
-    wo.wrap = false
+    wo.wrap = true
   end
 end
 
