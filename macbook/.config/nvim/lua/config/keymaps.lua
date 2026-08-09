@@ -51,6 +51,11 @@ map("n", "<leader>bb", "<cmd>e #<CR>", { desc = "Switch to other buffer" })
 map("n", "<leader>fs", "<cmd>w<CR>", { desc = "Save file" })
 map("n", "<leader>fS", "<cmd>wa<CR>", { desc = "Save all files" })
 
+-- SPC c — code (LSP maps bind per-buffer in plugins/lsp.lua; build is global)
+map("n", "<leader>cb", function()
+  require("config.build").build()
+end, { desc = "Build project" })
+
 -- SPC p — project (group also populated in plugins/project.lua)
 map("n", "<leader>ps", "<cmd>wa<CR>", { desc = "Save all project files" })
 
