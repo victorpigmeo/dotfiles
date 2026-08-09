@@ -25,26 +25,8 @@ end
 return {
   "nvim-telescope/telescope.nvim",
   branch = "0.1.x",
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "nvim-telescope/telescope-ui-select.nvim", -- vim.ui.select (code actions) via telescope
-  },
+  dependencies = { "nvim-lua/plenary.nvim" },
   cmd = "Telescope",
-  -- Route vim.ui.select (LSP code actions) through telescope even though
-  -- telescope is lazy-loaded. This shim runs at startup; the first select loads
-  -- telescope, whose config replaces vim.ui.select with the picker, then we
-  -- delegate to it. Until telescope loads (or if it fails) we fall back to the
-  -- builtin, so code actions never depend on having opened telescope first.
-  init = function()
-    local builtin = vim.ui.select
-    local shim
-    shim = function(items, opts, on_choice)
-      pcall(require, "telescope") -- loads telescope; its config sets vim.ui.select
-      local impl = vim.ui.select ~= shim and vim.ui.select or builtin
-      return impl(items, opts, on_choice)
-    end
-    vim.ui.select = shim
-  end,
   keys = {
     { "<leader><leader>", "<cmd>Telescope find_files<CR>", desc = "Find files" },
     { "<leader>fr", "<cmd>Telescope oldfiles<CR>", desc = "Recent files" },
@@ -67,18 +49,4 @@ return {
       },
     },
   },
-  -- Route vim.ui.select (used by LSP code actions) through a Telescope dropdown,
-  -- so it is navigable with the arrow keys instead of typed numbers.
-  config = function(_, opts)
-    opts.extensions = {
-      ["ui-select"] = { require("telescope.themes").get_dropdown() },
-    }
-    local telescope = require("telescope")
-    telescope.setup(opts)
-    -- Guard: a not-yet-installed extension (e.g. on a fresh machine before
-    -- :Lazy sync) must not break all of telescope. Warn instead of erroring.
-    if not pcall(telescope.load_extension, "ui_select") then
-      vim.notify("telescope ui-select not installed yet — run :Lazy sync", vim.log.levels.WARN)
-    end
-  end,
 }
