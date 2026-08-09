@@ -5,8 +5,8 @@
 -- the captured output goes to the quickfix list (:copen) so errors are navigable.
 local M = {}
 
--- Gradle task for "build". Swap to "assemble" or "compileJava" for a
--- compile-only build (no tests).
+-- Gradle task for "build"; tests are skipped (-x test) in build_cmd below. Swap
+-- to "assemble" or "compileJava" for an even lighter compile-only build.
 local GRADLE_TASK = "build"
 
 local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
@@ -23,15 +23,18 @@ local function restore()
   vim.cmd("redrawstatus")
 end
 
--- Pick a build command from the tooling present at the project root.
+-- Pick a build command from the tooling present at the project root. The
+-- wrappers are passed as ABSOLUTE paths: jobstart's "is the command executable"
+-- check runs against Neovim's cwd, not the job's cwd, so a relative "./gradlew"
+-- errors (E475) whenever nvim isn't sitting in the Gradle root.
 local function build_cmd(root)
   local has = function(p)
     return vim.uv.fs_stat(root .. "/" .. p) ~= nil
   end
   if has("gradlew") then
-    return { "./gradlew", GRADLE_TASK }, "gradle"
+    return { root .. "/gradlew", GRADLE_TASK, "-x", "test" }, "gradle"
   elseif has("mvnw") then
-    return { "./mvnw", "compile" }, "maven"
+    return { root .. "/mvnw", "compile" }, "maven"
   elseif has("pom.xml") then
     return { "mvn", "compile" }, "maven"
   elseif has("package.json") then
