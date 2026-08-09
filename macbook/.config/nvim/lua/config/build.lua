@@ -6,9 +6,9 @@
 --            adding/removing a dependency so jdtls picks it up
 -- The command runs as a background job; a spinner takes over the statusline
 -- while it runs, then shows OK/FAILED for a few seconds. On failure the output
--- goes to the quickfix list (:copen). On SUCCESS the jdtls workspace cache is
--- wiped and loaded, unmodified Java buffers are reloaded so jdtls re-imports
--- with the fresh classpath.
+-- goes to the quickfix list (:copen). On SUCCESS jdtls is asked to re-read the
+-- build config (update_projects_config) so new dependencies land on the
+-- classpath -- without wiping the workspace or restarting the server.
 local M = {}
 
 -- SPC j b task; tests are skipped via -x test in build_cmd. Use "assemble" or
@@ -41,29 +41,18 @@ local function project_root()
   }) or vim.fn.getcwd()
 end
 
--- Wipe the jdtls workspace cache and restart jdtls on open Java buffers so it
--- re-imports with the current classpath (e.g. a newly added dependency).
--- Unmodified buffers only, so no unsaved work is lost.
+-- Ask the running jdtls to re-read the build config and update the project's
+-- classpath -- fast: no workspace wipe, no server restart -- so a newly added
+-- dependency lands without a full re-import.
 local function refresh_jdtls()
-  for _, c in ipairs(vim.lsp.get_clients({ name = "jdtls" })) do
-    vim.lsp.stop_client(c.id, true)
+  if not next(vim.lsp.get_clients({ name = "jdtls" })) then
+    return
   end
-  vim.fn.delete(vim.fn.stdpath("cache") .. "/jdtls", "rf")
-  vim.defer_fn(function()
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      if
-        vim.api.nvim_buf_is_loaded(buf)
-        and vim.bo[buf].filetype == "java"
-        and not vim.bo[buf].modified
-        and vim.api.nvim_buf_get_name(buf) ~= ""
-      then
-        vim.api.nvim_buf_call(buf, function()
-          vim.cmd("edit")
-        end)
-      end
-    end
-    vim.notify("jdtls cache cleared — re-importing project", vim.log.levels.INFO)
-  end, 300)
+  local ok, jdtls = pcall(require, "jdtls")
+  if ok then
+    pcall(jdtls.update_projects_config)
+    vim.notify("jdtls project config updated", vim.log.levels.INFO)
+  end
 end
 
 -- Run an async job from the project root: spinner on the statusline, quickfix on
