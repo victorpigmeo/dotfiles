@@ -3,15 +3,39 @@
 --   SPC j t  run the test method (or class) under the cursor
 --   SPC j r  re-run the last test (no-op if none has run yet)
 -- Treesitter resolves the fully-qualified target at the cursor, then
--- `./gradlew cleanTest test --tests <fqn>` runs it. Output opens in a scratch
--- window on the right (30% wide); press q or Esc in it to close.
+-- `./gradlew cleanTest test --tests <fqn>` runs it in a TERMINAL split on the
+-- right (40% wide) -- a pty, so Gradle keeps its colours and streams live. A
+-- Gradle init script turns on full test-failure logging so the assertion
+-- message + stack trace show (not just "FAILED"). Press q or Esc to close.
 local M = {}
 
 local state = { last = nil, job = nil }
-
--- ---- output window -------------------------------------------------------
 local out = { win = nil, buf = nil, prev = nil }
 
+-- Gradle init script (rewritten each run) that enables full test-failure output.
+local function init_script()
+  local path = vim.fn.stdpath("cache") .. "/nvim-gradle-test-logging.gradle"
+  local f = io.open(path, "w")
+  if f then
+    f:write([[
+allprojects {
+    tasks.withType(Test).configureEach {
+        testLogging {
+            events "failed"
+            exceptionFormat "full"
+            showExceptions true
+            showCauses true
+            showStackTraces true
+        }
+    }
+}
+]])
+    f:close()
+  end
+  return path
+end
+
+-- ---- output window -------------------------------------------------------
 local function close_output()
   local prev = out.prev
   if out.win and vim.api.nvim_win_is_valid(out.win) then
@@ -23,34 +47,18 @@ local function close_output()
   end
 end
 
-local function ensure_output()
-  if not (out.buf and vim.api.nvim_buf_is_valid(out.buf)) then
-    out.buf = vim.api.nvim_create_buf(false, true)
-    vim.bo[out.buf].bufhidden = "hide"
-    vim.keymap.set("n", "q", close_output, { buffer = out.buf, nowait = true, desc = "Close test output" })
-    vim.keymap.set("n", "<Esc>", close_output, { buffer = out.buf, nowait = true, desc = "Close test output" })
-  end
+local function open_window()
   if not (out.win and vim.api.nvim_win_is_valid(out.win)) then
     out.prev = vim.api.nvim_get_current_win()
     vim.cmd("botright vsplit") -- full-height split on the far right (focused)
     out.win = vim.api.nvim_get_current_win()
-    vim.api.nvim_win_set_buf(out.win, out.buf)
     vim.api.nvim_win_set_width(out.win, math.max(40, math.floor(vim.o.columns * 0.4)))
     local wo = vim.wo[out.win]
     wo.number = false
     wo.relativenumber = false
     wo.signcolumn = "no"
-    wo.wrap = true
-  end
-end
-
-local function render(lines)
-  ensure_output()
-  vim.bo[out.buf].modifiable = true
-  vim.api.nvim_buf_set_lines(out.buf, 0, -1, false, lines)
-  vim.bo[out.buf].modifiable = false
-  if out.win and vim.api.nvim_win_is_valid(out.win) then
-    pcall(vim.api.nvim_win_set_cursor, out.win, { vim.api.nvim_buf_line_count(out.buf), 0 })
+  else
+    vim.api.nvim_set_current_win(out.win)
   end
 end
 
@@ -110,33 +118,40 @@ local function run(root, target, label)
     vim.notify("A test is already running", vim.log.levels.WARN)
     return
   end
-  -- cleanTest forces re-run across Gradle versions; --tests filters to our fqn.
-  local cmd = { root .. "/gradlew", "cleanTest", "test", "--tests", target, "--console=plain" }
-  render({ "▶ Running " .. label, "  " .. target, "", "  running gradle…" })
-  local output = {}
+  -- cleanTest forces re-run across Gradle versions; --tests filters to our fqn;
+  -- --init-script turns on full failure logging. No --console: in the pty Gradle
+  -- auto-detects a terminal and emits colour.
+  local cmd = {
+    root .. "/gradlew",
+    "cleanTest",
+    "test",
+    "--tests",
+    target,
+    "--init-script",
+    init_script(),
+  }
+
+  open_window() -- sized before the job so the pty gets the right width
+  local old = out.buf
+  out.buf = vim.api.nvim_create_buf(false, false) -- empty buffer for the terminal
+  vim.api.nvim_win_set_buf(out.win, out.buf)
+  vim.api.nvim_set_current_win(out.win)
+  if old and vim.api.nvim_buf_is_valid(old) then
+    pcall(vim.api.nvim_buf_delete, old, { force = true }) -- don't pile up terminals
+  end
+
   state.job = vim.fn.jobstart(cmd, {
+    term = true, -- run in a pty so Gradle keeps its colours and streams live
     cwd = root,
-    stdout_buffered = true,
-    stderr_buffered = true,
-    on_stdout = function(_, d)
-      if d then
-        vim.list_extend(output, d)
-      end
-    end,
-    on_stderr = function(_, d)
-      if d then
-        vim.list_extend(output, d)
-      end
-    end,
-    on_exit = function(_, code)
+    on_exit = function()
       state.job = nil
-      local lines = { "▶ " .. label, "  " .. target, "" }
-      vim.list_extend(lines, output)
-      lines[#lines + 1] = ""
-      lines[#lines + 1] = code == 0 and "✓ PASSED" or ("✗ FAILED (exit " .. code .. ")")
-      render(lines)
     end,
   })
+  vim.cmd("stopinsert") -- stay in normal mode so q / Esc close the window
+
+  vim.keymap.set("n", "q", close_output, { buffer = out.buf, nowait = true, desc = "Close test output" })
+  vim.keymap.set("n", "<Esc>", close_output, { buffer = out.buf, nowait = true, desc = "Close test output" })
+
   state.last = { root = root, target = target, label = label }
 end
 
