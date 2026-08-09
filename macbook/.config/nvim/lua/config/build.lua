@@ -16,7 +16,7 @@ local M = {}
 local GRADLE_TASK = "build"
 
 local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-local state = { running = false, timer = nil, saved = nil, frame = 1 }
+local state = { running = false, timer = nil, saved = nil, frame = 1, gen = 0, overridden = false }
 
 local function show(text)
   -- centre the message; escape % so the statusline parser treats it literally
@@ -26,6 +26,7 @@ end
 
 local function restore()
   vim.o.statusline = state.saved or ""
+  state.overridden = false
   vim.cmd("redrawstatus")
 end
 
@@ -65,7 +66,15 @@ local function run(root, cmd, tool, verb)
     return
   end
   state.running = true
-  state.saved = vim.o.statusline
+  state.gen = state.gen + 1
+  local run_gen = state.gen
+  -- Capture the real statusline only when we're not already showing our own
+  -- message, so restore always goes back to the user's statusline, not a stale
+  -- "OK/FAILED" line left over from a quick retry.
+  if not state.overridden then
+    state.saved = vim.o.statusline
+    state.overridden = true
+  end
   state.frame = 1
   local name = vim.fs.basename(root)
   local out = {}
@@ -100,9 +109,16 @@ local function run(root, cmd, tool, verb)
         refresh_jdtls()
       else
         show("✗  " .. verb .. " FAILED (exit " .. code .. ") — :copen for errors")
-        vim.fn.setqflist({}, "r", { title = verb .. " " .. name, lines = out })
+        -- pcall so a setqflist error can never skip the restore scheduled below
+        pcall(vim.fn.setqflist, {}, "r", { title = verb .. " " .. name, lines = out })
       end
-      vim.defer_fn(restore, 4000)
+      -- Only the latest run restores, so a retry within the 4s window can't
+      -- leave a stale message stuck on the statusline.
+      vim.defer_fn(function()
+        if state.gen == run_gen then
+          restore()
+        end
+      end, 4000)
     end,
   })
 end
