@@ -76,6 +76,7 @@ return {
       },
       formatters_by_ft = {
         java = { "spotless" },
+        groovy = { "spotless" }, -- build.gradle, when the project's Spotless targets it
       },
     }
   end,
