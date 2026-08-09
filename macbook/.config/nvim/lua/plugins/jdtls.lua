@@ -94,8 +94,20 @@ local nvim_jdtls = {
       caps.resolveAdditionalTextEditsSupport = true
 
       local jhome = jdtls_java_home()
+
+      -- Lombok agent: @Slf4j / @Data / @Builder etc. generate members at compile
+      -- time, so jdtls only sees them (e.g. the `log` field) when Lombok is loaded
+      -- as a javaagent into its JVM. Enabled when lombok.jar is present
+      -- (linux/scripts/setup-full.sh downloads it; macOS: drop it at the path
+      -- below). --jvm-arg is passed through by mason's jdtls launcher.
+      local cmd = { jdtls_bin, "-data", workspace }
+      local lombok = vim.fn.stdpath("data") .. "/lombok.jar"
+      if vim.uv.fs_stat(lombok) then
+        table.insert(cmd, 2, "--jvm-arg=-javaagent:" .. lombok)
+      end
+
       jdtls.start_or_attach({
-        cmd = { jdtls_bin, "-data", workspace },
+        cmd = cmd,
         cmd_env = jhome and { JAVA_HOME = jhome } or nil,
         root_dir = root,
         capabilities = require("blink.cmp").get_lsp_capabilities(),
