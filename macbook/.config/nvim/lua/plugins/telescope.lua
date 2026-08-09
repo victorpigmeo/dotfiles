@@ -30,6 +30,21 @@ return {
     "nvim-telescope/telescope-ui-select.nvim", -- vim.ui.select (code actions) via telescope
   },
   cmd = "Telescope",
+  -- Route vim.ui.select (LSP code actions) through telescope even though
+  -- telescope is lazy-loaded. This shim runs at startup; the first select loads
+  -- telescope, whose config replaces vim.ui.select with the picker, then we
+  -- delegate to it. Until telescope loads (or if it fails) we fall back to the
+  -- builtin, so code actions never depend on having opened telescope first.
+  init = function()
+    local builtin = vim.ui.select
+    local shim
+    shim = function(items, opts, on_choice)
+      pcall(require, "telescope") -- loads telescope; its config sets vim.ui.select
+      local impl = vim.ui.select ~= shim and vim.ui.select or builtin
+      return impl(items, opts, on_choice)
+    end
+    vim.ui.select = shim
+  end,
   keys = {
     { "<leader><leader>", "<cmd>Telescope find_files<CR>", desc = "Find files" },
     { "<leader>fr", "<cmd>Telescope oldfiles<CR>", desc = "Recent files" },
