@@ -43,9 +43,10 @@ return {
       preview = { treesitter = false },
     },
     pickers = {
-      -- rg --files respects .gitignore; avoids `find` fallback that lists ignored files
+      -- rg --files listing everything: --hidden shows dotfiles, --no-ignore shows
+      -- gitignored files; exclude .git so the picker isn't flooded with git internals.
       find_files = {
-        find_command = { "rg", "--files", "--color", "never" },
+        find_command = { "rg", "--files", "--hidden", "--no-ignore", "--glob", "!.git", "--color", "never" },
       },
     },
   },
