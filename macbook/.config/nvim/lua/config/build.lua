@@ -50,7 +50,8 @@ local function refresh_jdtls()
   end
   local ok, jdtls = pcall(require, "jdtls")
   if ok then
-    pcall(jdtls.update_projects_config)
+    -- select_mode = "all" updates every module without the "which project?" prompt
+    pcall(jdtls.update_projects_config, { select_mode = "all" })
     vim.notify("jdtls project config updated", vim.log.levels.INFO)
   end
 end
