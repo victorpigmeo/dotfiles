@@ -25,7 +25,10 @@ end
 return {
   "nvim-telescope/telescope.nvim",
   branch = "0.1.x",
-  dependencies = { "nvim-lua/plenary.nvim" },
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-telescope/telescope-ui-select.nvim", -- vim.ui.select (code actions) via telescope
+  },
   cmd = "Telescope",
   keys = {
     { "<leader><leader>", "<cmd>Telescope find_files<CR>", desc = "Find files" },
@@ -49,4 +52,14 @@ return {
       },
     },
   },
+  -- Route vim.ui.select (used by LSP code actions) through a Telescope dropdown,
+  -- so it is navigable with the arrow keys instead of typed numbers.
+  config = function(_, opts)
+    opts.extensions = {
+      ["ui-select"] = { require("telescope.themes").get_dropdown() },
+    }
+    local telescope = require("telescope")
+    telescope.setup(opts)
+    telescope.load_extension("ui_select")
+  end,
 }
