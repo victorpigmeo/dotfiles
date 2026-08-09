@@ -24,6 +24,12 @@ return {
       follow_current_file = { enabled = true }, -- track the active buffer
       use_libuv_file_watcher = true, -- live-refresh on external file changes
       hijack_netrw_behavior = "disabled", -- leave netrw/dirs to oil
+      -- Show everything: dotfiles and gitignored files included.
+      filtered_items = {
+        visible = true, -- show filtered items rather than hiding them
+        hide_dotfiles = false,
+        hide_gitignored = false,
+      },
     },
   },
 }
