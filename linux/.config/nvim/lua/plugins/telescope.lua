@@ -60,6 +60,10 @@ return {
     }
     local telescope = require("telescope")
     telescope.setup(opts)
-    telescope.load_extension("ui_select")
+    -- Guard: a not-yet-installed extension (e.g. on a fresh machine before
+    -- :Lazy sync) must not break all of telescope. Warn instead of erroring.
+    if not pcall(telescope.load_extension, "ui_select") then
+      vim.notify("telescope ui-select not installed yet — run :Lazy sync", vim.log.levels.WARN)
+    end
   end,
 }
