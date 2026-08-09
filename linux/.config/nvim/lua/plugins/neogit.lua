@@ -14,5 +14,10 @@ return {
     -- Open the status in the current window (same project tab) instead of a new
     -- tab. Neogit restores the previous buffer when the status is closed.
     kind = "replace",
+    -- The commit editor defaults to "tab"; open it as a split so it stays in the
+    -- same tab as the Neogit status instead of spawning a new tab.
+    commit_editor = {
+      kind = "split",
+    },
   },
 }
