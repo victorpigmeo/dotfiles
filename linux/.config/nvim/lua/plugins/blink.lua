@@ -15,7 +15,7 @@ return {
       default = { "lsp", "path", "snippets", "buffer" },
     },
     completion = {
-      menu = { auto_show_delay_ms = 2000 }, -- wait 2s before auto-opening menu
+      menu = { auto_show_delay_ms = 500 }, -- wait 500ms before auto-opening menu
       documentation = { auto_show = true },
     },
   },

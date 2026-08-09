@@ -9,6 +9,9 @@ local ensure = {
   "markdown_inline",
   "vim",
   "vimdoc",
+  -- build tooling
+  "groovy", -- build.gradle
+  "toml", -- libs.versions.toml, *.toml
   -- web / Next.js
   "typescript",
   "tsx",
