@@ -46,7 +46,24 @@ return {
       -- rg --files listing everything: --hidden shows dotfiles, --no-ignore shows
       -- gitignored files; exclude .git so the picker isn't flooded with git internals.
       find_files = {
-        find_command = { "rg", "--files", "--hidden", "--no-ignore", "--glob", "!.git", "--color", "never" },
+        -- --no-ignore surfaces gitignored files on purpose; still drop the noisy
+        -- build output (Gradle/Maven `build`/`target` dirs) and compiled .class.
+        find_command = {
+          "rg",
+          "--files",
+          "--hidden",
+          "--no-ignore",
+          "--glob",
+          "!.git",
+          "--glob",
+          "!**/build/**",
+          "--glob",
+          "!**/target/**",
+          "--glob",
+          "!*.class",
+          "--color",
+          "never",
+        },
       },
     },
   },
