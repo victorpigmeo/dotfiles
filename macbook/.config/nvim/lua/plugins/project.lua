@@ -16,14 +16,20 @@ return {
       -- keep auto-cd tab-local so each project tab holds its own cwd
       scope_chdir = "tab",
       detection_methods = { "pattern", "lsp" },
+      -- Root at the OUTERMOST project dir. A submodule's own build.gradle /
+      -- pom.xml is deliberately NOT a marker, else opening a multi-module file
+      -- (e.g. metadata-next/optimizer) would cd into the submodule and SPC SPC
+      -- would only search that module. settings.gradle(.kts) / gradlew / mvnw /
+      -- .git sit at the true root, so cwd covers every sibling module.
       patterns = {
         ".git",
+        "settings.gradle",
+        "settings.gradle.kts",
+        "gradlew",
+        "mvnw",
         "package.json",
         "Cargo.toml",
         "go.mod",
-        "pom.xml",
-        "build.gradle",
-        "settings.gradle",
         ".root",
       },
     })
