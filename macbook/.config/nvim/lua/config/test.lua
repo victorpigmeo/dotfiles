@@ -113,23 +113,31 @@ local function gradle_root()
   return vim.fs.root(0, { "gradlew", "settings.gradle", "settings.gradle.kts" })
 end
 
-local function run(root, target, label)
+-- Gradle project prefix for the current file's module, e.g. ":optimizer:". A
+-- multi-module build must qualify the task (":optimizer:test") -- an unqualified
+-- "test" runs every module, and modules without the --tests match fail with
+-- "No tests found for given includes". Empty for a single-module build (build
+-- file at the Gradle root), so tasks stay unqualified there.
+local function module_prefix(root)
+  local module_dir = vim.fs.root(0, { "build.gradle", "build.gradle.kts" })
+  if not module_dir or module_dir == root then
+    return ""
+  end
+  return ":" .. module_dir:sub(#root + 2):gsub("/", ":") .. ":"
+end
+
+local function run(root, tasks, target, label)
   if state.job then
     vim.notify("A test is already running", vim.log.levels.WARN)
     return
   end
+  -- tasks are module-qualified (":optimizer:cleanTest", ":optimizer:test");
   -- cleanTest forces re-run across Gradle versions; --tests filters to our fqn;
   -- --init-script turns on full failure logging. No --console: in the pty Gradle
   -- auto-detects a terminal and emits colour.
-  local cmd = {
-    root .. "/gradlew",
-    "cleanTest",
-    "test",
-    "--tests",
-    target,
-    "--init-script",
-    init_script(),
-  }
+  local cmd = { root .. "/gradlew" }
+  vim.list_extend(cmd, tasks)
+  vim.list_extend(cmd, { "--tests", target, "--init-script", init_script() })
 
   open_window() -- sized before the job so the pty gets the right width
   local old = out.buf
@@ -152,7 +160,7 @@ local function run(root, target, label)
   vim.keymap.set("n", "q", close_output, { buffer = out.buf, nowait = true, desc = "Close test output" })
   vim.keymap.set("n", "<Esc>", close_output, { buffer = out.buf, nowait = true, desc = "Close test output" })
 
-  state.last = { root = root, target = target, label = label }
+  state.last = { root = root, tasks = tasks, target = target, label = label }
 end
 
 function M.run_nearest()
@@ -166,7 +174,9 @@ function M.run_nearest()
     vim.notify("No test method/class at the cursor (open a .java test file)", vim.log.levels.WARN)
     return
   end
-  run(root, target, name or target)
+  local prefix = module_prefix(root)
+  local tasks = { prefix .. "cleanTest", prefix .. "test" }
+  run(root, tasks, target, name or target)
 end
 
 function M.run_last()
@@ -174,7 +184,7 @@ function M.run_last()
     vim.notify("No test has been run yet", vim.log.levels.INFO)
     return -- no-op
   end
-  run(state.last.root, state.last.target, state.last.label)
+  run(state.last.root, state.last.tasks, state.last.target, state.last.label)
 end
 
 return M
