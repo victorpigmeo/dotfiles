@@ -59,7 +59,13 @@ return {
       desc = "Find files",
     },
     { "<leader>fr", "<cmd>Telescope oldfiles<CR>", desc = "Recent files" },
-    { "<leader>sp", "<cmd>Telescope live_grep<CR>", desc = "Search project text" },
+    {
+      "<leader>sp",
+      function()
+        require("telescope.builtin").live_grep({ cwd = project_root() })
+      end,
+      desc = "Search project text",
+    },
     { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Search buffer" },
     { "<leader>bi", "<cmd>Telescope buffers<CR>", desc = "Buffer list" },
   },
