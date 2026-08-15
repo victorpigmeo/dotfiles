@@ -26,9 +26,12 @@ map("i", "<A-Up>", "<Esc>:m .-2<CR>==gi", { desc = "Move line up" })
 map("n", "<A-Down>", ":m .+1<CR>==", { desc = "Move line down" })
 map("n", "<A-Up>", ":m .-2<CR>==", { desc = "Move line up" })
 
--- Toggle comment on the visual selection with Ctrl+/ (terminals may send C-_)
+-- Toggle comment with Ctrl+/ (terminals may send C-_): the visual selection in
+-- visual mode, the current line in normal mode.
 map("x", "<C-/>", "gc", { remap = true, desc = "Toggle comment" })
 map("x", "<C-_>", "gc", { remap = true, desc = "Toggle comment" })
+map("n", "<C-/>", "gcc", { remap = true, desc = "Toggle comment line" })
+map("n", "<C-_>", "gcc", { remap = true, desc = "Toggle comment line" })
 
 -- SPC w — window
 map("n", "<leader>ws", "<C-w>s", { desc = "Split window below" })
