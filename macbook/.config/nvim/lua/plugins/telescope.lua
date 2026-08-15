@@ -22,15 +22,50 @@ local function path_display(_, path)
   return table.concat(parts, "/")
 end
 
+-- Root find_files at the WHOLE project, not the module of the current file.
+-- In a multi-module build the cwd is often the submodule (project.nvim detects
+-- the nearest build.gradle/pom.xml), which would limit find_files to that
+-- module. Gradle/Maven wrappers + settings live only at the true root, so prefer
+-- them; else climb to the topmost build file (multi-module Maven); else .git;
+-- else the cwd.
+local function project_root()
+  local root = vim.fs.root(0, { "settings.gradle", "settings.gradle.kts", "gradlew", "mvnw" })
+  if root then
+    return root
+  end
+  local markers = { "pom.xml", "build.gradle", "build.gradle.kts" }
+  root = vim.fs.root(0, markers)
+  while root do
+    local up = vim.fs.root(vim.fs.dirname(root), markers)
+    if not up or up == root then
+      break
+    end
+    root = up
+  end
+  return root or vim.fs.root(0, { ".git" }) or vim.uv.cwd()
+end
+
 return {
   "nvim-telescope/telescope.nvim",
   branch = "0.1.x",
   dependencies = { "nvim-lua/plenary.nvim" },
   cmd = "Telescope",
   keys = {
-    { "<leader><leader>", "<cmd>Telescope find_files<CR>", desc = "Find files" },
+    {
+      "<leader><leader>",
+      function()
+        require("telescope.builtin").find_files({ cwd = project_root() })
+      end,
+      desc = "Find files",
+    },
     { "<leader>fr", "<cmd>Telescope oldfiles<CR>", desc = "Recent files" },
-    { "<leader>sp", "<cmd>Telescope live_grep<CR>", desc = "Search project text" },
+    {
+      "<leader>sp",
+      function()
+        require("telescope.builtin").live_grep({ cwd = project_root() })
+      end,
+      desc = "Search project text",
+    },
     { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Search buffer" },
     { "<leader>bi", "<cmd>Telescope buffers<CR>", desc = "Buffer list" },
   },
