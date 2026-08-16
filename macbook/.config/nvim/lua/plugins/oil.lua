@@ -31,7 +31,9 @@ local function open_entry()
   local oil = require("oil")
   local entry = oil.get_cursor_entry()
   local dir = oil.get_current_dir()
-  if entry and dir and entry.type == "directory" then
+  -- Let the parent entry (`../`) fall through to oil's default select, so CR on
+  -- it goes up one level instead of descending back into the current dir.
+  if entry and dir and entry.type == "directory" and entry.name ~= ".." then
     oil.open(first_nonempty(dir .. entry.name))
   else
     oil.select()
