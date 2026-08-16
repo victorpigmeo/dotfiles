@@ -49,6 +49,9 @@ map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next buffer" })
 map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<leader>bk", "<cmd>bdelete<CR>", { desc = "Kill buffer" })
 map("n", "<leader>bb", "<cmd>e #<CR>", { desc = "Switch to other buffer" })
+map("n", "<leader>bc", function()
+  require("config.git").create_branch()
+end, { desc = "Create git branch" })
 
 -- SPC f — file
 map("n", "<leader>fs", "<cmd>w<CR>", { desc = "Save file" })

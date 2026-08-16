@@ -20,4 +20,19 @@ return {
       kind = "split",
     },
   },
+  config = function(_, opts)
+    require("neogit").setup(opts)
+    -- Inside the Neogit status buffer, `gu` ("git update") checks out the default
+    -- branch and pulls --rebase (the git-cmum equivalent). `g` is only used by
+    -- Neogit's `g?`, so there's no real conflict.
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "NeogitStatus",
+      desc = "Neogit: gu = checkout default branch + rebase",
+      callback = function(ev)
+        vim.keymap.set("n", "gu", function()
+          require("config.git").checkout_default_and_rebase()
+        end, { buffer = ev.buf, desc = "Checkout default branch + rebase" })
+      end,
+    })
+  end,
 }
