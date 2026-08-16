@@ -20,4 +20,19 @@ return {
       kind = "split",
     },
   },
+  config = function(_, opts)
+    require("neogit").setup(opts)
+    -- Inside the Neogit status buffer, `mu` checks out the default branch and
+    -- pulls --rebase (the git-cmum equivalent). It's a two-key sequence, so the
+    -- default `m` (merge popup) waits briefly to see if a `u` follows.
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "NeogitStatus",
+      desc = "Neogit: mu = checkout default branch + rebase",
+      callback = function(ev)
+        vim.keymap.set("n", "mu", function()
+          require("config.git").checkout_default_and_rebase()
+        end, { buffer = ev.buf, desc = "Checkout default branch + rebase" })
+      end,
+    })
+  end,
 }
