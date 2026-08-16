@@ -116,6 +116,26 @@ j() {
   jump "$1"
 }
 
+# git-cmum — check out the repo's default branch (main or master) and pull with
+# rebase. Uses origin/HEAD when set, else falls back to a local/remote main then
+# master, then main.
+git-cmum() {
+  local branch
+  branch="$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null)"
+  branch="${branch#origin/}"
+  if [[ -z "$branch" ]]; then
+    for b in main master; do
+      if git show-ref --verify --quiet "refs/heads/$b" \
+        || git show-ref --verify --quiet "refs/remotes/origin/$b"; then
+        branch="$b"
+        break
+      fi
+    done
+  fi
+  : "${branch:=main}"
+  git checkout "$branch" && git pull --rebase
+}
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="$HOME/.local/bin:$PATH"
