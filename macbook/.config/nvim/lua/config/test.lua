@@ -57,6 +57,7 @@ local function open_window()
     wo.number = false
     wo.relativenumber = false
     wo.signcolumn = "no"
+    wo.wrap = true -- wrap long lines (stack traces) instead of truncating off-screen
   else
     vim.api.nvim_set_current_win(out.win)
   end
@@ -133,11 +134,12 @@ local function run(root, tasks, target, label)
   end
   -- tasks are module-qualified (":optimizer:cleanTest", ":optimizer:test");
   -- cleanTest forces re-run across Gradle versions; --tests filters to our fqn;
-  -- --init-script turns on full failure logging. No --console: in the pty Gradle
+  -- --init-script turns on full failure logging; --info surfaces Gradle's INFO
+  -- logs (test lifecycle, skipped reasons, etc). No --console: in the pty Gradle
   -- auto-detects a terminal and emits colour.
   local cmd = { root .. "/gradlew" }
   vim.list_extend(cmd, tasks)
-  vim.list_extend(cmd, { "--tests", target, "--init-script", init_script() })
+  vim.list_extend(cmd, { "--tests", target, "--init-script", init_script(), "--info" })
 
   open_window() -- sized before the job so the pty gets the right width
   local old = out.buf
