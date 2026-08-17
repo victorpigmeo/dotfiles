@@ -127,19 +127,22 @@ local function module_prefix(root)
   return ":" .. module_dir:sub(#root + 2):gsub("/", ":") .. ":"
 end
 
-local function run(root, tasks, target, label)
+local function run(root, tasks, target, label, info)
   if state.job then
     vim.notify("A test is already running", vim.log.levels.WARN)
     return
   end
   -- tasks are module-qualified (":optimizer:cleanTest", ":optimizer:test");
   -- cleanTest forces re-run across Gradle versions; --tests filters to our fqn;
-  -- --init-script turns on full failure logging; --info surfaces Gradle's INFO
-  -- logs (test lifecycle, skipped reasons, etc). No --console: in the pty Gradle
-  -- auto-detects a terminal and emits colour.
+  -- --init-script turns on full failure logging. No --console: in the pty Gradle
+  -- auto-detects a terminal and emits colour. `info` adds --info (SPC j T) to
+  -- surface Gradle's INFO logs (test lifecycle, skipped reasons, etc).
   local cmd = { root .. "/gradlew" }
   vim.list_extend(cmd, tasks)
-  vim.list_extend(cmd, { "--tests", target, "--init-script", init_script(), "--info" })
+  vim.list_extend(cmd, { "--tests", target, "--init-script", init_script() })
+  if info then
+    table.insert(cmd, "--info")
+  end
 
   open_window() -- sized before the job so the pty gets the right width
   local old = out.buf
@@ -162,10 +165,12 @@ local function run(root, tasks, target, label)
   vim.keymap.set("n", "q", close_output, { buffer = out.buf, nowait = true, desc = "Close test output" })
   vim.keymap.set("n", "<Esc>", close_output, { buffer = out.buf, nowait = true, desc = "Close test output" })
 
-  state.last = { root = root, tasks = tasks, target = target, label = label }
+  state.last = { root = root, tasks = tasks, target = target, label = label, info = info }
 end
 
-function M.run_nearest()
+-- Run the test at the cursor. `info` (SPC j T) adds --info for verbose Gradle
+-- logs; without it (SPC j t) the run stays quiet.
+function M.run_nearest(info)
   local root = gradle_root()
   if not root then
     vim.notify("No Gradle project (gradlew) found for this file", vim.log.levels.ERROR)
@@ -178,7 +183,7 @@ function M.run_nearest()
   end
   local prefix = module_prefix(root)
   local tasks = { prefix .. "cleanTest", prefix .. "test" }
-  run(root, tasks, target, name or target)
+  run(root, tasks, target, name or target, info)
 end
 
 function M.run_last()
@@ -186,7 +191,7 @@ function M.run_last()
     vim.notify("No test has been run yet", vim.log.levels.INFO)
     return -- no-op
   end
-  run(state.last.root, state.last.tasks, state.last.target, state.last.label)
+  run(state.last.root, state.last.tasks, state.last.target, state.last.label, state.last.info)
 end
 
 return M
