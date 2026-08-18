@@ -53,6 +53,11 @@ map("n", "<leader>bc", function()
   require("config.git").create_branch()
 end, { desc = "Create git branch" })
 
+-- SPC c — code (group also populated in plugins/lsp.lua via on_attach)
+map("n", "<leader>cx", function()
+  require("config.diagnostics").show()
+end, { desc = "List diagnostics (problems)" })
+
 -- SPC f — file
 map("n", "<leader>fs", "<cmd>w<CR>", { desc = "Save file" })
 map("n", "<leader>fS", "<cmd>wa<CR>", { desc = "Save all files" })
