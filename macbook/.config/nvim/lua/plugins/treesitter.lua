@@ -4,6 +4,7 @@
 -- FileType. Indentation uses the plugin's indentexpr.
 local ensure = {
   "java",
+  "kotlin", -- .kt / .kts (also build.gradle.kts)
   "lua",
   "markdown",
   "markdown_inline",
