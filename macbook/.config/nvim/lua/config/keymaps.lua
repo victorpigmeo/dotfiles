@@ -14,6 +14,12 @@ for i = 1, 9 do
   map("t", ("<A-%d>"):format(i), ([[<C-\><C-n>%dgt]]):format(i), { desc = "Go to tab " .. i })
 end
 
+-- Reorder the current tab with Alt+Shift+Left/Right (jump is Alt+1..9). `<cmd>`
+-- runs without leaving terminal mode, so it works from a terminal tab too;
+-- silent! swallows the edge error when the tab is already first/last.
+map({ "n", "t" }, "<A-S-Left>", "<cmd>silent! tabmove -1<CR>", { desc = "Move tab left" })
+map({ "n", "t" }, "<A-S-Right>", "<cmd>silent! tabmove +1<CR>", { desc = "Move tab right" })
+
 -- Move selected lines (J/K, plus Alt+Down/Up)
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
