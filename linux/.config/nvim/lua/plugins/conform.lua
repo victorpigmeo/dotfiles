@@ -77,6 +77,11 @@ return {
       formatters_by_ft = {
         java = { "spotless" },
         groovy = { "spotless" }, -- build.gradle, when the project's Spotless targets it
+        -- Kotlin (.kt + build.gradle.kts): ktlint. The JetBrains kotlin-lsp's LSP
+        -- formatting is unreliable on build scripts, so use a dedicated formatter.
+        -- Install once per machine: :MasonInstall ktlint (mason's bin is on
+        -- conform's PATH, so no extra config needed).
+        kotlin = { "ktlint" },
       },
     }
   end,
