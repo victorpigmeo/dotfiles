@@ -51,8 +51,19 @@ function M.show()
   vim.fn.setqflist({}, " ", { title = "Diagnostics", items = items })
   vim.cmd("botright copen") -- window at the bottom, spanning the full width
   local buf = vim.api.nvim_get_current_buf()
-  -- Q closes the list (quickfix already jumps on <CR> and moves with j/k).
-  vim.keymap.set("n", "Q", "<cmd>cclose<CR>", { buffer = buf, nowait = true, desc = "Close diagnostics" })
+  local opts = { buffer = buf, nowait = true }
+
+  -- q / Q close the list.
+  vim.keymap.set("n", "q", "<cmd>cclose<CR>", vim.tbl_extend("force", opts, { desc = "Close diagnostics" }))
+  vim.keymap.set("n", "Q", "<cmd>cclose<CR>", vim.tbl_extend("force", opts, { desc = "Close diagnostics" }))
+
+  -- <CR> jumps to the problem under the cursor, then closes the list. The line
+  -- number in the quickfix window is the entry index, so `<n>cc` jumps to it.
+  vim.keymap.set("n", "<CR>", function()
+    local line = vim.fn.line(".")
+    vim.cmd(line .. "cc")
+    vim.cmd("cclose")
+  end, vim.tbl_extend("force", opts, { desc = "Jump to problem and close" }))
 end
 
 return M
