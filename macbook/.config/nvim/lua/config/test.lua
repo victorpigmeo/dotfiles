@@ -137,9 +137,13 @@ local function run(root, tasks, target, label, info)
   -- --init-script turns on full failure logging. No --console: in the pty Gradle
   -- auto-detects a terminal and emits colour. `info` adds --info (SPC j T) to
   -- surface Gradle's INFO logs (test lifecycle, skipped reasons, etc).
+  -- -x jacocoTestCoverageVerification: builds that finalize `test` with the
+  -- coverage gate fail a single-test run (one test can't meet a whole-module
+  -- threshold), so exclude it here.
   local cmd = { root .. "/gradlew" }
   vim.list_extend(cmd, tasks)
   vim.list_extend(cmd, { "--tests", target, "--init-script", init_script() })
+  vim.list_extend(cmd, { "-x", "jacocoTestCoverageVerification" })
   if info then
     table.insert(cmd, "--info")
   end
