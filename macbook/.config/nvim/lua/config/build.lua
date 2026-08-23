@@ -2,8 +2,10 @@
 -- jdtls cache refresh so the Java LSP re-imports afterwards. Bound in
 -- config/keymaps.lua under SPC j (java):
 --   SPC j b  build the project (gradle: build -x test)
---   SPC j d  refresh Gradle dependencies (--refresh-dependencies) -- run after
---            adding/removing a dependency so jdtls picks it up
+--   SPC j d  refresh jdtls only (re-read the build config) -- fast; use when
+--            jdtls goes stale (e.g. a red import for a dep already on classpath)
+--   SPC j D  refresh Gradle dependencies (--refresh-dependencies) THEN jdtls --
+--            run after adding/removing a dependency so it lands on the classpath
 -- The command runs as a background job; a spinner takes over the statusline
 -- while it runs, then shows OK/FAILED for a few seconds. On failure the output
 -- goes to the quickfix list (:copen). On SUCCESS jdtls is asked to re-read the
@@ -45,16 +47,18 @@ end
 -- Ask the running jdtls to re-read the build config and update the project's
 -- classpath -- fast: no workspace wipe, no server restart -- so a newly added
 -- dependency lands without a full re-import.
-local function refresh_jdtls()
+local function jdtls_reimport()
   if not next(vim.lsp.get_clients({ name = "jdtls" })) then
-    return
+    return false
   end
   local ok, jdtls = pcall(require, "jdtls")
   if ok then
     -- select_mode = "all" updates every module without the "which project?" prompt
     pcall(jdtls.update_projects_config, { select_mode = "all" })
     vim.notify("jdtls project config updated", vim.log.levels.INFO)
+    return true
   end
+  return false
 end
 
 -- Run an async job from the project root: spinner on the statusline, quickfix on
@@ -106,7 +110,7 @@ local function run(root, cmd, tool, verb)
       end
       if code == 0 then
         show("✓  " .. verb .. " OK — " .. name .. "; refreshing jdtls…")
-        refresh_jdtls()
+        jdtls_reimport()
       else
         show("✗  " .. verb .. " FAILED (exit " .. code .. ") — :copen for errors")
         -- pcall so a setqflist error can never skip the restore scheduled below
@@ -150,8 +154,16 @@ function M.build()
   run(root, cmd, tool, "Building")
 end
 
--- Force Gradle to re-resolve dependencies (after adding/removing one), then
--- refresh jdtls so the new deps land on its classpath.
+-- SPC j d: ask jdtls to re-read the build config, nothing else. Fast (no Gradle
+-- run) -- use when jdtls has gone stale but the deps are already resolved.
+function M.refresh_jdtls()
+  if not jdtls_reimport() then
+    vim.notify("jdtls is not running for this buffer", vim.log.levels.WARN)
+  end
+end
+
+-- SPC j D: force Gradle to re-resolve dependencies (after adding/removing one),
+-- then refresh jdtls so the new deps land on its classpath.
 function M.refresh_deps()
   local root = project_root()
   if not vim.uv.fs_stat(root .. "/gradlew") then
