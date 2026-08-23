@@ -116,8 +116,11 @@ local nvim_jdtls = {
           java = {
             completion = {
               -- jdtls only completes/auto-imports static members from this list.
-              -- It defaults to JUnit + Mockito; add AssertJ (and keep the
-              -- defaults) so assertThat / assertThatThrownBy resolve and import.
+              -- It defaults to JUnit + Mockito (Mockito/ArgumentMatchers/Answers);
+              -- add AssertJ and the rest of the common Mockito holders -- notably
+              -- BDDMockito (given/willReturn/then), MockitoAnnotations (openMocks)
+              -- and the Additional* matchers/answers -- so assertThat, given, etc.
+              -- resolve and auto-import.
               favoriteStaticMembers = {
                 "org.assertj.core.api.Assertions.*",
                 "org.assertj.core.api.Assumptions.*",
@@ -129,8 +132,12 @@ local nvim_jdtls = {
                 "org.junit.Assert.*",
                 "org.junit.Assume.*",
                 "org.mockito.Mockito.*",
+                "org.mockito.BDDMockito.*",
                 "org.mockito.ArgumentMatchers.*",
                 "org.mockito.Answers.*",
+                "org.mockito.AdditionalMatchers.*",
+                "org.mockito.AdditionalAnswers.*",
+                "org.mockito.MockitoAnnotations.*",
               },
             },
           },
