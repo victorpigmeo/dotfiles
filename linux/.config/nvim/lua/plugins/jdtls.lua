@@ -138,6 +138,7 @@ local nvim_jdtls = {
                 "org.mockito.AdditionalMatchers.*",
                 "org.mockito.AdditionalAnswers.*",
                 "org.mockito.MockitoAnnotations.*",
+                "org.awaitility.Awaitility.*",
               },
             },
           },
